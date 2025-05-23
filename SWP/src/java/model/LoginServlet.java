@@ -29,9 +29,15 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("user", user); // Lưu user với key "user"
 
             if ("admin".equalsIgnoreCase(user.getRole())) {
+<<<<<<< HEAD
                 response.sendRedirect("admin.jsp");
             } else if ("customer".equalsIgnoreCase(user.getRole())) {
                 response.sendRedirect("user.jsp");  // chuyển thành index.jsp nếu dùng JSP
+=======
+                response.sendRedirect("admin/dashboard.jsp");
+            } else if ("customer".equalsIgnoreCase(user.getRole())) {
+                response.sendRedirect("index.jsp");  // chuyển thành index.jsp nếu dùng JSP
+>>>>>>> 184b2c6dc0113fb927607ee2d6bf9a0fc3fbdf93
             } else {
                 request.setAttribute("errorMsg", "Vai trò không hợp lệ!");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
@@ -41,4 +47,8 @@ public class LoginServlet extends HttpServlet {
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 184b2c6dc0113fb927607ee2d6bf9a0fc3fbdf93

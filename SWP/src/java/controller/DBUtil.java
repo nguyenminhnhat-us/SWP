@@ -8,7 +8,11 @@ public class DBUtil {
     public static final Connection getConnection() throws ClassNotFoundException, SQLException {
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         String url = "jdbc:sqlserver://localhost:1433;databaseName=plant_care_system;encrypt=true;trustServerCertificate=true";
+<<<<<<< HEAD
         return DriverManager.getConnection(url, "sa", "2005huuphuc");
+=======
+        return DriverManager.getConnection(url, "sa", "1");
+>>>>>>> 184b2c6dc0113fb927607ee2d6bf9a0fc3fbdf93
     }
     
     public static void main(String[] args) {
