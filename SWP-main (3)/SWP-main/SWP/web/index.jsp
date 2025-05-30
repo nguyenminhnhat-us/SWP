@@ -274,7 +274,7 @@
                     <button class="btn btn-outline-light bg-success text-white dropdown-toggle" data-bs-toggle="dropdown">
                         
                        <%= user.getFullName() %>
-                        <img src="uploads/default.jpg" alt="Avatar" class="rounded-circle" style="width: 40px; height: 40px; margin-right: 5px;"> 
+                        
                     </button>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="viewProfile">Xem hồ sơ</a></li>

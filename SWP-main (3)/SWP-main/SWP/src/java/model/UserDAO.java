@@ -14,7 +14,7 @@ public class UserDAO {
             ps.setString(1, email);
             ps.setString(2, password);
             ResultSet rs = ps.executeQuery();
-            
+
             if (rs.next()) {
                 User user = new User(
                     rs.getInt("user_id"),
@@ -26,7 +26,7 @@ public class UserDAO {
                     rs.getString("role"),
                     rs.getBoolean("is_active")
                 );
-                user.setAvatarPath("uploads/default.jpg"); // Gán giá trị mặc định
+                user.setAvatarPath(rs.getString("avatar_path")); // Lấy từ DB
                 return user;
             }
         } catch (SQLException | ClassNotFoundException e) {
@@ -36,14 +36,15 @@ public class UserDAO {
     }
 
     public boolean updateUser(User user) {
-        String sql = "UPDATE Users SET full_name = ?, email = ?, phone = ?, address = ? WHERE user_id = ?";
+        String sql = "UPDATE Users SET full_name = ?, email = ?, phone = ?, address = ?, avatar_path = ? WHERE user_id = ?";
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, user.getFullName());
             ps.setString(2, user.getEmail());
             ps.setString(3, user.getPhone());
             ps.setString(4, user.getAddress());
-            ps.setInt(5, user.getUserId());
+            ps.setString(5, user.getAvatarPath());
+            ps.setInt(6, user.getUserId());
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException | ClassNotFoundException e) {

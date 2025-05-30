@@ -76,7 +76,7 @@ public class EditProfileServlet extends HttpServlet {
         user.setEmail(email);
         user.setPhone(phone);
         user.setAddress(address);
-        user.setAvatarPath(avatarPath);
+        user.setAvatarPath(avatarPath); // Cập nhật avatar path
 
         if (userDAO.updateUser(user)) {
             session.setAttribute("user", user);

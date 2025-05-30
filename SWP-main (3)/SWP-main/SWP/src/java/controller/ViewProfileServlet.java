@@ -1,8 +1,10 @@
 package controller;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import model.User;
+
 import java.io.IOException;
 
 @WebServlet("/viewProfile")
