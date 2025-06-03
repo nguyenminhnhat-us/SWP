@@ -75,8 +75,7 @@ public User getUserByEmail(String email) {
         }
         return null;
     }
-
-   public void insertUser(User user) {
+public void insertUser(User user) {
         String sql = "INSERT INTO Users (email, password, full_name, phone, address, role, is_active) VALUES (?, ?, ?, ?, ?, ?, 1)";
         try (Connection conn = DBUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, user.getEmail());
@@ -90,6 +89,7 @@ public User getUserByEmail(String email) {
             e.printStackTrace();
         }
     }
+<<<<<<< HEAD
     
     private User extractUserFromResultSet(ResultSet rs) throws SQLException {
         return new User(
@@ -102,5 +102,53 @@ public User getUserByEmail(String email) {
                 rs.getString("role"),
                 rs.getBoolean("is_active")
         );
+=======
+
+public void insertUsergoogle(User user) {
+    String sql = "INSERT INTO Users (email, password, full_name, phone, address, role, is_active, auth_type) VALUES (?, ?, ?, ?, ?, ?, 1, ?)";
+    try (Connection conn = DBUtil.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, user.getEmail());
+        ps.setString(2, user.getPassword());
+        ps.setString(3, user.getFullName());
+        ps.setString(4, user.getPhone());
+        ps.setString(5, user.getAddress());
+        ps.setString(6, user.getRole());
+        ps.setString(7, user.getAuthType());  // local hoặc google
+        ps.executeUpdate();
+    } catch (Exception e) {
+        e.printStackTrace();
+>>>>>>> b4fc4b4ba9bfe05082e12a7e1c2bcd6e8698d470
     }
+}
+public void updatePasswordreset(String email, String newPassword) {
+    String sql = "UPDATE Users SET password = ? WHERE email = ?";
+    try (Connection conn = DBUtil.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ps.setString(1, newPassword);
+        ps.setString(2, email);
+        ps.executeUpdate();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+
+
+
+        private User extractUserFromResultSet(ResultSet rs) throws SQLException {
+    User user = new User();
+    user.setUserId(rs.getInt("user_id"));
+    user.setEmail(rs.getString("email"));
+    user.setPassword(rs.getString("password"));
+    user.setFullName(rs.getString("full_name"));
+    user.setPhone(rs.getString("phone"));
+    user.setAddress(rs.getString("address"));
+    user.setRole(rs.getString("role"));
+    user.setIsActive(rs.getBoolean("is_active"));
+    user.setAvatarPath(rs.getString("avatar_path"));
+    user.setAuthType(rs.getString("auth_type"));  // nếu bạn có trường này
+    return user;
+}
+    
 }

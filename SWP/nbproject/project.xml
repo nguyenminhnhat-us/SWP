@@ -3,7 +3,7 @@
     <type>org.netbeans.modules.web.project</type>
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/web-project/3">
-            <name>SWP</name>
+            <name>SWPcu</name>
             <minimum-ant-version>1.6.5</minimum-ant-version>
             <web-module-libraries>
                 <library dirs="200">
@@ -11,11 +11,19 @@
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
+<<<<<<< HEAD
                     <file>${libs.jakartaee-api-10.0.classpath}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
                     <file>${file.reference.gson-2.13.1.jar}</file>
+=======
+                    <file>${file.reference.jakarta.activation-1.2.2.jar}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
+                <library dirs="200">
+                    <file>${file.reference.jakarta.mail-1.6.7__1_.jar}</file>
+>>>>>>> b4fc4b4ba9bfe05082e12a7e1c2bcd6e8698d470
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
             </web-module-libraries>

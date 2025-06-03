@@ -7,8 +7,13 @@ import java.sql.SQLException;
 public class DBUtil {
     public static final Connection getConnection() throws ClassNotFoundException, SQLException {
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+<<<<<<< HEAD
         String url = "jdbc:sqlserver://localhost:1433;databaseName=plant_care_system;encrypt=true;trustServerCertificate=true";
         return DriverManager.getConnection(url, "sa", "2005huuphuc");
+=======
+        String url = "jdbc:sqlserver://localhost:1433;databaseName=plant_care_systemcu;encrypt=true;trustServerCertificate=true";
+        return DriverManager.getConnection(url, "sa", "1");
+>>>>>>> b4fc4b4ba9bfe05082e12a7e1c2bcd6e8698d470
 
     }
     
