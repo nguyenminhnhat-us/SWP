@@ -10,7 +10,15 @@ public class User {
     private String role;
     private boolean isActive;
     private String avatarPath; // Quản lý trong session, không lưu vào DB
+private String authType;  // 'local' hoặc 'google'
 
+    public String getAuthType() {
+        return authType;
+    }
+
+    public void setAuthType(String authType) {
+        this.authType = authType;
+    }
     public User() {
     }
 
