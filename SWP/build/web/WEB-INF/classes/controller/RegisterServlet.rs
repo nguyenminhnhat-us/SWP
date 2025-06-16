@@ -1,2 +1,1 @@
-RegisterServlet
 model.RegisterServlet

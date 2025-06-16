@@ -290,41 +290,46 @@ footer a:hover {
     </div>
 </div>
 
-    <!-- Navbar -->
+  <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-success">
-    <div class="container">
-        <ul class="navbar-nav d-flex justify-content-around w-100">
-        <li class="nav-item"><a class="nav-link" href="#">TRANG CHỦ</a></li>
-
-        <!-- Dropdown GIỚI THIỆU -->
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="gioithieuDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            GIỚI THIỆU
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="gioithieuDropdown">
-            <li><a class="dropdown-item" href="#">Cây cảnh</a></li>
-            <li><a class="dropdown-item" href="#">Chuyên gia</a></li>
+        <div class="container">
+            <ul class="navbar-nav d-flex justify-content-around w-100">
+                <li class="nav-item"><a class="nav-link" href="index.jsp">TRANG CHỦ</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="gioithieuDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        GIỚI THIỆU
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="gioithieuDropdown">
+                        <li><a class="dropdown-item" href="#">Cây cảnh</a></li>
+                        <li><a class="dropdown-item" href="#">Chuyên gia</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="sanphamDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        SẢN PHẨM
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="sanphamDropdown">
+                        <li><a class="dropdown-item" href="plantList?category=1">Cây Xanh Công Trình</a></li>
+                        <li><a class="dropdown-item" href="plantList?category=2">Cây Xanh Ngoại Thất</a></li>
+                        <li><a class="dropdown-item" href="plantList?category=3">Cây Xanh Nội Thất</a></li>
+                        <li><a class="dropdown-item" href="plantList?category=4">Cây Phong Thủy</a></li>
+                        <li><a class="dropdown-item" href="plantList">Tất Cả Sản Phẩm</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="#">BÁO GIÁ</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="dichvuDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        DỊCH VỤ
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dichvuDropdown">
+                        <li><a class="dropdown-item" href="#">Chăm sóc cây</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="#">TIN TỨC</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">DỰ ÁN</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">LIÊN HỆ</a></li>
             </ul>
-        </li>
-
-        <li class="nav-item"><a class="nav-link" href="#">SẢN PHẨM</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">BÁO GIÁ</a></li>
-
-        <!-- Dropdown DỊCH VỤ -->
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="dichvuDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            DỊCH VỤ
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="dichvuDropdown">
-            <li><a class="dropdown-item" href="#">Chăm sóc cây</a></li>
-            </ul>
-        </li>
-
-        <li class="nav-item"><a class="nav-link" href="#">TIN TỨC</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">DỰ ÁN</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">LIÊN HỆ</a></li>
-        </ul>
-    </div>
+        </div>
     </nav>
     <!-- Main content -->
     <div class="container my-4">
@@ -333,10 +338,10 @@ footer a:hover {
             <aside class="col-md-3 sidebar">
                 <h5>Danh mục sản phẩm</h5>
                 <ul class="list-group">
-                    <li class="list-group-item"><a href="#">Cây Xanh Công Trình</a></li>
-                    <li class="list-group-item"><a href="#">Cây Xanh Ngoại Thất</a></li>
-                    <li class="list-group-item"><a href="#">Cây Xanh Nội Thất</a></li>
-                    <li class="list-group-item"><a href="#">Cây Phong Thủy</a></li>
+                   <li class="list-group-item"><a href="plantList?category=1">Cây Xanh Công Trình</a></li>
+                    <li class="list-group-item"><a href="plantList?category=2">Cây Xanh Ngoại Thất</a></li>
+                    <li class="list-group-item"><a href="plantList?category=3">Cây Xanh Nội Thất</a></li>
+                    <li class="list-group-item"><a href="plantList?category=4">Cây Phong Thủy</a></li>
                 </ul>
             </aside>
 
@@ -382,7 +387,7 @@ footer a:hover {
                 </div>
                 <div class="col-md-3">
                     <img src="images\tải xuống.jpg" class="img-fluid rounded shadow-sm" alt="Cây Xanh Ngoại Thất">
-                    <p class="bold-text1">Cây xanh công trình</p><br>
+                    <p class="bold-text1">Cây xanh ngoại thất</p><br>
                     <p class="bold-text2">Chi tiết</p><br>
                     <p class="bold-text3">Số lượng:</p><br>
                 </div>
