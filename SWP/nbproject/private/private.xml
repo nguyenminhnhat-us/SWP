@@ -2,29 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/Users/ADMIN/Downloads/SWP-main%20(4)/SWP-main/SWP/src/java/model/UserDAO.java</file>
-            <file>file:/C:/Users/ADMIN/Downloads/SWP-main%20(4)/SWP-main/SWP/src/java/controller/ViewProfileServlet.java</file>
-            <file>file:/C:/Users/ADMIN/Downloads/SWP-main%20(4)/SWP-main/SWP/web/user.jsp</file>
-            <file>file:/C:/Users/ADMIN/Downloads/SWP-main%20(4)/SWP-main/SWP/src/java/controller/PlantListServlet.java</file>
-            <file>file:/C:/Users/ADMIN/Downloads/SWP-main%20(4)/SWP-main/SWP/web/index.html</file>
-            <file>file:/C:/Users/ADMIN/Downloads/SWP-main%20(4)/SWP-main/SWP/src/java/model/PlantDAO.java</file>
-            <file>file:/C:/Users/ADMIN/Downloads/SWP-main%20(4)/SWP-main/SWP/src/java/controller/EditProfileServlet.java</file>
-            <file>file:/C:/Users/ADMIN/Downloads/SWP-main%20(4)/SWP-main/SWP/src/java/controller/ForgotPasswordServlet.java</file>
-            <file>file:/C:/Users/ADMIN/Downloads/SWP-main%20(4)/SWP-main/SWP/web/verifyForgotOTP.jsp</file>
-            <file>file:/C:/Users/ADMIN/Downloads/SWP-main%20(4)/SWP-main/SWP/web/index.jsp</file>
-            <file>file:/C:/Users/ADMIN/Downloads/SWP-main%20(4)/SWP-main/SWP/web/forgotPassword.jsp</file>
-            <file>file:/C:/Users/ADMIN/Downloads/SWP-main%20(4)/SWP-main/SWP/web/plantList.jsp</file>
-            <file>file:/C:/Users/ADMIN/Downloads/SWP-main%20(4)/SWP-main/SWP/web/verifyOTP.jsp</file>
-            <file>file:/C:/Users/ADMIN/Downloads/SWP-main%20(4)/SWP-main/SWP/src/java/controller/LoginGoogleServlet.java</file>
-            <file>file:/C:/Users/ADMIN/Downloads/SWP-main%20(4)/SWP-main/SWP/src/java/model/Plant.java</file>
-            <file>file:/C:/Users/ADMIN/Downloads/SWP-main%20(4)/SWP-main/SWP/src/java/model/User.java</file>
-            <file>file:/C:/Users/ADMIN/Downloads/SWP-main%20(4)/SWP-main/SWP/web/plantDetails.jsp</file>
-            <file>file:/C:/Users/ADMIN/Downloads/SWP-main%20(4)/SWP-main/SWP/web/descriptions/phuong_vy.jsp</file>
-            <file>file:/C:/Users/ADMIN/Downloads/SWP-main%20(4)/SWP-main/SWP/src/java/controller/DBUtil.java</file>
-            <file>file:/C:/Users/ADMIN/Downloads/SWP-main%20(4)/SWP-main/SWP/web/completeRegistration.jsp</file>
-            <file>file:/C:/Users/ADMIN/Downloads/SWP-main%20(4)/SWP-main/SWP/src/java/controller/PlantDetailsServlet.java</file>
-            <file>file:/C:/Users/ADMIN/Downloads/SWP-main%20(4)/SWP-main/SWP/web/editProfile.jsp</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>
