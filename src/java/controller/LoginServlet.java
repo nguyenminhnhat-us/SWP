@@ -4,8 +4,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
+
+import dal.UserDAO;
 import model.User;
-import model.UserDAO;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {

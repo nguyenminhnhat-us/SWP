@@ -1,6 +1,7 @@
-package model;
+package dal;
 
 import controller.DBUtil;
+import model.Plant;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -144,5 +145,57 @@ public class PlantDAO {
         }
         
         return plants;
+    }
+
+    public List<Plant> getTopSellingPlants(int limit) throws SQLException {
+        List<Plant> list = new ArrayList<>();
+        String sql = "SELECT p.plant_id, p.name, p.price, p.image_url, SUM(od.quantity) AS total_sold " +
+                     "FROM Plants p " +
+                     "JOIN OrderDetails od ON p.plant_id = od.plant_id " +
+                     "GROUP BY p.plant_id, p.name, p.price, p.image_url " +
+                     "ORDER BY total_sold DESC " +
+                     "OFFSET 0 ROWS FETCH NEXT ? ROWS ONLY";
+        try (Connection con = DBUtil.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, limit);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Plant plant = new Plant();
+                plant.setPlantId(rs.getInt("plant_id"));
+                plant.setName(rs.getString("name"));
+                plant.setPrice(rs.getDouble("price"));
+                plant.setImageUrl(rs.getString("image_url"));
+                // Thêm trường total_sold nếu muốn
+                list.add(plant);
+            }
+        }
+        return list;
+    }
+
+    public List<Plant> getPagedPlants(int page, int pageSize) throws SQLException {
+        List<Plant> list = new ArrayList<>();
+        String sql = "SELECT * FROM Plants ORDER BY created_at DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        try (Connection con = DBUtil.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, (page - 1) * pageSize);
+            ps.setInt(2, pageSize);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                // Tạo Plant từ rs
+                // ...
+                list.add(plant);
+            }
+        }
+        return list;
+    }
+
+    public int getTotalPlantCount() throws SQLException {
+        String sql = "SELECT COUNT(*) FROM Plants";
+        try (Connection con = DBUtil.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return rs.getInt(1);
+        }
+        return 0;
     }
 }

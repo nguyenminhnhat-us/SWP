@@ -199,3 +199,23 @@ VALUES
 
 ('user2@plant.com', 'user456', N'Trần Thị B', '0905333444', N'27 Lê Duẩn, Đà Nẵng', 'customer', 1);
 
+-- Thêm dữ liệu mẫu cho Categories
+INSERT INTO Categories (name, description)
+VALUES 
+(N'Cây Xanh Công Trình', N'Các loại cây xanh phù hợp cho công trình, dự án lớn'),
+(N'Cây Xanh Ngoại Thất', N'Các loại cây xanh trang trí sân vườn, ban công'),
+(N'Cây Xanh Nội Thất', N'Các loại cây xanh trang trí trong nhà, văn phòng'),
+(N'Cây Phong Thủy', N'Các loại cây mang ý nghĩa phong thủy');
+
+-- Thêm dữ liệu mẫu cho Plants
+INSERT INTO Plants (category_id, name, description, price, stock_quantity, image_url)
+VALUES 
+(1, N'Cây Phượng Vĩ', N'Cây phượng vĩ là loại cây thân gỗ có hoa đẹp, thích hợp trồng trong công viên, trường học', 1500000, 50, 'images/phuong_vy.jpg'),
+(2, N'Cây Hoa Sữa', N'Cây hoa sữa có hương thơm đặc trưng, thích hợp trồng trong sân vườn', 2000000, 30, 'images/hoa_sua.jpg'),
+(3, N'Cây Trầu Bà', N'Cây trầu bà dễ chăm sóc, có tác dụng thanh lọc không khí', 250000, 100, 'images/trau_ba.jpg'),
+(4, N'Cây Kim Tiền', N'Cây kim tiền mang ý nghĩa phong thủy tốt, thu hút tài lộc', 300000, 80, 'images/kim_tien.jpg'),
+(1, N'Cây Bàng', N'Cây bàng có tán rộng, thích hợp làm cây bóng mát', 1800000, 40, 'images/bang.jpg'),
+(2, N'Cây Nguyệt Quế', N'Cây nguyệt quế có hương thơm, thích hợp trồng trong vườn', 1200000, 45, 'images/nguyet_que.jpg'),
+(3, N'Cây Lưỡi Hổ', N'Cây lưỡi hổ dễ chăm sóc, có khả năng hấp thụ bức xạ', 180000, 120, 'images/luoi_ho.jpg'),
+(4, N'Cây Phát Tài', N'Cây phát tài mang ý nghĩa may mắn, thịnh vượng', 400000, 60, 'images/phat_tai.jpg');
+

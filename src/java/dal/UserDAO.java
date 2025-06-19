@@ -1,6 +1,8 @@
-package model;
+package dal;
 
 import controller.DBUtil;
+import model.User;
+
 import java.sql.*;
 
 public class UserDAO {

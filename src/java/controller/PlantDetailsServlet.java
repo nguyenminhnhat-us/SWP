@@ -6,7 +6,6 @@ package controller;
 
 
 
-import model.PlantDAO;
 import model.Plant;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -17,6 +16,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import dal.PlantDAO;
 
 @WebServlet("/plantDetailsServlet")
 public class PlantDetailsServlet extends HttpServlet {

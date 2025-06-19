@@ -244,43 +244,14 @@
                     <!-- Categories Section -->
                     <section class="container mb-5">
                         <h2 class="text-center mb-4">Danh mục sản phẩm</h2>
-                        <div class="row">
-                            <div class="col-md-3">
-                                <div class="category-card card">
-                                    <img src="images/cong-trinh.jpg" class="card-img-top" alt="Cây Xanh Công Trình">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Cây Xanh Công Trình</h5>
-                                        <a href="#" class="btn btn-outline-success">Xem thêm</a>
-                                    </div>
-                                </div>
+                        <div class="d-flex align-items-center mb-3">
+                            <button class="btn btn-outline-success me-2" id="category-prev"><i class="fas fa-chevron-left"></i></button>
+                            <div id="category-list" class="flex-grow-1 d-flex justify-content-center">
+                                <c:forEach var="cat" items="${categories}">
+                                    <span class="badge bg-success mx-2">${cat.name}</span>
+                                </c:forEach>
                             </div>
-                            <div class="col-md-3">
-                                <div class="category-card card">
-                                    <img src="images/ngoai-that.jpg" class="card-img-top" alt="Cây Xanh Ngoại Thất">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Cây Xanh Ngoại Thất</h5>
-                                        <a href="#" class="btn btn-outline-success">Xem thêm</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="category-card card">
-                                    <img src="images/noi-that.jpg" class="card-img-top" alt="Cây Xanh Nội Thất">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Cây Xanh Nội Thất</h5>
-                                        <a href="#" class="btn btn-outline-success">Xem thêm</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="category-card card">
-                                    <img src="images/phong-thuy.jpg" class="card-img-top" alt="Cây Phong Thủy">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Cây Phong Thủy</h5>
-                                        <a href="#" class="btn btn-outline-success">Xem thêm</a>
-                                    </div>
-                                </div>
-                            </div>
+                            <button class="btn btn-outline-success ms-2" id="category-next"><i class="fas fa-chevron-right"></i></button>
                         </div>
                     </section>
 
@@ -355,10 +326,23 @@
                         </div>
                     </section>
 
+                    <nav>
+                        <ul class="pagination justify-content-center">
+                            <c:forEach begin="1" end="${totalPages}" var="i">
+                                <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                    <a class="page-link" href="?page=${i}">${i}</a>
+                                </li>
+                            </c:forEach>
+                        </ul>
+                    </nav>
+
                     <jsp:include page="./common/home/footer.jsp"></jsp:include>
 
                     <!-- Bootstrap JS -->
                     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+                    <script>
+                        // JS để chuyển danh mục (ẩn/hiện, hoặc scroll)
+                    </script>
                 </body>
 
                 </html>

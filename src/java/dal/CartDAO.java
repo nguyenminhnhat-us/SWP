@@ -1,4 +1,4 @@
-package model;
+package dal;
 
 import controller.DBUtil;
 import model.Plant;

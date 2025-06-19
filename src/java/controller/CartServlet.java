@@ -1,6 +1,5 @@
 package controller;
 
-import model.CartDAO;
 import model.CartItem;
 import model.User;
 
@@ -13,6 +12,8 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+
+import dal.CartDAO;
 
 @WebServlet("/cart")
 public class CartServlet extends HttpServlet {
