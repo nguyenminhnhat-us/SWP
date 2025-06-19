@@ -32,8 +32,8 @@ public class HomeController extends HttpServlet {
             List<Plant> topSellingPlants = plantDAO.getTopSellingPlants(5);
             request.setAttribute("topSellingPlants", topSellingPlants);
 
-            // 5 bài viết mới nhất
-            List<Article> latestArticles = articleDAO.getLatestArticles(5);
+            // 3 bài viết mới nhất
+            List<Article> latestArticles = articleDAO.getLatestArticles(3);
             request.setAttribute("latestArticles", latestArticles);
 
             // Danh mục sản phẩm
