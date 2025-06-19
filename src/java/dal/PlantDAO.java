@@ -9,6 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class PlantDAO {
 
@@ -147,7 +149,7 @@ public class PlantDAO {
         return plants;
     }
 
-    public List<Plant> getTopSellingPlants(int limit) throws SQLException {
+    public List<Plant> getTopSellingPlants(int limit) throws SQLException, ClassNotFoundException {
         List<Plant> list = new ArrayList<>();
         String sql = "SELECT p.plant_id, p.name, p.price, p.image_url, SUM(od.quantity) AS total_sold " +
                      "FROM Plants p " +
@@ -172,7 +174,7 @@ public class PlantDAO {
         return list;
     }
 
-    public List<Plant> getPagedPlants(int page, int pageSize) throws SQLException {
+    public List<Plant> getPagedPlants(int page, int pageSize) throws SQLException, ClassNotFoundException {
         List<Plant> list = new ArrayList<>();
         String sql = "SELECT * FROM Plants ORDER BY created_at DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
         try (Connection con = DBUtil.getConnection();
@@ -181,8 +183,16 @@ public class PlantDAO {
             ps.setInt(2, pageSize);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                // Tạo Plant từ rs
-                // ...
+                int plantId = rs.getInt("plant_id");
+                int categoryId = rs.getInt("category_id");
+                String name = rs.getString("name");
+                String description = rs.getString("description");
+                double price = rs.getDouble("price");
+                int stockQuantity = rs.getInt("stock_quantity");
+                String imageUrl = rs.getString("image_url");
+                java.sql.Timestamp createdAt = rs.getTimestamp("created_at");
+                Plant plant = new Plant(plantId, categoryId, name, description, price, stockQuantity, imageUrl);
+                plant.setCreatedAt(createdAt);
                 list.add(plant);
             }
         }
@@ -195,6 +205,8 @@ public class PlantDAO {
              PreparedStatement ps = con.prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) return rs.getInt(1);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(PlantDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return 0;
     }

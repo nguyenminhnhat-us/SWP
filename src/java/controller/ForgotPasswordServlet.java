@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import javax.mail.MessagingException;
 import model.User;
-import model.UserDAO;
+import dal.UserDAO;
 import utils.EmailUtility;
 
 @WebServlet("/forgot-password")
