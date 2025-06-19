@@ -112,4 +112,37 @@ public class PlantDAO {
 
         return plantList;
     }
+
+    public List<Plant> getFeaturedPlants() throws SQLException, ClassNotFoundException {
+        List<Plant> plants = new ArrayList<>();
+        String sql = "SELECT p.*, c.name as category_name " +
+                    "FROM Plants p " +
+                    "LEFT JOIN Categories c ON p.category_id = c.category_id " +
+                    "ORDER BY p.created_at DESC";
+        
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            
+            while (rs.next()) {
+                Plant plant = new Plant();
+                plant.setPlantId(rs.getInt("plant_id"));
+                plant.setCategoryId(rs.getInt("category_id"));
+                plant.setName(rs.getString("name"));
+                plant.setDescription(rs.getString("description"));
+                plant.setPrice(rs.getDouble("price"));
+                plant.setStockQuantity(rs.getInt("stock_quantity"));
+                plant.setImageUrl(rs.getString("image_url"));
+                plant.setCreatedAt(rs.getTimestamp("created_at"));
+                
+                
+                plants.add(plant);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error in getFeaturedPlants: " + e.getMessage());
+            e.printStackTrace();
+        }
+        
+        return plants;
+    }
 }
