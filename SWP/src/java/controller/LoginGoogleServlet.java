@@ -78,24 +78,24 @@ public class LoginGoogleServlet extends HttpServlet {
             String name = userJson.get("name").getAsString();
             String avatar = userJson.get("picture").getAsString();
 
-            // B3: Kiểm tra người dùng trong DB
+            // B3: Kiểm tra người dùng trong DB với auth_type = 'google'
             UserDAO userDAO = new UserDAO();
-            User user = userDAO.getUserByEmail(email);
+            User user = userDAO.getUserByEmailAndAuthType(email, "google");
 
             if (user == null) {
-                // Nếu chưa có thì thêm vào DB
+                // Nếu chưa có thì thêm vào DB với auth_type = 'google'
                 User newUser = new User();
                 newUser.setEmail(email);
-                newUser.setPassword(""); // đăng nhập Google không cần mật khẩu
+                newUser.setPassword(""); // Không cần mật khẩu cho Google
                 newUser.setFullName(name);
                 newUser.setPhone("");
                 newUser.setAddress("");
-                newUser.setRole("user");
+                newUser.setRole("customer"); // Mặc định là customer
                 newUser.setIsActive(true);
-                newUser.setAvatarPath(avatar); // lưu avatar từ Google
-
+                newUser.setAvatarPath(avatar);
+                newUser.setAuthType("google"); // Đặt auth_type là 'google'
                 userDAO.insertUser(newUser);
-                user = userDAO.getUserByEmail(email);
+                user = userDAO.getUserByEmailAndAuthType(email, "google"); // Lấy lại user sau khi thêm
             }
 
             // B4: Đăng nhập thành công -> tạo session

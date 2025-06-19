@@ -1,10 +1,17 @@
+index.jsp:
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" session="true" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
     model.User user = (model.User) session.getAttribute("user");
+    // Chuyển hướng đến PlantServlet nếu danh sách cây chưa được tải
+    if (request.getAttribute("plants") == null) {
+        request.getRequestDispatcher("/plants").forward(request, response);
+        return;
+    }
 %>
-<!DOCTYPE html>
-<html lang="vi">
+<!DOCTYPE html><html lang="vi">
     <head>
         <meta charset="UTF-8">
         <title>Vườn Cây Đà Nẵng - Chuyên Mua Bán Cây Xanh</title>
@@ -14,8 +21,237 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <!-- Font Awesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link rel="stylesheet" href="css/index-style.css">
-        
+
+        <style>
+
+            body {
+                background-color: #171717;
+            }
+            .logo-bar {
+                background-color: #28a745; /* Màu xanh Bootstrap chuẩn */
+                color: white; /* Để chữ nổi trên nền xanh */
+                border-radius: 5px; /* Tùy chọn: bo góc */
+            }
+            .logo-bar {
+                background-color: #28a745; /* Màu xanh Bootstrap chuẩn */
+                border-radius: 5px; /* Tùy chọn: bo góc */
+                padding: 15px;
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: space-between;
+
+            }
+            .logo img {
+                width: 150px;  /* tăng kích thước theo ý bạn */
+                height: auto;  /* giữ tỉ lệ ảnh */
+                margin-right: 15px; /* thêm khoảng cách bên phải nếu muốn */
+            }
+            .logo h1 {
+                font-size: 24px;
+                margin: 0;
+                color: #2e7d32;
+            }
+            .logo small {
+                font-size: 14px;
+                color: gray;
+            }
+            .hotline-label {
+                text-transform: uppercase; /* Viết hoa */
+                color: red;                /* Màu đỏ */
+                font-weight: bold;         /* (Tùy chọn) In đậm */
+            }
+            .hotline-number {
+                color: red;
+                font-weight: bold;
+                font-size: 18px;
+            }
+            .nav-link:hover,
+            .dropdown-item:hover {
+                color: yellow !important;
+            }
+
+            .sidebar {
+                background-color: #171717;
+                padding: 15px;
+                color: #28a745; /* chữ trắng cho tiêu đề */
+            }
+            .sidebar ul.list-group li.list-group-item {
+                background-color: #171717;
+                border: none; /* bỏ viền */
+                padding-left: 0; /* nếu muốn */
+            }
+
+            .sidebar ul.list-group li.list-group-item a {
+                color: #28a745; /* xanh sáng */
+                text-decoration: none; /* bỏ gạch chân */
+            }
+            .sidebar ul.list-group {
+                padding: 0; /* bỏ padding mặc định */
+                margin: 0; /* bỏ margin nếu có */
+            }
+
+            .sidebar ul.list-group li.list-group-item {
+                border: 1px solid #28a745 !important;
+                border-top: none; /* bỏ viền trên của các ô, trừ ô đầu */
+                margin: 0; /* bỏ khoảng cách giữa các ô */
+                border-radius: 0; /* bỏ bo góc */
+                background-color:  !important;
+                padding: 8px 12px;
+            }
+
+            /* Giữ viền trên cho ô đầu tiên */
+            .sidebar ul.list-group li.list-group-item:first-child {
+                border-top: 1px solid #28a745 !important;
+                border-radius: 4px 4px 0 0; /* bo góc trên */
+            }
+
+            /* Bo góc dưới cho ô cuối */
+            .sidebar ul.list-group li.list-group-item:last-child {
+                border-radius: 0 0 4px 4px;
+            }
+
+            .sidebar ul.list-group li.list-group-item a:hover {
+                text-decoration: underline;
+            }
+
+            .banner-categories {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 20px;
+            }
+
+            .banner-categories .col-md-3 {
+                flex: 0 0 calc(25% - 20px);
+                box-sizing: border-box;
+                border: 3px solid #28a745;
+                padding: 2px;
+                border-radius: 10px;
+                transition: box-shadow 0.3s ease;
+                cursor: pointer;
+                background-color: #9ED2BB;
+            }
+
+            .banner-categories img {
+                width: 100%;
+                height: 250px;
+                object-fit: cover;
+            }
+            .banner-text {
+                font-weight: bold;
+                text-align: center;
+                margin-top: 20px;
+                color: #388e3c;
+                font-size: 20px;
+            }
+            .carousel-inner img {
+                width: 100%;
+                height: 450px;
+                object-fit: cover;
+                border-radius: 8px;
+            }
+            .bold-text1{
+                display: inline-block;          /* Giúp viền gọn sát chữ */
+                border: 3px solid #28a745;       /* Viền xanh lá */
+                padding: 2px 6px;                /* Khoảng cách giữa chữ và viền */
+                border-radius: 4px;              /* Bo góc nhẹ */
+                font-weight: bold;               /* In đậm (áp dụng chung cho cả 3) */
+                margin: 5px 5px ;
+                background-color: #f8f9fa;
+            }
+
+            .bold-text2{
+                display: inline-block;          /* Giúp viền gọn sát chữ */
+                border: 3px solid #28a745;       /* Viền xanh lá */
+                padding: 2px 6px;                /* Khoảng cách giữa chữ và viền */
+                border-radius: 4px;              /* Bo góc nhẹ */
+                font-weight: bold;               /* In đậm (áp dụng chung cho cả 3) */
+                margin: 5px 5px ;
+                background-color: #f8f9fa;
+            }
+            .bold-text3 {
+                display: inline-block;          /* Giúp viền gọn sát chữ */
+                border: 3px solid #28a745;       /* Viền xanh lá */
+                padding: 2px 6px;                /* Khoảng cách giữa chữ và viền */
+                border-radius: 4px;              /* Bo góc nhẹ */
+                font-weight: bold;               /* In đậm (áp dụng chung cho cả 3) */
+                margin: 5px 5px ;                   /* Tạo khoảng cách dọc giữa các dòng */
+                background-color: #f8f9fa;
+            }
+            .company-intro {
+                background-color: #9ED2BB;
+                padding: 30px;
+                border-radius: 10px;
+                margin-bottom: 40px;
+                font-size: 1.25rem;      /* Làm chữ to hơn (20px) */
+                line-height: 1.8;        /* Giãn dòng dễ đọc */
+                text-align: justify;     /* Căn đều chữ cho đẹp */            /* Màu chữ dễ nhìn */
+                margin-top: 15px;
+                color: white;
+            }
+            .company-intro img {
+                width: 100%;              /* Làm ảnh chiếm toàn bộ chiều ngang khung */
+                height: auto;             /* Giữ tỉ lệ ảnh */
+                object-fit: cover;        /* Cắt ảnh để lấp đầy khung mà không bị méo */
+                border-radius: 10px;
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+                transition: transform 0.3s ease;
+            }
+            .commitment-section {
+                background-color: #171717;
+                color: white;
+                padding: 60px 20px;
+                margin-top: 40px;
+            }
+
+            .commitment-title {
+                font-size: 2.2rem;
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+
+            .commitment-subtitle {
+                font-size: 1.2rem;
+                margin-bottom: 40px;
+            }
+
+            .commitment-features {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 30px;
+            }
+
+            .feature-box {
+                text-align: center;
+                flex: 1 1 200px;
+            }
+
+            .feature-icon {
+                width: 60px;
+                margin-bottom: 15px;
+            }
+
+            footer {
+                background-color:#388e3c;
+                color: white;
+                padding: 20px 0;
+            }
+
+            footer .container {
+                text-align: left;
+            }
+
+            footer a {
+                color: white;
+                text-decoration: none;
+            }
+
+            footer a:hover {
+                text-decoration: underline;
+            }
+        </style>
+
     </head>
     <body>
         <!-- Modal Đăng nhập -->
@@ -26,7 +262,8 @@
         <div class="container d-flex align-items-center justify-content-between flex-wrap">
             <div class="d-flex align-items-center logo">
                 <img src="images\logo.png" alt="Logo">
-                <h1>VUONCAYDANANG.COM<br><small>Chuyên Mua Bán Cây Xanh</small></h1>
+                <h1>VUONCAYDANANG.COM
+                    <small>Chuyên Mua Bán Cây Xanh</small></h1>
             </div>
             <div class="input-group w-50">
                 <input type="text" class="form-control" placeholder="Bạn muốn tìm gì...">
@@ -37,13 +274,13 @@
                 <div class="hotline-number">0968 702 490</div>
             </div>
             <div class="d-flex gap-2 ms-auto">
-                <button class="btn btn-warning">GIỎ HÀNG 🛒</button>
-                <% if (user != null) { %>
+                <a href="${pageContext.request.contextPath}/cart" class="btn btn-warning">GIỎ HÀNG </a>
+                <% if (user != null) {%>
                 <div class="dropdown">
                     <button class="btn btn-outline-light bg-success text-white dropdown-toggle" data-bs-toggle="dropdown">
-                        
-                       <%= user.getFullName() %>
-                      
+
+                        <%= user.getFullName()%>
+
                     </button>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="viewProfile">Xem hồ sơ</a></li>
@@ -53,7 +290,7 @@
                 </div>
                 <% } else { %>
                 <a href="login.jsp" class="btn btn-outline-light bg-success text-white">Đăng nhập</a>
-                <% } %>
+                <% }%>
             </div>
         </div>
     </div>
@@ -62,7 +299,9 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-success">
         <div class="container">
             <ul class="navbar-nav d-flex justify-content-around w-100">
-                <li class="nav-item"><a class="nav-link" href="index.jsp">TRANG CHỦ</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">TRANG CHỦ</a></li>
+
+                <!-- Dropdown GIỚI THIỆU -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="gioithieuDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         GIỚI THIỆU
@@ -72,19 +311,11 @@
                         <li><a class="dropdown-item" href="#">Chuyên gia</a></li>
                     </ul>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="sanphamDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        SẢN PHẨM
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="sanphamDropdown">
-                        <li><a class="dropdown-item" href="plantList?category=1">Cây Xanh Công Trình</a></li>
-                        <li><a class="dropdown-item" href="plantList?category=2">Cây Xanh Ngoại Thất</a></li>
-                        <li><a class="dropdown-item" href="plantList?category=3">Cây Xanh Nội Thất</a></li>
-                        <li><a class="dropdown-item" href="plantList?category=4">Cây Phong Thủy</a></li>
-                        <li><a class="dropdown-item" href="plantList">Tất Cả Sản Phẩm</a></li>
-                    </ul>
-                </li>
+
+                <li class="nav-item"><a class="nav-link" href="#">SẢN PHẨM</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">BÁO GIÁ</a></li>
+
+                <!-- Dropdown DỊCH VỤ -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="dichvuDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         DỊCH VỤ
@@ -93,6 +324,7 @@
                         <li><a class="dropdown-item" href="#">Chăm sóc cây</a></li>
                     </ul>
                 </li>
+
                 <li class="nav-item"><a class="nav-link" href="#">TIN TỨC</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">DỰ ÁN</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">LIÊN HỆ</a></li>
@@ -106,10 +338,10 @@
             <aside class="col-md-3 sidebar">
                 <h5>Danh mục sản phẩm</h5>
                 <ul class="list-group">
-                    <li class="list-group-item"><a href="plantList?category=1">Cây Xanh Công Trình</a></li>
-                    <li class="list-group-item"><a href="plantList?category=2">Cây Xanh Ngoại Thất</a></li>
-                    <li class="list-group-item"><a href="plantList?category=3">Cây Xanh Nội Thất</a></li>
-                    <li class="list-group-item"><a href="plantList?category=4">Cây Phong Thủy</a></li>
+                    <li class="list-group-item"><a href="#">Cây Xanh Công Trình</a></li>
+                    <li class="list-group-item"><a href="#">Cây Xanh Ngoại Thất</a></li>
+                    <li class="list-group-item"><a href="#">Cây Xanh Nội Thất</a></li>
+                    <li class="list-group-item"><a href="#">Cây Phong Thủy</a></li>
                 </ul>
             </aside>
 
@@ -147,30 +379,26 @@
             <section>
                 <h3 class="text-success text-center">Danh mục sản phẩm</h3>
                 <div class="row banner-categories text-center mt-4">
-                    <div class="col-md-3">
-                        <img src="images\download.jpg" class="img-fluid rounded shadow-sm" alt="Cây Xanh Công Trình">
-                        <p class="bold-text1">Cây xanh công trình</p><br>
-                        <p class="bold-text2">Chi tiết</p><br>
-                        <p class="bold-text3">Số lượng:</p><br>
-                    </div>
-                    <div class="col-md-3">
-                        <img src="images\tải xuống.jpg" class="img-fluid rounded shadow-sm" alt="Cây Xanh Ngoại Thất">
-                        <p class="bold-text1">Cây xanh ngoại thất</p><br>
-                        <p class="bold-text2">Chi tiết</p><br>
-                        <p class="bold-text3">Số lượng:</p><br>
-                    </div>
-                    <div class="col-md-3">
-                        <img src="images\noi that.jpg" class="img-fluid rounded shadow-sm" alt="Cây xanh nội thất">
-                        <p class="bold-text1">Cây xanh nội thất</p><br>
-                        <p class="bold-text2">Chi tiết</p><br>
-                        <p class="bold-text3">Số lượng:</p><br>
-                    </div>
-                    <div class="col-md-3">
-                        <img src="images\phong thuy.jpg" class="img-fluid rounded shadow-sm" alt="Cây phong thủy">
-                        <p class="bold-text1">Cây phong thủy</p><br>
-                        <p class="bold-text2">Chi tiết</p><br>
-                        <p class="bold-text3">Số lượng:</p><br>
-                    </div>
+                    <c:forEach var="plant" items="${plants}">
+                        <div class="col-md-3">
+                            <img src="${plant.imageUrl}" class="img-fluid rounded shadow-sm" alt="${plant.name}">
+                            <p class="bold-text1">${plant.name}</p>
+
+                            <p class="bold-text2">Giá: <fmt:formatNumber value="${plant.price}" type="currency" currencySymbol="₫" /></p>
+
+                            <form action="${pageContext.request.contextPath}/cart" method="post" class="d-inline">
+                                <input type="hidden" name="action" value="add">
+                                <input type="hidden" name="plantId" value="${plant.plantId}">
+                                <input type="number" name="quantity" value="1" min="1" max="${plant.stockQuantity}" class="form-control d-inline-block" style="width: 80px;">
+                                <button type="submit" class="btn btn-success btn-sm">Thêm vào giỏ</button>
+                            </form>
+                            <p><a href="#" class="btn btn-primary btn-sm">Chi tiết</a></p>
+                            <p>Số lượng: ${plant.stockQuantity}</p>
+                        </div>
+                    </c:forEach>
+                    <c:if test="${empty plants}">
+                        <div class="alert alert-warning text-center">Không có sản phẩm để hiển thị.</div>
+                    </c:if>
                 </div>
                 <p class="banner-text">GIÁ RẺ - BỀN ĐẸP - GIAO NHANH</p>
             </section>
@@ -192,31 +420,34 @@
         </div>
         <section class="commitment-section">
             <div class="container text-center">
-    <h2 class="commitment-title">CAM KẾT TỪ VƯỜN CÂY ĐÀ Nẵng</h2>
-    <p class="commitment-subtitle">Công Ty Vườn Cây Đà Nẵng – Chuyên mua bán cây xanh</p>
+                <h2 class="commitment-title">CAM KẾT TỪ VƯỜN CÂY ĐÀ Nẵng</h2>
+                <p class="commitment-subtitle">Công Ty Vườn Cây Đà Nẵng – Chuyên mua bán cây xanh</p>
                 <div class="row commitment-features">
                     <div class="col-md-3 col-sm-6 feature-box">
                         <img src="images\truck.png" alt="Giao hàng" class="feature-icon">
-                        <p><strong>Giao hàng trên toàn quốc</strong><br>Tất cả giá trị của đơn hàng.</p>
+                        <p><strong>Giao hàng trên toàn quốc</strong>
+                            Tất cả giá trị của đơn hàng.</p>
                     </div>
                     <div class="col-md-3 col-sm-6 feature-box">
                         <img src="images\exchange.png" alt="Đổi trả" class="feature-icon">
-                        <p><strong>Đổi trả miễn phí</strong><br>Trong vòng 7 ngày</p>
+                        <p><strong>Đổi trả miễn phí</strong>
+                            Trong vòng 7 ngày</p>
                     </div>
                     <div class="col-md-3 col-sm-6 feature-box">
                         <img src=images\customer-service.png alt="Hotline" class="feature-icon">
-                        <p><strong>Hotline: 0968 702 490</strong><br>Hỗ trợ 24/7</p>
+                        <p><strong>Hotline: 0968 702 490</strong>
+                            Hỗ trợ 24/7</p>
                     </div>
                     <div class="col-md-3 col-sm-6 feature-box">
                         <img src="images\price.png" alt="Thanh toán" class="feature-icon">
-                        <p><strong>Thanh toán</strong><br>Bảo mật thanh toán</p>
+                        <p><strong>Thanh toán</strong>
+                            Bảo mật thanh toán</p>
                     </div>
                 </div>
             </div>
         </section>
 
-    </div>
-</div>
+    </div></div>
 <!-- Footer -->
 <footer>
     <div class="container">

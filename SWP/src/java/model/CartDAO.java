@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CartDAO {
+
     private PlantDAO plantDAO = new PlantDAO();
 
     // Thêm cây vào giỏ hàng
@@ -50,8 +51,7 @@ public class CartDAO {
         List<CartItem> cartItems = new ArrayList<>();
         String sql = "SELECT * FROM Cart WHERE user_id = ?";
 
-        try (Connection conn = DBUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DBUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, userId);
             ResultSet rs = ps.executeQuery();
 
@@ -60,11 +60,11 @@ public class CartDAO {
                 Plant plant = plantDAO.getPlantById(plantId);
                 if (plant != null) {
                     CartItem item = new CartItem(
-                        rs.getInt("cart_id"),
-                        rs.getInt("user_id"),
-                        plantId,
-                        rs.getInt("quantity"),
-                        plant
+                            rs.getInt("cart_id"),
+                            rs.getInt("user_id"),
+                            plantId,
+                            rs.getInt("quantity"),
+                            plant
                     );
                     cartItems.add(item);
                 }
@@ -76,8 +76,7 @@ public class CartDAO {
     // Cập nhật số lượng mặt hàng trong giỏ
     public void updateCartItem(int userId, int plantId, int quantity) throws SQLException, ClassNotFoundException {
         String sql = "UPDATE Cart SET quantity = ? WHERE user_id = ? AND plant_id = ?";
-        try (Connection conn = DBUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DBUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, quantity);
             ps.setInt(2, userId);
             ps.setInt(3, plantId);
@@ -88,8 +87,7 @@ public class CartDAO {
     // Xóa mặt hàng khỏi giỏ
     public void removeCartItem(int userId, int plantId) throws SQLException, ClassNotFoundException {
         String sql = "DELETE FROM Cart WHERE user_id = ? AND plant_id = ?";
-        try (Connection conn = DBUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DBUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, userId);
             ps.setInt(2, plantId);
             ps.executeUpdate();
@@ -99,8 +97,7 @@ public class CartDAO {
     // Xóa toàn bộ giỏ hàng
     public void clearCart(int userId) throws SQLException, ClassNotFoundException {
         String sql = "DELETE FROM Cart WHERE user_id = ?";
-        try (Connection conn = DBUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DBUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, userId);
             ps.executeUpdate();
         }
