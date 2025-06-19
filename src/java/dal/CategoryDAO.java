@@ -27,4 +27,17 @@ public class CategoryDAO {
         }
         return list;
     }
+
+    public String getCategoryNameById(int categoryId) throws SQLException, ClassNotFoundException {
+        String sql = "SELECT name FROM Categories WHERE category_id = ?";
+        try (Connection con = DBUtil.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, categoryId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getString("name");
+            }
+        }
+        return null;
+    }
 }

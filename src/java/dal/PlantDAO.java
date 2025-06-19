@@ -210,4 +210,43 @@ public class PlantDAO {
         }
         return 0;
     }
+
+    public List<Plant> getRelatedPlants(int categoryId, int plantId, int limit) throws SQLException, ClassNotFoundException {
+        List<Plant> list = new ArrayList<>();
+        String sql = "SELECT * FROM Plants WHERE category_id = ? AND plant_id <> ? ORDER BY NEWID() OFFSET 0 ROWS FETCH NEXT ? ROWS ONLY";
+        try (Connection con = DBUtil.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, categoryId);
+            ps.setInt(2, plantId);
+            ps.setInt(3, limit);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Plant p = new Plant(
+                    rs.getInt("plant_id"),
+                    rs.getInt("category_id"),
+                    rs.getString("name"),
+                    rs.getString("description"),
+                    rs.getDouble("price"),
+                    rs.getInt("stock_quantity"),
+                    rs.getString("image_url")
+                );
+                p.setCreatedAt(rs.getTimestamp("created_at"));
+                list.add(p);
+            }
+        }
+        return list;
+    }
+
+    public String getPlantNameById(int plantId) throws SQLException, ClassNotFoundException {
+        String sql = "SELECT name FROM Plants WHERE plant_id = ?";
+        try (Connection con = DBUtil.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, plantId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getString("name");
+            }
+        }
+        return null;
+    }
 }

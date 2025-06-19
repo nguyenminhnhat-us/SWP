@@ -318,7 +318,7 @@
                                                     <fmt:formatNumber value="${plant.price}" type="currency" currencySymbol="₫" />
                                                 </p>
                                                 <div class="d-flex justify-content-between align-items-center">
-                                                    <a href="plant-details?id=${plant.plantId}" class="btn btn-outline-success">Chi tiết</a>
+                                                    <a href="${pageContext.request.contextPath}//product-detail?id=${plant.plantId}" class="btn btn-outline-success">Chi tiết</a>
                                                     <form action="${pageContext.request.contextPath}/cart" method="post" class="d-inline">
                                                         <input type="hidden" name="action" value="add">
                                                         <input type="hidden" name="plantId" value="${plant.plantId}">

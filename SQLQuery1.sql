@@ -219,3 +219,131 @@ VALUES
 (3, N'Cây Lưỡi Hổ', N'Cây lưỡi hổ dễ chăm sóc, có khả năng hấp thụ bức xạ', 180000, 120, 'images/luoi_ho.jpg'),
 (4, N'Cây Phát Tài', N'Cây phát tài mang ý nghĩa may mắn, thịnh vượng', 400000, 60, 'images/phat_tai.jpg');
 
+  
+-- Giả sử user_id 2 và 3 là khách hàng
+INSERT INTO Orders (user_id, total_amount, status, shipping_address, payment_method)
+VALUES 
+(1, 550000, 'delivered', N'45 Nguyễn Lương Bằng, Đà Nẵng', N'Thanh toán khi nhận hàng'),
+(1, 780000, 'processing', N'27 Lê Duẩn, Đà Nẵng', N'Chuyển khoản'),
+(1, 550000, 'delivered', N'45 Nguyễn Lương Bằng, Đà Nẵng', N'Thanh toán khi nhận hàng');
+-- Giả sử plant_id 3 là Trầu Bà, plant_id 4 là Kim Tiền, plant_id 8 là Phát Tài
+INSERT INTO OrderDetails (order_id, plant_id, quantity, unit_price)
+VALUES 
+(1, 3, 2, 250000),   -- Trầu Bà x2
+(5, 4, 1, 300000),   -- Kim Tiền x1
+(6, 8, 2, 400000);   -- Phát Tài x2
+-- Giả sử admin có user_id = 1
+INSERT INTO Articles (author_id, title, content, category)
+VALUES 
+(1, N'Mẹo chăm sóc cây Kim Tiền vào mùa hè', 
+ N'Cây Kim Tiền cần đặt nơi thoáng, tránh ánh nắng trực tiếp và tưới đều nước mỗi tuần.', 
+ N'Chăm sóc cây'),
+
+(1, N'Lợi ích của việc đặt cây xanh trong văn phòng', 
+ N'Cây xanh giúp giảm căng thẳng, lọc không khí và tạo không gian làm việc tích cực.', 
+ N'Sức khỏe & Môi trường');
+
+INSERT INTO Categories (name, description)
+VALUES 
+(N'Cây Cảnh Mini', N'Cây nhỏ để bàn làm việc, dễ chăm sóc'),
+(N'Cây Lọc Không Khí', N'Cây có khả năng lọc độc tố, làm sạch không khí'),
+(N'Cây Trồng Ban Công', N'Cây thích hợp với không gian ngoài trời như ban công'),
+(N'Cây May Mắn', N'Cây mang ý nghĩa phong thủy, may mắn cho gia chủ');
+-- Giả sử các category_id tương ứng là từ 5 đến 8
+INSERT INTO Plants (category_id, name, description, price, stock_quantity, image_url)
+VALUES 
+(5, N'Cây Sen Đá', N'Cây nhỏ gọn, dễ sống, phù hợp đặt bàn làm việc', 120000, 200, 'images/sen_da.jpg'),
+(5, N'Cây Xương Rồng Tai Thỏ', N'Cây cảnh mini với hình dáng độc đáo', 150000, 150, 'images/xuong_rong_tai_tho.jpg'),
+(6, N'Cây Lan Ý', N'Cây lọc không khí tốt, lá xanh bóng đẹp', 220000, 100, 'images/lan_y.jpg'),
+(6, N'Cây Hồng Môn', N'Vừa lọc khí, vừa có hoa đỏ đẹp', 260000, 90, 'images/hong_mon.jpg'),
+(7, N'Cây Dây Nhện', N'Cây ưa sáng, thích hợp trồng treo ngoài ban công', 130000, 110, 'images/day_nhen.jpg'),
+(7, N'Cây Ngọc Ngân', N'Màu lá độc đáo, ưa sáng, chịu nắng tốt', 190000, 70, 'images/ngoc_ngan.jpg'),
+(8, N'Cây Thiết Mộc Lan', N'Mang tài lộc và thịnh vượng, dễ trồng trong nhà', 350000, 60, 'images/thiet_moc_lan.jpg'),
+(8, N'Cây Vạn Lộc', N'Mang ý nghĩa may mắn, màu lá bắt mắt', 280000, 80, 'images/van_loc.jpg');
+INSERT INTO Categories (name, description)
+VALUES 
+(N'Cây Văn Phòng', N'Cây cảnh phù hợp đặt trong môi trường làm việc, giúp giảm căng thẳng và tăng năng suất.'),
+(N'Cây Thủy Sinh', N'Cây sống trong nước hoặc môi trường ẩm, trang trí bể cá hoặc không gian sống.'),
+(N'Cây Leo Giàn', N'Cây dây leo dùng trang trí hàng rào, cổng nhà, ban công.'),
+(N'Cây Cảnh Bonsai', N'Cây được uốn nắn, tạo hình nghệ thuật, thường dùng làm cây cảnh nội thất.'),
+(N'Cây Trồng Trong Nhà', N'Cây phù hợp với điều kiện ánh sáng yếu, thường được đặt ở phòng khách hoặc phòng ngủ.'),
+(N'Cây Cảnh Ngoại Thất', N'Cây trồng ngoài sân vườn, chịu được nắng, gió và thời tiết khắc nghiệt.'),
+(N'Cây Ăn Quả Mini', N'Cây ăn trái được trồng trong chậu nhỏ, phù hợp với không gian hạn chế.'),
+(N'Cây Cảnh Phong Thủy', N'Cây mang ý nghĩa may mắn, tài lộc và sức khỏe theo ngũ hành.'),
+(N'Cây Trồng Đường Phố', N'Cây bóng mát lớn, trồng ven đường, công viên hoặc dự án đô thị.'),
+(N'Cây Sống Đời', N'Loại cây tượng trưng cho sự trường tồn và kiên cường, dễ trồng và ra hoa quanh năm.');
+INSERT INTO Articles (author_id, title, content, category)
+VALUES
+(1, N'Cách chăm sóc cây Lan Ý luôn xanh tốt',
+ N'Cây Lan Ý cần đất thoát nước tốt, tưới 2 lần/tuần và đặt nơi có ánh sáng nhẹ.',
+ N'Chăm sóc cây'),
+
+(1, N'Những loại cây lọc không khí tốt nhất trong nhà',
+ N'Lan Ý, Lưỡi Hổ, Trầu Bà là những loại cây có khả năng hấp thụ khí độc như formaldehyde.',
+ N'Sức khỏe'),
+
+(1, N'Trồng cây Phát Tài đúng cách để thu hút tài lộc',
+ N'Cây Phát Tài nên đặt ở hướng Đông Nam, tránh ánh nắng gắt và tưới mỗi 5 ngày.',
+ N'Phong thủy'),
+
+(1, N'Mẹo chọn cây để bàn hợp mệnh Kim',
+ N'Người mệnh Kim nên chọn cây Kim Tiền, Ngọc Ngân hoặc Cây Bạch Mã Hoàng Tử để hút tài khí.',
+ N'Phong thủy'),
+
+(1, N'Lợi ích bất ngờ khi đặt cây trong phòng ngủ',
+ N'Một số cây như Lưỡi Hổ, Lan Ý giúp tăng oxy, cải thiện giấc ngủ khi đặt trong phòng ngủ.',
+ N'Sức khỏe'),
+
+(1, N'Kỹ thuật nhân giống cây Sen Đá tại nhà',
+ N'Chỉ cần tách lá khỏe từ cây mẹ, để khô vài ngày rồi đặt lên đất ẩm để mọc rễ.',
+ N'Kỹ thuật'),
+
+(1, N'5 loại cây nên trồng ở ban công đón gió tốt',
+ N'Nguyệt Quế, Dây Nhện, Hoa Giấy, Dương Xỉ và Cúc Tần là những lựa chọn lý tưởng cho ban công.',
+ N'Không gian sống'),
+
+(1, N'Bí quyết tưới cây đúng cách vào mùa hè',
+ N'Tưới vào sáng sớm hoặc chiều muộn, tránh tưới giữa trưa nắng nóng sẽ làm héo rễ.',
+ N'Chăm sóc cây'),
+
+(1, N'Cây nào phù hợp làm quà tặng tân gia?',
+ N'Cây Kim Ngân, Phát Tài hoặc Thiết Mộc Lan mang ý nghĩa chúc tài lộc và bình an.',
+ N'Gợi ý mua sắm'),
+
+(1, N'Những sai lầm thường gặp khi chăm sóc cây cảnh',
+ N'Tưới quá nhiều, đặt cây ở nơi không phù hợp ánh sáng là những sai lầm phổ biến.',
+ N'Chăm sóc cây');
+
+-- Thêm dữ liệu mẫu cho Reviews (feedback)
+INSERT INTO Reviews (user_id, plant_id, order_id, rating, comment)
+VALUES
+(2, 3, 1, 5, N'Sản phẩm rất đẹp, giao hàng nhanh!'),
+(3, 3, 1, 4, N'Cây khỏe mạnh, đúng mô tả.'),
+(2, 4, 5, 5, N'Rất hài lòng với cây Kim Tiền.'),
+(3, 8, 6, 3, N'Cây Phát Tài hơi nhỏ hơn mong đợi nhưng vẫn ổn.'),
+(2, 5, 7, 5, N'Cây Sen Đá rất dễ thương, phù hợp để bàn.'),
+(3, 6, 8, 4, N'Cây Lan Ý xanh tốt, giao đúng hẹn.'),
+(2, 7, 9, 5, N'Cây Dây Nhện rất đẹp, sẽ ủng hộ tiếp.'),
+(3, 8, 10, 5, N'Cây Vạn Lộc màu sắc bắt mắt, rất thích!');
+
+-- Bổ sung thêm OrderDetails để có nhiều sản phẩm bán chạy
+INSERT INTO OrderDetails (order_id, plant_id, quantity, unit_price)
+VALUES
+(2, 3, 5, 250000),   -- Trầu Bà x5
+(2, 4, 3, 300000),   -- Kim Tiền x3
+(3, 8, 4, 400000),   -- Phát Tài x4
+(3, 5, 2, 1800000),  -- Bàng x2
+(4, 6, 6, 1200000),  -- Nguyệt Quế x6
+(4, 7, 7, 180000),   -- Lưỡi Hổ x7
+(5, 5, 3, 1800000),  -- Bàng x3
+(6, 6, 2, 1200000),  -- Nguyệt Quế x2
+(7, 7, 4, 180000),   -- Lưỡi Hổ x4
+(8, 8, 5, 400000);   -- Phát Tài x5
+
+-- Bổ sung thêm dữ liệu cho Plants liên quan (cùng category)
+INSERT INTO Plants (category_id, name, description, price, stock_quantity, image_url)
+VALUES
+(1, N'Cây Sấu', N'Cây bóng mát, lá xanh quanh năm, thích hợp trồng đường phố.', 1700000, 30, 'images/cay_sau.jpg'),
+(1, N'Cây Xà Cừ', N'Cây thân gỗ lớn, tán rộng, thường trồng ở công viên.', 2000000, 25, 'images/xa_cu.jpg'),
+(3, N'Cây Ngũ Gia Bì', N'Cây nội thất, lọc không khí tốt, dễ chăm sóc.', 350000, 60, 'images/ngu_gia_bi.jpg'),
+(3, N'Cây Bạch Mã Hoàng Tử', N'Cây nội thất sang trọng, lá xanh sọc trắng.', 400000, 50, 'images/bach_ma.jpg');

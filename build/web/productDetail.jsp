@@ -1,0 +1,270 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Chi tiết sản phẩm</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        
+                            /* Header Styles */
+                            .logo-container {
+                                display: flex;
+                                align-items: center;
+                                padding: 10px 0;
+                            }
+
+                            .logo-container img {
+                                width: 100px;
+                                height: auto;
+                                margin-right: 15px;
+                            }
+
+                            .logo-text {
+                                color: #333;
+                            }
+
+                            .logo-text h1 {
+                                font-size: 24px;
+                                margin: 0;
+                                color: #28a745;
+                            }
+
+                            .search-bar {
+                                display: flex;
+                                align-items: center;
+                                margin: 10px 0;
+                            }
+
+                            .search-bar input {
+                                flex: 1;
+                                padding: 8px 15px;
+                                border: 2px solid #28a745;
+                                border-radius: 4px 0 0 4px;
+                                outline: none;
+                            }
+
+                            .search-bar button {
+                                padding: 8px 20px;
+                                background: #28a745;
+                                border: none;
+                                color: white;
+                                border-radius: 0 4px 4px 0;
+                                cursor: pointer;
+                            }
+
+                            .header-contact {
+                                text-align: right;
+                                padding: 10px 0;
+                            }
+
+                            .hotline {
+                                color: red;
+                                font-weight: bold;
+                                font-size: 18px;
+                            }
+
+                            .header-buttons {
+                                text-align: right;
+                            }
+
+                            .header-buttons .btn {
+                                margin-left: 10px;
+                            }
+
+                            /* Navigation */
+                            .main-nav {
+                                background-color: #28a745;
+                                padding: 0;
+                            }
+
+                            .main-nav .nav-link {
+                                color: white !important;
+                                padding: 15px 20px;
+                                font-weight: 500;
+                                transition: all 0.3s ease;
+                            }
+
+                            .main-nav .nav-link:hover {
+                                background-color: rgba(255, 255, 255, 0.1);
+                                color: yellow !important;
+                            }
+
+                            .dropdown-menu {
+                                border: none;
+                                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                            }
+
+                            .dropdown-item:hover {
+                                background-color: #28a745;image.png
+                                color: white !important;
+                            }
+
+                            .navbar {
+                                background-color: #28a745;
+                            }
+
+                            .navbar-brand {
+                                color: white !important;
+                                font-weight: bold;
+                            }
+
+                            .nav-link {
+                                color: white !important;
+                            }
+        .product-image {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .sidebar-section {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 24px;
+            padding: 16px;
+        }
+        .related-slider {
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+        .related-slider .card {
+            display: inline-block;
+            width: 220px;
+            margin-right: 16px;
+            vertical-align: top;
+        }
+        .feedback-section {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 24px;
+            padding: 16px;
+        }
+        footer, .footer {
+            background: #222;
+            color: #fff;
+            padding: 30px 0 10px 0;
+            font-size: 1rem;
+            text-align: center;
+            border-top: 1px solid #444;
+        }
+        .footer a, footer a {
+            color: #8fd19e;
+            text-decoration: none;
+        }
+        .footer a:hover, footer a:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+        .footer .footer-contact {
+            margin-bottom: 10px;
+        }
+        .footer .footer-contact i {
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+<c:set var="product" value="${productMap.product}" />
+<c:set var="categoryName" value="${productMap.categoryName}" />
+<jsp:include page="./common/home/header.jsp" />
+<div class="container my-4">
+    <div class="row">
+        <!-- Thông tin sản phẩm -->
+        <div class="col-lg-8 mb-4">
+            <div class="card mb-4">
+                <div class="row g-0">
+                    <div class="col-md-5 text-center p-3">
+                        <img src="${product.imageUrl}" alt="${product.name}" class="product-image">
+                    </div>
+                    <div class="col-md-7">
+                        <div class="card-body">
+                            <h2 class="card-title">${product.name}</h2>
+                            <p class="card-text">${product.description}</p>
+                            <p class="mb-2"><b>Giá:</b> <span class="text-success fs-4">
+                                <fmt:formatNumber value="${product.price}" type="currency" currencySymbol="₫" />
+                            </span></p>
+                            <p><b>Số lượng còn:</b> ${product.stockQuantity}</p>
+                            <p><b>Danh mục:</b> ${categoryName}</p>
+                            <form action="${pageContext.request.contextPath}/cart" method="post" class="d-inline">
+                                <input type="hidden" name="action" value="add">
+                                <input type="hidden" name="plantId" value="${product.plantId}">
+                                <input type="hidden" name="quantity" value="1">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Feedback -->
+            <div class="feedback-section mb-4">
+                <h4 class="mb-3">Phản hồi của khách hàng</h4>
+                <c:forEach var="fb" items="${feedbackList}">
+                    <c:set var="review" value="${fb.review}" />
+                    <div class="mb-3 border-bottom pb-2">
+                        <b>${fb.userName}</b>
+                        <span class="text-warning">${review.rating} <i class="fas fa-star"></i></span>
+                        <p class="mb-1">${review.comment}</p>
+                        <small class="text-muted"><fmt:formatDate value="${review.createdAt}" pattern="dd/MM/yyyy"/></small>
+                    </div>
+                </c:forEach>
+                <c:if test="${empty feedbackList}">
+                    <p>Chưa có phản hồi nào cho sản phẩm này.</p>
+                </c:if>
+            </div>
+            <!-- Sản phẩm liên quan -->
+            <div class="mb-4">
+                <h4 class="mb-3">Sản phẩm liên quan</h4>
+                <div class="related-slider">
+                    <c:forEach var="rel" items="${relatedPlants}">
+                        <div class="card">
+                            <img src="${rel.imageUrl}" class="card-img-top" alt="${rel.name}">
+                            <div class="card-body">
+                                <h6 class="card-title">${rel.name}</h6>
+                                <p class="price mb-1">
+                                    <fmt:formatNumber value="${rel.price}" type="currency" currencySymbol="₫" />
+                                </p>
+                                <a href="product-detail?id=${rel.plantId}" class="btn btn-outline-success btn-sm w-100">Xem chi tiết</a>
+                            </div>
+                        </div>
+                    </c:forEach>
+                </div>
+            </div>
+        </div>
+        <!-- Sidebar phải -->
+        <div class="col-lg-4">
+            <div class="sidebar-section mb-4">
+                <h5 class="mb-3">Bài viết mới nhất</h5>
+                <c:forEach var="article" items="${latestArticles}">
+                    <div class="mb-2">
+                        <a href="#" class="fw-bold">${article.title}</a>
+                        <div class="text-muted small mb-1">${article.category}</div>
+                    </div>
+                </c:forEach>
+            </div>
+            <div class="sidebar-section">
+                <h5 class="mb-3">Sản phẩm bán chạy</h5>
+                <c:forEach var="plant" items="${topSellingPlants}">
+                    <div class="d-flex align-items-center mb-2">
+                        <img src="${plant.imageUrl}" alt="${plant.name}" style="width:40px;height:40px;object-fit:cover;border-radius:5px;">
+                        <div class="ms-2">
+                            <a href="product-detail?id=${plant.plantId}" class="fw-bold">${plant.name}</a>
+                            <div class="text-success small"><fmt:formatNumber value="${plant.price}" type="currency" currencySymbol="₫" /></div>
+                        </div>
+                    </div>
+                </c:forEach>
+            </div>
+        </div>
+    </div>
+</div>
+<jsp:include page="./common/home/footer.jsp" />
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
