@@ -7,7 +7,7 @@
         <!-- Logo -->
         <div class="col-md-3">
             <div class="logo-container">
-                <img src="images/logo.png" alt="Vườn Cây Đà Nẵng">
+                <img src="${pageContext.request.contextPath}/images/logo.png" alt="Vườn Cây Đà Nẵng">
                 <div class="logo-text">
                     <h1>VUONCAYDANANG.COM</h1>
                     <small>Chuyên Mua Bán Cây Xanh</small>

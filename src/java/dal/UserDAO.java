@@ -84,7 +84,7 @@ public class UserDAO {
     }
 
     private User extractUserFromResultSet(ResultSet rs) throws SQLException {
-        return new User(
+        User user = new User(
                 rs.getInt("user_id"),
                 rs.getString("email"),
                 rs.getString("password"),
@@ -93,8 +93,10 @@ public class UserDAO {
                 rs.getString("address"),
                 rs.getString("role"),
                 rs.getBoolean("is_active"),
-                rs.getString("auth_type") // Thêm auth_type
+                rs.getString("auth_type")
         );
+        user.setAvatarPath(rs.getString("avatar_path"));
+        return user;
     }
 
     public void updatePasswordreset(String email, String newPassword) {
@@ -115,17 +117,7 @@ public class UserDAO {
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return new User(
-                        rs.getInt("user_id"),
-                        rs.getString("email"),
-                        rs.getString("password"),
-                        rs.getString("full_name"),
-                        rs.getString("phone"),
-                        rs.getString("address"),
-                        rs.getString("role"),
-                        rs.getBoolean("is_active"),
-                        rs.getString("auth_type") // Thêm authType
-                );
+                return extractUserFromResultSet(rs);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -152,5 +144,21 @@ public class UserDAO {
 
     public String getUserNameById(int userId) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public boolean updateAvatar(int userId, String avatarPath) {
+        // Đảm bảo đường dẫn luôn bắt đầu bằng "/"
+        if (avatarPath != null && !avatarPath.startsWith("/")) {
+            avatarPath = "/" + avatarPath;
+        }
+        String sql = "UPDATE Users SET avatar_path = ? WHERE user_id = ?";
+        try (Connection conn = DBUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, avatarPath);
+            ps.setInt(2, userId);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

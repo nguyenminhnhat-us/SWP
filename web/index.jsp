@@ -3,8 +3,7 @@
         <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
             <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
                 <%
-                    model.User user = (model.User) session.getAttribute("user");
-                    // Chuyển hướng đến HomeController nếu danh sách cây chưa được tải
+                    // Redirect to HomeController if the plant list is not loaded
                     if (request.getAttribute("plants") == null) {
                         request.getRequestDispatcher("/home").forward(request, response);
                         return;
@@ -18,123 +17,20 @@
                         <title>Vườn Cây Đà Nẵng - Chuyên Mua Bán Cây Xanh</title>
                         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-                        <!-- Bootstrap 5 -->
                         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
                             rel="stylesheet">
-                        <!-- Font Awesome -->
                         <link rel="stylesheet"
                             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+                        <script
+                            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+                        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/header-style.css">
 
                         <style>
                             body {
                                 background-color: #f8f9fa;
                             }
 
-                            /* Header Styles */
-                            .logo-container {
-                                display: flex;
-                                align-items: center;
-                                padding: 10px 0;
-                            }
-
-                            .logo-container img {
-                                width: 100px;
-                                height: auto;
-                                margin-right: 15px;
-                            }
-
-                            .logo-text {
-                                color: #333;
-                            }
-
-                            .logo-text h1 {
-                                font-size: 24px;
-                                margin: 0;
-                                color: #28a745;
-                            }
-
-                            .search-bar {
-                                display: flex;
-                                align-items: center;
-                                margin: 10px 0;
-                            }
-
-                            .search-bar input {
-                                flex: 1;
-                                padding: 8px 15px;
-                                border: 2px solid #28a745;
-                                border-radius: 4px 0 0 4px;
-                                outline: none;
-                            }
-
-                            .search-bar button {
-                                padding: 8px 20px;
-                                background: #28a745;
-                                border: none;
-                                color: white;
-                                border-radius: 0 4px 4px 0;
-                                cursor: pointer;
-                            }
-
-                            .header-contact {
-                                text-align: right;
-                                padding: 10px 0;
-                            }
-
-                            .hotline {
-                                color: red;
-                                font-weight: bold;
-                                font-size: 18px;
-                            }
-
-                            .header-buttons {
-                                text-align: right;
-                            }
-
-                            .header-buttons .btn {
-                                margin-left: 10px;
-                            }
-
-                            /* Navigation */
-                            .main-nav {
-                                background-color: #28a745;
-                                padding: 0;
-                            }
-
-                            .main-nav .nav-link {
-                                color: white !important;
-                                padding: 15px 20px;
-                                font-weight: 500;
-                                transition: all 0.3s ease;
-                            }
-
-                            .main-nav .nav-link:hover {
-                                background-color: rgba(255, 255, 255, 0.1);
-                                color: yellow !important;
-                            }
-
-                            .dropdown-menu {
-                                border: none;
-                                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-                            }
-
-                            .dropdown-item:hover {
-                                background-color: #28a745;
-                                color: white !important;
-                            }
-
-                            .navbar {
-                                background-color: #28a745;
-                            }
-
-                            .navbar-brand {
-                                color: white !important;
-                                font-weight: bold;
-                            }
-
-                            .nav-link {
-                                color: white !important;
-                            }
+                            
 
                             .hero-section {
                                 background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('images/banner.jpg');
@@ -253,9 +149,11 @@
                                             <div class="card-body p-2">
                                                 <h6 class="card-title mb-1">${plant.name}</h6>
                                                 <p class="price mb-1">
-                                                    <fmt:formatNumber value="${plant.price}" type="currency" currencySymbol="₫" />
+                                                    <fmt:formatNumber value="${plant.price}" type="currency"
+                                                        currencySymbol="₫" />
                                                 </p>
-                                                <a href="plant-details?id=${plant.plantId}" class="btn btn-outline-success btn-sm w-100">Chi tiết</a>
+                                                <a href="plant-details?id=${plant.plantId}"
+                                                    class="btn btn-outline-success btn-sm w-100">Chi tiết</a>
                                             </div>
                                         </div>
                                     </div>
@@ -283,7 +181,9 @@
                                                     </c:choose>
                                                 </p>
                                                 <p class="text-muted small mb-1">Chuyên mục: ${article.category}</p>
-                                                <p class="text-muted small">Ngày đăng: <fmt:formatDate value='${article.createdAt}' pattern='dd/MM/yyyy'/></p>
+                                                <p class="text-muted small">Ngày đăng:
+                                                    <fmt:formatDate value='${article.createdAt}' pattern='dd/MM/yyyy' />
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
@@ -295,11 +195,14 @@
                         <section class="container mb-5">
                             <h2 class="text-center mb-4">Danh mục sản phẩm</h2>
                             <div class="d-flex align-items-center mb-3">
-                                <button class="btn btn-outline-success me-2" id="category-prev"><i class="fas fa-chevron-left"></i></button>
-                                <div id="category-list" class="flex-grow-1 d-flex justify-content-center" style="overflow: hidden; min-width: 350px;">
+                                <button class="btn btn-outline-success me-2" id="category-prev"><i
+                                        class="fas fa-chevron-left"></i></button>
+                                <div id="category-list" class="flex-grow-1 d-flex justify-content-center"
+                                    style="overflow: hidden; min-width: 350px;">
                                     <!-- Danh mục sẽ được render bằng JS -->
                                 </div>
-                                <button class="btn btn-outline-success ms-2" id="category-next"><i class="fas fa-chevron-right"></i></button>
+                                <button class="btn btn-outline-success ms-2" id="category-next"><i
+                                        class="fas fa-chevron-right"></i></button>
                             </div>
                         </section>
 
@@ -315,11 +218,14 @@
                                                 <h5 class="card-title">${plant.name}</h5>
                                                 <p class="card-text">${plant.description}</p>
                                                 <p class="price">
-                                                    <fmt:formatNumber value="${plant.price}" type="currency" currencySymbol="₫" />
+                                                    <fmt:formatNumber value="${plant.price}" type="currency"
+                                                        currencySymbol="₫" />
                                                 </p>
                                                 <div class="d-flex justify-content-between align-items-center">
-                                                    <a href="${pageContext.request.contextPath}//product-detail?id=${plant.plantId}" class="btn btn-outline-success">Chi tiết</a>
-                                                    <form action="${pageContext.request.contextPath}/cart" method="post" class="d-inline">
+                                                    <a href="${pageContext.request.contextPath}//product-detail?id=${plant.plantId}"
+                                                        class="btn btn-outline-success">Chi tiết</a>
+                                                    <form action="${pageContext.request.contextPath}/cart" method="post"
+                                                        class="d-inline">
                                                         <input type="hidden" name="action" value="add">
                                                         <input type="hidden" name="plantId" value="${plant.plantId}">
                                                         <input type="hidden" name="quantity" value="1">
@@ -380,11 +286,12 @@
                             </div>
                         </section>
 
-                        
+
                         <jsp:include page="./common/home/footer.jsp"></jsp:include>
 
                         <!-- Bootstrap JS -->
-                        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+                        <script
+                            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
                         <script>
                             // Lấy danh sách category từ JSP sang JS
                             const categories = [
@@ -412,14 +319,14 @@
                                 nextBtn.disabled = catStart + catPerPage >= categories.length;
                             }
 
-                            prevBtn.onclick = function() {
+                            prevBtn.onclick = function () {
                                 if (catStart > 0) {
                                     catStart -= catPerPage;
                                     if (catStart < 0) catStart = 0;
                                     renderCategories();
                                 }
                             };
-                            nextBtn.onclick = function() {
+                            nextBtn.onclick = function () {
                                 if (catStart + catPerPage < categories.length) {
                                     catStart += catPerPage;
                                     renderCategories();

@@ -7,11 +7,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.http.Part;
+import java.io.File;
 
 import dal.UserDAO;
 import model.User;
 
 @WebServlet(name = "ProfileController", urlPatterns = {"/dashboard/profile"})
+@MultipartConfig
 public class ProfileController extends HttpServlet {
     private UserDAO userDAO = new UserDAO();
 
@@ -86,6 +90,31 @@ public class ProfileController extends HttpServlet {
                 request.setAttribute("successMessage", "Đổi mật khẩu thành công!");
             } else {
                 request.setAttribute("errorMessage", "Đổi mật khẩu thất bại!");
+            }
+        } else if ("upload_avatar".equals(action)) {
+            // Xử lý upload ảnh đại diện
+            Part filePart = request.getPart("avatar");
+            if (filePart != null && filePart.getSize() > 0) {
+                String fileName = System.currentTimeMillis() + "_" + filePart.getSubmittedFileName();
+                String imagesDir = getServletContext().getRealPath("/images");
+                File uploadDir = new File(imagesDir);
+                if (!uploadDir.exists()) uploadDir.mkdirs();
+                String filePath = imagesDir + File.separator + fileName;
+                filePart.write(filePath);
+                
+                // Thống nhất lưu đường dẫn với dấu / ở đầu
+                String avatarDbPath = "/images/" + fileName;
+
+                // Cập nhật đường dẫn ảnh vào user
+                userDAO.updateAvatar(sessionUser.getUserId(), avatarDbPath);
+                
+                // Lấy lại user mới nhất từ DB để cập nhật session và request
+                User updatedUser = userDAO.getUserByEmail(sessionUser.getEmail());
+                session.setAttribute("user", updatedUser);
+                request.setAttribute("user", updatedUser);
+                request.setAttribute("successMessage", "Cập nhật ảnh đại diện thành công!");
+            } else {
+                request.setAttribute("errorMessage", "Vui lòng chọn ảnh để tải lên!");
             }
         }
 
