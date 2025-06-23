@@ -1,0 +1,87 @@
+/* Header Styles */
+.logo-container {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+}
+.logo-container img {
+    width: 100px;
+    height: auto;
+    margin-right: 15px;
+}
+.logo-text {
+    color: #333;
+}
+.logo-text h1 {
+    font-size: 24px;
+    margin: 0;
+    color: #28a745;
+}
+.search-bar {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+.search-bar input {
+    flex: 1;
+    padding: 8px 15px;
+    border: 2px solid #28a745;
+    border-radius: 4px 0 0 4px;
+    outline: none;
+}
+.search-bar button {
+    padding: 8px 20px;
+    background: #28a745;
+    border: none;
+    color: white;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+}
+.header-contact {
+    text-align: right;
+    padding: 10px 0;
+}
+.hotline {
+    color: red;
+    font-weight: bold;
+    font-size: 18px;
+}
+.header-buttons {
+    text-align: right;
+}
+.header-buttons .btn {
+    margin-left: 10px;
+}
+/* Navigation */
+.main-nav {
+    background-color: #28a745;
+    padding: 0;
+}
+.main-nav .nav-link {
+    color: white !important;
+    padding: 15px 20px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+.main-nav .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: yellow !important;
+}
+.dropdown-menu {
+    border: none;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+.dropdown-item:hover {
+    background-color: #28a745;
+    color: white !important;
+}
+.navbar {
+    background-color: #28a745;
+}
+.navbar-brand {
+    color: white !important;
+    font-weight: bold;
+}
+.nav-link {
+    color: white !important;
+} 
