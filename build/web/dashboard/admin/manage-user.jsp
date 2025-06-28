@@ -82,18 +82,20 @@
                     <!-- Users Table -->
                     <div class="card">
                         <div class="card-body">
-                            <c:if test="${not empty message}">
+                            <c:if test="${not empty sessionScope.successMessage}">
                                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                    ${message}
+                                    ${sessionScope.successMessage}
                                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                                 </div>
+                                <c:remove var="successMessage" scope="session" />
                             </c:if>
                             
-                            <c:if test="${not empty error}">
+                            <c:if test="${not empty sessionScope.errorMessage}">
                                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                    ${error}
+                                    ${sessionScope.errorMessage}
                                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                                 </div>
+                                <c:remove var="errorMessage" scope="session" />
                             </c:if>
                             
                             <div class="table-responsive">
@@ -142,7 +144,11 @@
                                                                 title="${user.isActive ? 'Khóa tài khoản' : 'Kích hoạt tài khoản'}">
                                                             <i class="fa ${user.isActive ? 'fa-lock' : 'fa-unlock'}"></i>
                                                         </button>
-                                                
+                                                        <button class="btn btn-sm btn-outline-danger" 
+                                                                onclick="deleteUser(${user.userId}, '${user.fullName}')" 
+                                                                title="Xóa người dùng">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -245,7 +251,7 @@
                             <div class="col-md-6">
                                 <label class="form-label">Vai trò</label>
                                 <select class="form-select" name="role">
-                                    <option value="user">User</option>
+                                    <option value="customer">Customer</option>
                                     <option value="admin">Admin</option>
                                 </select>
                             </div>
@@ -269,6 +275,98 @@
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // Form validation for add user
+        document.getElementById('addUserForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Clear previous error messages
+            clearValidationErrors();
+            
+            let isValid = true;
+            
+            // Get form elements
+            const fullName = document.querySelector('input[name="fullName"]');
+            const email = document.querySelector('input[name="email"]');
+            const password = document.querySelector('input[name="password"]');
+            const phone = document.querySelector('input[name="phone"]');
+            
+            // Validate full name
+            if (!fullName.value.trim()) {
+                showFieldError(fullName, 'Họ tên không được để trống');
+                isValid = false;
+            } else if (fullName.value.trim().length < 2) {
+                showFieldError(fullName, 'Họ tên phải có ít nhất 2 ký tự');
+                isValid = false;
+            } else if (!/^[a-zA-ZÀ-ỹ\s]+$/.test(fullName.value.trim())) {
+                showFieldError(fullName, 'Họ tên chỉ được chứa chữ cái và khoảng trắng');
+                isValid = false;
+            }
+            
+            // Validate email
+            if (!email.value.trim()) {
+                showFieldError(email, 'Email không được để trống');
+                isValid = false;
+            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) {
+                showFieldError(email, 'Email không đúng định dạng');
+                isValid = false;
+            }
+            
+            // Validate password
+            if (!password.value) {
+                showFieldError(password, 'Mật khẩu không được để trống');
+                isValid = false;
+            } else if (password.value.length < 6) {
+                showFieldError(password, 'Mật khẩu phải có ít nhất 6 ký tự');
+                isValid = false;
+            } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password.value)) {
+                showFieldError(password, 'Mật khẩu phải chứa ít nhất 1 chữ hoa, 1 chữ thường và 1 số');
+                isValid = false;
+            }
+            
+            // Validate phone (optional but if provided, must be valid)
+            if (phone.value.trim() && !/^[0-9]{10,11}$/.test(phone.value.trim())) {
+                showFieldError(phone, 'Số điện thoại phải có 10-11 chữ số');
+                isValid = false;
+            }
+            
+            if (isValid) {
+                // If validation passes, submit the form
+                this.submit();
+            }
+        });
+        
+        function showFieldError(field, message) {
+            field.classList.add('is-invalid');
+            
+            // Remove existing error message
+            const existingError = field.parentNode.querySelector('.invalid-feedback');
+            if (existingError) {
+                existingError.remove();
+            }
+            
+            // Add new error message
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'invalid-feedback';
+            errorDiv.textContent = message;
+            field.parentNode.appendChild(errorDiv);
+        }
+        
+        function clearValidationErrors() {
+            // Remove all error classes and messages
+            document.querySelectorAll('.is-invalid').forEach(field => {
+                field.classList.remove('is-invalid');
+            });
+            document.querySelectorAll('.invalid-feedback').forEach(error => {
+                error.remove();
+            });
+        }
+        
+        // Clear errors when modal is closed
+        document.getElementById('addUserModal').addEventListener('hidden.bs.modal', function() {
+            clearValidationErrors();
+            document.getElementById('addUserForm').reset();
+        });
+        
         function viewUser(userId) {
             window.location.href = '${pageContext.request.contextPath}/dashboard/user-detail?id=' + userId;
         }

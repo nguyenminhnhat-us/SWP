@@ -58,7 +58,7 @@
             </a>
         </li>
         <li>
-            <a href="/dashboard/plants" class="nav-link">
+            <a href="${pageContext.request.contextPath}/dashboard/manage-plants" class="nav-link">
                 <i class="fa fa-seedling me-2"></i> Quản lý cây
             </a>
         </li>

@@ -51,7 +51,36 @@ public class ManageUserController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        doGet(request, response);
+        
+        // Kiểm tra quyền admin
+        HttpSession session = request.getSession();
+        User currentUser = (User) session.getAttribute("user");
+        
+        if (currentUser == null || !"admin".equals(currentUser.getRole())) {
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
+            return;
+        }
+
+        String action = request.getParameter("action");
+        if (action == null) {
+            doGet(request, response);
+            return;
+        }
+
+        switch (action) {
+            case "add":
+                addUser(request, response);
+                break;
+            case "toggle":
+                toggleUserStatus(request, response);
+                break;
+            case "delete":
+                deleteUser(request, response);
+                break;
+            default:
+                doGet(request, response);
+                break;
+        }
     }
 
     private void listUsers(HttpServletRequest request, HttpServletResponse response)
@@ -123,5 +152,95 @@ public class ManageUserController extends HttpServlet {
         response.sendRedirect(request.getContextPath() + "/dashboard/manage-users");
     }
 
+    private void addUser(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+        try {
+            // Lấy thông tin từ form
+            String email = request.getParameter("email");
+            String password = request.getParameter("password");
+            String fullName = request.getParameter("fullName");
+            String phone = request.getParameter("phone");
+            String address = request.getParameter("address");
+            String role = request.getParameter("role");
+            String isActiveParam = request.getParameter("isActive");
+            
+            // Validate required fields
+            if (email == null || email.trim().isEmpty() || 
+                password == null || password.trim().isEmpty() || 
+                fullName == null || fullName.trim().isEmpty()) {
+                request.getSession().setAttribute("errorMessage", "Vui lòng điền đầy đủ thông tin bắt buộc!");
+                response.sendRedirect(request.getContextPath() + "/dashboard/manage-users");
+                return;
+            }
+            
+            // Kiểm tra email đã tồn tại
+            User existingUser = userDAO.getUserByEmail(email.trim());
+            if (existingUser != null) {
+                request.getSession().setAttribute("errorMessage", "Email đã tồn tại trong hệ thống!");
+                response.sendRedirect(request.getContextPath() + "/dashboard/manage-users");
+                return;
+            }
+            
+            // Tạo user mới
+            User newUser = new User();
+            newUser.setEmail(email.trim());
+            newUser.setPassword(password); // Trong thực tế nên hash password
+            newUser.setFullName(fullName.trim());
+            newUser.setPhone(phone != null ? phone.trim() : "");
+            newUser.setAddress(address != null ? address.trim() : "");
+            newUser.setRole(role != null ? role : "customer");
+            newUser.setIsActive(isActiveParam != null && isActiveParam.equals("1"));
+            newUser.setAuthType("local");
+            
+            // Thêm user vào database
+            boolean success = userDAO.addUser(newUser);
+            
+            if (!success) {
+                request.getSession().setAttribute("errorMessage", "Không thể thêm người dùng vào cơ sở dữ liệu!");
+                response.sendRedirect(request.getContextPath() + "/dashboard/manage-users");
+                return;
+            }
+            
+            request.getSession().setAttribute("successMessage", "Thêm người dùng mới thành công!");
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.getSession().setAttribute("errorMessage", "Có lỗi xảy ra khi thêm người dùng: " + e.getMessage());
+        }
+        
+        response.sendRedirect(request.getContextPath() + "/dashboard/manage-users");
+    }
     
+    private void deleteUser(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+        String userIdParam = request.getParameter("userId");
+        if (userIdParam != null && !userIdParam.isEmpty()) {
+            try {
+                int userId = Integer.parseInt(userIdParam);
+                
+                // Không cho phép xóa chính mình
+                HttpSession session = request.getSession();
+                User currentUser = (User) session.getAttribute("user");
+                if (currentUser.getUserId() == userId) {
+                    request.getSession().setAttribute("errorMessage", "Không thể xóa tài khoản của chính mình!");
+                    response.sendRedirect(request.getContextPath() + "/dashboard/manage-users");
+                    return;
+                }
+                
+                boolean success = userDAO.deleteUser(userId);
+                
+                if (success) {
+                    request.getSession().setAttribute("successMessage", "Xóa người dùng thành công!");
+                } else {
+                    request.getSession().setAttribute("errorMessage", "Không thể xóa người dùng!");
+                }
+            } catch (NumberFormatException e) {
+                request.getSession().setAttribute("errorMessage", "ID người dùng không hợp lệ!");
+            }
+        }
+        
+        response.sendRedirect(request.getContextPath() + "/dashboard/manage-users");
+    }
 }
