@@ -53,7 +53,7 @@
             </a>
         </li>
         <li>
-            <a href="/dashboard/users" class="nav-link">
+            <a href="${pageContext.request.contextPath}/dashboard/manage-users" class="nav-link">
                 <i class="fa fa-users me-2"></i> Quản lý người dùng
             </a>
         </li>

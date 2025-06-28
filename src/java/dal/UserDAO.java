@@ -161,4 +161,140 @@ public class UserDAO {
             return false;
         }
     }
+
+    // Lấy danh sách người dùng với phân trang
+    public java.util.List<User> getUsersWithPagination(int offset, int limit, String searchKeyword) {
+        return getUsersWithPagination(offset, limit, searchKeyword, "", "");
+    }
+    
+    // Lấy danh sách người dùng với phân trang và filter
+    public java.util.List<User> getUsersWithPagination(int offset, int limit, String searchKeyword, String roleFilter, String statusFilter) {
+        java.util.List<User> users = new java.util.ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT * FROM Users WHERE (full_name LIKE ? OR email LIKE ?)");
+        
+        // Thêm filter theo role
+        if (roleFilter != null && !roleFilter.isEmpty()) {
+            sql.append(" AND role = ?");
+        }
+        
+        // Thêm filter theo status
+        if (statusFilter != null && !statusFilter.isEmpty()) {
+            if (statusFilter.equals("active")) {
+                sql.append(" AND is_active = 1");
+            } else if (statusFilter.equals("inactive")) {
+                sql.append(" AND is_active = 0");
+            }
+        }
+        
+        sql.append(" ORDER BY user_id DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
+        
+        try (Connection conn = DBUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql.toString())) {
+            String searchPattern = "%" + searchKeyword + "%";
+            int paramIndex = 1;
+            ps.setString(paramIndex++, searchPattern);
+            ps.setString(paramIndex++, searchPattern);
+            
+            // Set role filter parameter
+            if (roleFilter != null && !roleFilter.isEmpty()) {
+                ps.setString(paramIndex++, roleFilter);
+            }
+            
+            ps.setInt(paramIndex++, offset);
+            ps.setInt(paramIndex, limit);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                users.add(extractUserFromResultSet(rs));
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
+
+    // Đếm tổng số người dùng
+    public int getTotalUsersCount(String searchKeyword) {
+        return getTotalUsersCount(searchKeyword, "", "");
+    }
+    
+    // Đếm tổng số người dùng với filter
+    public int getTotalUsersCount(String searchKeyword, String roleFilter, String statusFilter) {
+        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM Users WHERE (full_name LIKE ? OR email LIKE ?)");
+        
+        // Thêm filter theo role
+        if (roleFilter != null && !roleFilter.isEmpty()) {
+            sql.append(" AND role = ?");
+        }
+        
+        // Thêm filter theo status
+        if (statusFilter != null && !statusFilter.isEmpty()) {
+            if (statusFilter.equals("active")) {
+                sql.append(" AND is_active = 1");
+            } else if (statusFilter.equals("inactive")) {
+                sql.append(" AND is_active = 0");
+            }
+        }
+        
+        try (Connection conn = DBUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql.toString())) {
+            String searchPattern = "%" + searchKeyword + "%";
+            int paramIndex = 1;
+            ps.setString(paramIndex++, searchPattern);
+            ps.setString(paramIndex++, searchPattern);
+            
+            // Set role filter parameter
+            if (roleFilter != null && !roleFilter.isEmpty()) {
+                ps.setString(paramIndex++, roleFilter);
+            }
+            
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    // Chuyển đổi trạng thái người dùng (active/inactive)
+    public boolean toggleUserStatus(int userId) {
+        String sql = "UPDATE Users SET is_active = CASE WHEN is_active = 1 THEN 0 ELSE 1 END WHERE user_id = ?";
+        
+        try (Connection conn = DBUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // Xóa người dùng
+    public boolean deleteUser(int userId) {
+        String sql = "DELETE FROM Users WHERE user_id = ?";
+        
+        try (Connection conn = DBUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // Lấy thông tin người dùng theo ID
+    public User getUserById(int userId) {
+        String sql = "SELECT * FROM Users WHERE user_id = ?";
+        
+        try (Connection conn = DBUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return extractUserFromResultSet(rs);
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
