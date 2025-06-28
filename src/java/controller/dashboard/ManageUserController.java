@@ -42,6 +42,12 @@ public class ManageUserController extends HttpServlet {
             case "toggle":
                 toggleUserStatus(request, response);
                 break;
+            case "view":
+                viewUser(request, response);
+                break;
+            case "edit":
+                showEditUser(request, response);
+                break;
             default:
                 listUsers(request, response);
                 break;
@@ -70,6 +76,9 @@ public class ManageUserController extends HttpServlet {
         switch (action) {
             case "add":
                 addUser(request, response);
+                break;
+            case "update":
+                updateUser(request, response);
                 break;
             case "toggle":
                 toggleUserStatus(request, response);
@@ -239,6 +248,135 @@ public class ManageUserController extends HttpServlet {
             } catch (NumberFormatException e) {
                 request.getSession().setAttribute("errorMessage", "ID người dùng không hợp lệ!");
             }
+        }
+        
+        response.sendRedirect(request.getContextPath() + "/dashboard/manage-users");
+    }
+    
+    private void viewUser(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+        String userIdParam = request.getParameter("userId");
+        if (userIdParam == null || userIdParam.isEmpty()) {
+            request.getSession().setAttribute("errorMessage", "ID người dùng không hợp lệ!");
+            response.sendRedirect(request.getContextPath() + "/dashboard/manage-users");
+            return;
+        }
+        
+        try {
+            int userId = Integer.parseInt(userIdParam);
+            User user = userDAO.getUserById(userId);
+            
+            if (user == null) {
+                request.getSession().setAttribute("errorMessage", "Không tìm thấy người dùng!");
+                response.sendRedirect(request.getContextPath() + "/dashboard/manage-users");
+                return;
+            }
+            
+            request.setAttribute("viewUser", user);
+            request.setAttribute("action", "view");
+            request.getRequestDispatcher("/dashboard/admin/manage-user.jsp").forward(request, response);
+            
+        } catch (NumberFormatException e) {
+            request.getSession().setAttribute("errorMessage", "ID người dùng không hợp lệ!");
+            response.sendRedirect(request.getContextPath() + "/dashboard/manage-users");
+        }
+    }
+    
+    private void showEditUser(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+        String userIdParam = request.getParameter("userId");
+        if (userIdParam == null || userIdParam.isEmpty()) {
+            request.getSession().setAttribute("errorMessage", "ID người dùng không hợp lệ!");
+            response.sendRedirect(request.getContextPath() + "/dashboard/manage-users");
+            return;
+        }
+        
+        try {
+            int userId = Integer.parseInt(userIdParam);
+            User user = userDAO.getUserById(userId);
+            
+            if (user == null) {
+                request.getSession().setAttribute("errorMessage", "Không tìm thấy người dùng!");
+                response.sendRedirect(request.getContextPath() + "/dashboard/manage-users");
+                return;
+            }
+            
+            request.setAttribute("editUser", user);
+            request.setAttribute("action", "edit");
+            request.getRequestDispatcher("/dashboard/admin/manage-user.jsp").forward(request, response);
+            
+        } catch (NumberFormatException e) {
+            request.getSession().setAttribute("errorMessage", "ID người dùng không hợp lệ!");
+            response.sendRedirect(request.getContextPath() + "/dashboard/manage-users");
+        }
+    }
+    
+    private void updateUser(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+        try {
+            // Lấy thông tin từ form
+            String userIdParam = request.getParameter("userId");
+            String email = request.getParameter("email");
+            String fullName = request.getParameter("fullName");
+            String phone = request.getParameter("phone");
+            String address = request.getParameter("address");
+            String role = request.getParameter("role");
+            String isActiveParam = request.getParameter("isActive");
+            
+            // Validate required fields
+            if (userIdParam == null || userIdParam.isEmpty() ||
+                email == null || email.trim().isEmpty() || 
+                fullName == null || fullName.trim().isEmpty()) {
+                request.getSession().setAttribute("errorMessage", "Vui lòng điền đầy đủ thông tin bắt buộc!");
+                response.sendRedirect(request.getContextPath() + "/dashboard/manage-users");
+                return;
+            }
+            
+            int userId = Integer.parseInt(userIdParam);
+            
+            // Lấy thông tin user hiện tại
+            User existingUser = userDAO.getUserById(userId);
+            if (existingUser == null) {
+                request.getSession().setAttribute("errorMessage", "Không tìm thấy người dùng!");
+                response.sendRedirect(request.getContextPath() + "/dashboard/manage-users");
+                return;
+            }
+            
+            // Kiểm tra email đã tồn tại (trừ user hiện tại)
+            User userWithEmail = userDAO.getUserByEmail(email.trim());
+            if (userWithEmail != null && userWithEmail.getUserId() != userId) {
+                request.getSession().setAttribute("errorMessage", "Email đã tồn tại trong hệ thống!");
+                response.sendRedirect(request.getContextPath() + "/dashboard/manage-users?action=edit&userId=" + userId);
+                return;
+            }
+            
+            // Cập nhật thông tin user
+            existingUser.setEmail(email.trim());
+            existingUser.setFullName(fullName.trim());
+            existingUser.setPhone(phone != null ? phone.trim() : "");
+            existingUser.setAddress(address != null ? address.trim() : "");
+            existingUser.setRole(role != null ? role : "customer");
+            existingUser.setIsActive(isActiveParam != null && isActiveParam.equals("1"));
+            
+            // Cập nhật user trong database
+            boolean success = userDAO.updateUser(existingUser);
+            
+            if (!success) {
+                request.getSession().setAttribute("errorMessage", "Không thể cập nhật thông tin người dùng!");
+                response.sendRedirect(request.getContextPath() + "/dashboard/manage-users?action=edit&userId=" + userId);
+                return;
+            }
+            
+            request.getSession().setAttribute("successMessage", "Cập nhật thông tin người dùng thành công!");
+            
+        } catch (NumberFormatException e) {
+            request.getSession().setAttribute("errorMessage", "ID người dùng không hợp lệ!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.getSession().setAttribute("errorMessage", "Có lỗi xảy ra khi cập nhật người dùng: " + e.getMessage());
         }
         
         response.sendRedirect(request.getContextPath() + "/dashboard/manage-users");

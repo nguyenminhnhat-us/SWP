@@ -39,49 +39,196 @@
                 <div class="container-fluid py-4">
                     <!-- Header -->
                     <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h2><i class="fa fa-users me-2"></i>Quản lý người dùng</h2>
-                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addUserModal">
-                            <i class="fa fa-plus me-2"></i>Thêm người dùng
-                        </button>
+                        <h2><i class="fa fa-users me-2"></i>
+                            <c:choose>
+                                <c:when test="${action == 'view'}">Chi tiết người dùng</c:when>
+                                <c:when test="${action == 'edit'}">Chỉnh sửa người dùng</c:when>
+                                <c:otherwise>Quản lý người dùng</c:otherwise>
+                            </c:choose>
+                        </h2>
+                        <c:if test="${action != 'view' && action != 'edit'}">
+                            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addUserModal">
+                                <i class="fa fa-plus me-2"></i>Thêm người dùng
+                            </button>
+                        </c:if>
+                        <c:if test="${action == 'view' || action == 'edit'}">
+                            <a href="${pageContext.request.contextPath}/dashboard/manage-users" class="btn btn-secondary">
+                                <i class="fa fa-arrow-left me-2"></i>Quay lại
+                            </a>
+                        </c:if>
                     </div>
                     
-                    <!-- Search and Filter -->
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <form method="GET" action="${pageContext.request.contextPath}/dashboard/manage-users">
-                                <div class="row g-3">
-                                    <div class="col-md-4">
-                                        <input type="text" class="form-control" name="search" 
-                                               placeholder="Tìm kiếm theo tên, email..." 
-                                               value="${param.search}">
+                    <!-- Search and Filter (only show when not viewing/editing) -->
+                    <c:if test="${action != 'view' && action != 'edit'}">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <form method="GET" action="${pageContext.request.contextPath}/dashboard/manage-users">
+                                    <div class="row g-3">
+                                        <div class="col-md-4">
+                                            <input type="text" class="form-control" name="search" 
+                                                   placeholder="Tìm kiếm theo tên, email..." 
+                                                   value="${param.search}">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select class="form-select" name="role">
+                                                <option value="">Tất cả vai trò</option>
+                                                <option value="admin" ${param.role == 'admin' ? 'selected' : ''}>Admin</option>
+                                                <option value="customer" ${param.role == 'customer' ? 'selected' : ''}>Customer</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select class="form-select" name="status">
+                                                <option value="">Tất cả trạng thái</option>
+                                                <option value="active" ${param.status == 'active' ? 'selected' : ''}>Hoạt động</option>
+                                                <option value="inactive" ${param.status == 'inactive' ? 'selected' : ''}>Bị khóa</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button type="submit" class="btn btn-primary w-100">
+                                                <i class="fa fa-search"></i> Tìm kiếm
+                                            </button>
+                                        </div>
                                     </div>
-                                    <div class="col-md-3">
-                                        <select class="form-select" name="role">
-                                            <option value="">Tất cả vai trò</option>
-                                            <option value="admin" ${param.role == 'admin' ? 'selected' : ''}>Admin</option>
-                                            <option value="customer" ${param.role == 'customer' ? 'selected' : ''}>Customer</option>
-                                        </select>
+                                </form>
+                            </div>
+                        </div>
+                    </c:if>
+                    
+                    <!-- View User Detail -->
+                    <c:if test="${action == 'view' && viewUser != null}">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row g-4">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label fw-bold">ID người dùng:</label>
+                                            <p class="form-control-plaintext">${viewUser.userId}</p>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label fw-bold">Họ tên:</label>
+                                            <p class="form-control-plaintext">${viewUser.fullName}</p>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label fw-bold">Email:</label>
+                                            <p class="form-control-plaintext">${viewUser.email}</p>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label fw-bold">Số điện thoại:</label>
+                                            <p class="form-control-plaintext">${not empty viewUser.phone ? viewUser.phone : 'Chưa cập nhật'}</p>
+                                        </div>
                                     </div>
-                                    <div class="col-md-3">
-                                        <select class="form-select" name="status">
-                                            <option value="">Tất cả trạng thái</option>
-                                            <option value="active" ${param.status == 'active' ? 'selected' : ''}>Hoạt động</option>
-                                            <option value="inactive" ${param.status == 'inactive' ? 'selected' : ''}>Bị khóa</option>
-                                        </select>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label fw-bold">Vai trò:</label>
+                                            <p class="form-control-plaintext">
+                                                <span class="badge ${viewUser.role == 'admin' ? 'bg-danger' : 'bg-primary'} fs-6">
+                                                    ${viewUser.role == 'admin' ? 'Admin' : 'Customer'}
+                                                </span>
+                                            </p>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label fw-bold">Trạng thái:</label>
+                                            <p class="form-control-plaintext">
+                                                <span class="badge ${viewUser.isActive ? 'bg-success' : 'bg-secondary'} fs-6">
+                                                    ${viewUser.isActive ? 'Hoạt động' : 'Bị khóa'}
+                                                </span>
+                                            </p>
+                                        </div>
+                                        <!-- <div class="mb-3">
+                                            <label class="form-label fw-bold">Loại xác thực:</label>
+                                            <p class="form-control-plaintext">
+                                                <span class="badge bg-info fs-6">
+                                                    ${viewUser.authType == 'google' ? 'Google' : 'Tài khoản nội bộ'}
+                                                </span>
+                                            </p>
+                                        </div> -->
+                                        <div class="mb-3">
+                                            <label class="form-label fw-bold">Ngày tạo:</label>
+                                            <p class="form-control-plaintext">
+                                                <fmt:formatDate value="${viewUser.createdAt}" pattern="dd/MM/yyyy HH:mm:ss" />
+                                            </p>
+                                        </div>
                                     </div>
-                                    <div class="col-md-2">
-                                        <button type="submit" class="btn btn-primary w-100">
-                                            <i class="fa fa-search"></i> Tìm kiếm
-                                        </button>
+                                    <div class="col-12">
+                                        <div class="mb-3">
+                                            <label class="form-label fw-bold">Địa chỉ:</label>
+                                            <p class="form-control-plaintext">${not empty viewUser.address ? viewUser.address : 'Chưa cập nhật'}</p>
+                                        </div>
                                     </div>
                                 </div>
-                            </form>
+                                <div class="mt-4">
+                                    <a href="${pageContext.request.contextPath}/dashboard/manage-users?action=edit&userId=${viewUser.userId}" class="btn btn-warning me-2">
+                                        <i class="fa fa-edit me-2"></i>Chỉnh sửa
+                                    </a>
+                                    <a href="${pageContext.request.contextPath}/dashboard/manage-users" class="btn btn-secondary">
+                                        <i class="fa fa-arrow-left me-2"></i>Quay lại danh sách
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    </c:if>
                     
-                    <!-- Users Table -->
-                    <div class="card">
-                        <div class="card-body">
+                    <!-- Edit User Form -->
+                    <c:if test="${action == 'edit' && editUser != null}">
+                        <div class="card">
+                            <div class="card-body">
+                                <form method="POST" action="${pageContext.request.contextPath}/dashboard/manage-users">
+                                    <input type="hidden" name="action" value="update">
+                                    <input type="hidden" name="userId" value="${editUser.userId}">
+                                    
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Họ tên *</label>
+                                            <input type="text" class="form-control" name="fullName" value="${editUser.fullName}" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Email *</label>
+                                            <input type="email" class="form-control" name="email" value="${editUser.email}" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Số điện thoại</label>
+                                            <input type="tel" class="form-control" name="phone" value="${editUser.phone}">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Vai trò</label>
+                                            <select class="form-select" name="role">
+                                                <option value="customer" ${editUser.role == 'customer' ? 'selected' : ''}>Customer</option>
+                                                <option value="admin" ${editUser.role == 'admin' ? 'selected' : ''}>Admin</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label">Địa chỉ</label>
+                                            <textarea class="form-control" name="address" rows="3">${editUser.address}</textarea>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Trạng thái</label>
+                                            <select class="form-select" name="isActive">
+                                                <option value="1" ${editUser.isActive ? 'selected' : ''}>Hoạt động</option>
+                                                <option value="0" ${!editUser.isActive ? 'selected' : ''}>Bị khóa</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mt-4">
+                                        <button type="submit" class="btn btn-warning me-2">
+                                            <i class="fa fa-save me-2"></i>Cập nhật
+                                        </button>
+                                        <a href="${pageContext.request.contextPath}/dashboard/manage-users?action=view&userId=${editUser.userId}" class="btn btn-info me-2">
+                                            <i class="fa fa-eye me-2"></i>Xem chi tiết
+                                        </a>
+                                        <a href="${pageContext.request.contextPath}/dashboard/manage-users" class="btn btn-secondary">
+                                            <i class="fa fa-arrow-left me-2"></i>Quay lại danh sách
+                                        </a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </c:if>
+                    
+                    <!-- Users Table (only show when not viewing/editing) -->
+                    <c:if test="${action != 'view' && action != 'edit'}">
+                        <div class="card">
+                            <div class="card-body">
                             <c:if test="${not empty sessionScope.successMessage}">
                                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                                     ${sessionScope.successMessage}
@@ -209,8 +356,9 @@
                                     </div>
                                 </nav>
                             </c:if>
+                            </div>
                         </div>
-                    </div>
+                    </c:if>
                 </div>
             </div>
         </div>
@@ -267,6 +415,80 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
                         <button type="submit" class="btn btn-success">Thêm người dùng</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- View User Detail Modal -->
+    <div class="modal fade" id="viewUserModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Chi tiết người dùng</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-3" id="userDetailContent">
+                        <!-- Content will be loaded here -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Edit User Modal -->
+    <div class="modal fade" id="editUserModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Chỉnh sửa người dùng</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="editUserForm" method="POST" action="${pageContext.request.contextPath}/dashboard/manage-users">
+                    <input type="hidden" name="action" value="update">
+                    <input type="hidden" name="userId" id="editUserId">
+                    <div class="modal-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Họ tên *</label>
+                                <input type="text" class="form-control" name="fullName" id="editFullName" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Email *</label>
+                                <input type="email" class="form-control" name="email" id="editEmail" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Số điện thoại</label>
+                                <input type="tel" class="form-control" name="phone" id="editPhone">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Vai trò</label>
+                                <select class="form-select" name="role" id="editRole">
+                                    <option value="customer">Customer</option>
+                                    <option value="admin">Admin</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Địa chỉ</label>
+                                <textarea class="form-control" name="address" id="editAddress" rows="2"></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Trạng thái</label>
+                                <select class="form-select" name="isActive" id="editIsActive">
+                                    <option value="1">Hoạt động</option>
+                                    <option value="0">Bị khóa</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <button type="submit" class="btn btn-warning">Cập nhật</button>
                     </div>
                 </form>
             </div>
@@ -368,12 +590,94 @@
         });
         
         function viewUser(userId) {
-            window.location.href = '${pageContext.request.contextPath}/dashboard/user-detail?id=' + userId;
+            // Redirect to view user detail page
+            window.location.href = '${pageContext.request.contextPath}/dashboard/manage-users?action=view&userId=' + userId;
         }
         
         function editUser(userId) {
-            window.location.href = '${pageContext.request.contextPath}/dashboard/edit-user?id=' + userId;
+            // Redirect to edit user page
+            window.location.href = '${pageContext.request.contextPath}/dashboard/manage-users?action=edit&userId=' + userId;
         }
+        
+        // Validate edit user form
+        function validateEditUserForm() {
+            const fullName = document.getElementById('editFullName').value.trim();
+            const email = document.getElementById('editEmail').value.trim();
+            const phone = document.getElementById('editPhone').value.trim();
+            const address = document.getElementById('editAddress').value.trim();
+            
+            // Clear previous errors
+            clearEditUserErrors();
+            
+            let isValid = true;
+            
+            // Validate full name
+            if (fullName === '') {
+                showEditUserError('editFullNameError', 'Vui lòng nhập họ tên');
+                isValid = false;
+            } else if (fullName.length < 2) {
+                showEditUserError('editFullNameError', 'Họ tên phải có ít nhất 2 ký tự');
+                isValid = false;
+            }
+            
+            // Validate email
+            if (email === '') {
+                showEditUserError('editEmailError', 'Vui lòng nhập email');
+                isValid = false;
+            } else if (!isValidEmail(email)) {
+                showEditUserError('editEmailError', 'Email không hợp lệ');
+                isValid = false;
+            }
+            
+            // Validate phone
+            if (phone === '') {
+                showEditUserError('editPhoneError', 'Vui lòng nhập số điện thoại');
+                isValid = false;
+            } else if (!isValidPhone(phone)) {
+                showEditUserError('editPhoneError', 'Số điện thoại không hợp lệ');
+                isValid = false;
+            }
+            
+            // Validate address
+            if (address === '') {
+                showEditUserError('editAddressError', 'Vui lòng nhập địa chỉ');
+                isValid = false;
+            }
+            
+            return isValid;
+        }
+        
+        function showEditUserError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            if (errorElement) {
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+            }
+        }
+        
+        function clearEditUserErrors() {
+            const errorElements = ['editFullNameError', 'editEmailError', 'editPhoneError', 'editAddressError'];
+            errorElements.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.style.display = 'none';
+                    element.textContent = '';
+                }
+            });
+        }
+        
+        // Handle edit user form submission
+        document.addEventListener('DOMContentLoaded', function() {
+            const editUserForm = document.getElementById('editUserForm');
+            if (editUserForm) {
+                editUserForm.addEventListener('submit', function(e) {
+                    if (!validateEditUserForm()) {
+                        e.preventDefault();
+                        return false;
+                    }
+                });
+            }
+        });
         
         function toggleUserStatus(userId, currentStatus) {
             const action = currentStatus ? 'khóa' : 'kích hoạt';

@@ -246,7 +246,7 @@
                     <h5 class="modal-title">Thêm cây cảnh mới</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <form action="${pageContext.request.contextPath}/dashboard/manage-plants" method="post" id="addPlantForm">
+                <form action="${pageContext.request.contextPath}/dashboard/manage-plants" method="post" id="addPlantForm" enctype="multipart/form-data">
                     <input type="hidden" name="action" value="add">
                     <div class="modal-body">
                         <div class="row">
@@ -292,9 +292,12 @@
                             <div class="invalid-feedback"></div>
                         </div>
                         <div class="mb-3">
-                            <label for="addImageUrl" class="form-label">URL Hình Ảnh</label>
-                            <input type="url" class="form-control" id="addImageUrl" name="imageUrl" placeholder="images/plant-name.jpg">
-                            <div class="form-text">Để trống sẽ sử dụng hình ảnh mặc định</div>
+                            <label for="addImageFile" class="form-label">Hình Ảnh Cây Cảnh</label>
+                            <input type="file" class="form-control" id="addImageFile" name="imageFile" accept="image/*">
+                            <div class="form-text">Chọn file ảnh (JPG, PNG, GIF). Để trống sẽ sử dụng hình ảnh mặc định</div>
+                            <div class="mt-2">
+                                <img id="addImagePreview" src="" alt="Preview" class="img-thumbnail" style="max-width: 200px; display: none;">
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -314,7 +317,7 @@
                     <h5 class="modal-title">Chỉnh sửa cây cảnh</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <form action="${pageContext.request.contextPath}/dashboard/manage-plants" method="post" id="editPlantForm">
+                <form action="${pageContext.request.contextPath}/dashboard/manage-plants" method="post" id="editPlantForm" enctype="multipart/form-data">
                     <input type="hidden" name="action" value="update">
                     <input type="hidden" id="editPlantId" name="plantId">
                     <div class="modal-body">
@@ -361,9 +364,13 @@
                             <div class="invalid-feedback"></div>
                         </div>
                         <div class="mb-3">
-                            <label for="editImageUrl" class="form-label">URL Hình Ảnh</label>
-                            <input type="url" class="form-control" id="editImageUrl" name="imageUrl" placeholder="images/plant-name.jpg">
-                            <div class="form-text">Để trống sẽ sử dụng hình ảnh mặc định</div>
+                            <label for="editImageFile" class="form-label">Hình Ảnh Cây Cảnh</label>
+                            <input type="file" class="form-control" id="editImageFile" name="imageFile" accept="image/*">
+                            <div class="form-text">Chọn file ảnh mới để thay đổi. Để trống sẽ giữ nguyên ảnh hiện tại</div>
+                            <div class="mt-2">
+                                <img id="editCurrentImage" src="" alt="Current Image" class="img-thumbnail" style="max-width: 200px;">
+                                <img id="editImagePreview" src="" alt="Preview" class="img-thumbnail" style="max-width: 200px; display: none;">
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -465,6 +472,42 @@
                 isValid = false;
             }
             
+            // Validate image file (only for add form)
+            if (form.id === 'addPlantForm') {
+                const imageFile = form.querySelector('[name="imageFile"]').files[0];
+                if (imageFile) {
+                    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+                    if (!allowedTypes.includes(imageFile.type)) {
+                        showFieldError(form.querySelector('[name="imageFile"]').id, 'Chỉ chấp nhận file ảnh (JPG, PNG, GIF, WEBP)');
+                        isValid = false;
+                    }
+                    
+                    // Check file size (max 10MB)
+                    if (imageFile.size > 10 * 1024 * 1024) {
+                        showFieldError(form.querySelector('[name="imageFile"]').id, 'Kích thước file không được vượt quá 10MB');
+                        isValid = false;
+                    }
+                }
+            }
+            
+            // Validate image file for edit form (optional)
+            if (form.id === 'editPlantForm') {
+                const imageFile = form.querySelector('[name="imageFile"]').files[0];
+                if (imageFile) {
+                    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+                    if (!allowedTypes.includes(imageFile.type)) {
+                        showFieldError(form.querySelector('[name="imageFile"]').id, 'Chỉ chấp nhận file ảnh (JPG, PNG, GIF, WEBP)');
+                        isValid = false;
+                    }
+                    
+                    // Check file size (max 10MB)
+                    if (imageFile.size > 10 * 1024 * 1024) {
+                        showFieldError(form.querySelector('[name="imageFile"]').id, 'Kích thước file không được vượt quá 10MB');
+                        isValid = false;
+                    }
+                }
+            }
+            
             return isValid;
         }
 
@@ -485,11 +528,38 @@
         document.getElementById('addPlantModal').addEventListener('hidden.bs.modal', function() {
             clearValidationErrors('addPlantForm');
             document.getElementById('addPlantForm').reset();
+            document.getElementById('addImagePreview').style.display = 'none';
         });
 
         document.getElementById('editPlantModal').addEventListener('hidden.bs.modal', function() {
             clearValidationErrors('editPlantForm');
+            document.getElementById('editImagePreview').style.display = 'none';
+            document.getElementById('editCurrentImage').style.display = 'none';
         });
+
+        // Image preview functions
+        function setupImagePreview(inputId, previewId) {
+            const input = document.getElementById(inputId);
+            const preview = document.getElementById(previewId);
+            
+            input.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        preview.src = e.target.result;
+                        preview.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    preview.style.display = 'none';
+                }
+            });
+        }
+        
+        // Setup image previews
+        setupImagePreview('addImageFile', 'addImagePreview');
+        setupImagePreview('editImageFile', 'editImagePreview');
 
         // Plant management functions
         function editPlant(plantId, name, description, price, stockQuantity, categoryId, imageUrl) {
@@ -499,7 +569,20 @@
             document.getElementById('editPrice').value = price;
             document.getElementById('editStockQuantity').value = stockQuantity;
             document.getElementById('editCategoryId').value = categoryId;
-            document.getElementById('editImageUrl').value = imageUrl || '';
+            
+            // Show current image
+            const currentImage = document.getElementById('editCurrentImage');
+            if (imageUrl && imageUrl.trim() !== '') {
+                currentImage.src = '${pageContext.request.contextPath}/' + imageUrl;
+                currentImage.style.display = 'block';
+            } else {
+                currentImage.src = '${pageContext.request.contextPath}/images/default-plant.jpg';
+                currentImage.style.display = 'block';
+            }
+            
+            // Hide preview and reset file input
+            document.getElementById('editImageFile').value = '';
+            document.getElementById('editImagePreview').style.display = 'none';
             
             new bootstrap.Modal(document.getElementById('editPlantModal')).show();
         }

@@ -63,6 +63,11 @@
             </a>
         </li>
         <li>
+            <a href="${pageContext.request.contextPath}/dashboard/manage-categories" class="nav-link">
+                <i class="fa fa-seedling me-2"></i> Quản lý phân loại cây
+            </a>
+        </li>
+        <li>
             <a href="/dashboard/orders" class="nav-link">
                 <i class="fa fa-shopping-cart me-2"></i> Quản lý đơn hàng
             </a>
