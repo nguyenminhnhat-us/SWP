@@ -52,29 +52,40 @@
                 <i class="fa fa-home me-2"></i> Trang chủ
             </a>
         </li>
+        
+        <!-- Menu chỉ dành cho Admin -->
+        <c:if test="${sessionScope.user.role == 'admin'}">
+            <li>
+                <a href="${pageContext.request.contextPath}/dashboard/manage-users" class="nav-link">
+                    <i class="fa fa-users me-2"></i> Quản lý người dùng
+                </a>
+            </li>
+            <li>
+                <a href="${pageContext.request.contextPath}/dashboard/manage-plants" class="nav-link">
+                    <i class="fa fa-seedling me-2"></i> Quản lý cây
+                </a>
+            </li>
+            <li>
+                <a href="${pageContext.request.contextPath}/dashboard/manage-categories" class="nav-link">
+                    <i class="fa fa-seedling me-2"></i> Quản lý phân loại cây
+                </a>
+            </li>
+            <li>
+                <a href="/dashboard/reports" class="nav-link">
+                    <i class="fa fa-chart-line me-2"></i> Báo cáo
+                </a>
+            </li>
+        </c:if>
+        
+        <!-- Menu cho tất cả các role -->
         <li>
-            <a href="/dashboard/users" class="nav-link">
-                <i class="fa fa-users me-2"></i> Quản lý người dùng
-            </a>
-        </li>
-        <li>
-            <a href="/dashboard/plants" class="nav-link">
-                <i class="fa fa-seedling me-2"></i> Quản lý cây
-            </a>
-        </li>
-        <li>
-            <a href="/dashboard/orders" class="nav-link">
+            <a href="${pageContext.request.contextPath}/dashboard/order-history" class="nav-link">
                 <i class="fa fa-shopping-cart me-2"></i> Quản lý đơn hàng
             </a>
         </li>
         <li>
-            <a href="/dashboard/reports" class="nav-link">
-                <i class="fa fa-chart-line me-2"></i> Báo cáo
-            </a>
-        </li>
-        <li>
             <a href="${pageContext.request.contextPath}/dashboard/profile" class="nav-link">
-                <i class="fa fa-chart-line me-2"></i> Profile
+                <i class="fa fa-user me-2"></i> Profile
             </a>
         </li>
     </ul>
@@ -82,11 +93,17 @@
         <div class="dropdown">
             <a href="#" class="d-flex align-items-center link-light text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
                 <img src="/images/logo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                <strong>Admin</strong>
+                <strong>
+                    <c:choose>
+                        <c:when test="${sessionScope.user.role == 'admin'}">Admin</c:when>
+                        <c:when test="${sessionScope.user.role == 'staff'}">Nhân viên</c:when>
+                        <c:otherwise>Người dùng</c:otherwise>
+                    </c:choose>
+                </strong>
             </a>
             <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
-                <li><a class="dropdown-item" href="/viewProfile">Hồ sơ</a></li>
-                <li><a class="dropdown-item" href="/logout">Đăng xuất</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/viewProfile">Hồ sơ</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/logout">Đăng xuất</a></li>
             </ul>
         </div>
     </div>

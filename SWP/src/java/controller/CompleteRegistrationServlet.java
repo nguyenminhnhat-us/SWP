@@ -5,7 +5,7 @@ import jakarta.servlet.http.*;
 
 import java.io.IOException;
 import model.User;
-import model.UserDAO;
+import dal.UserDAO;
 
 @WebServlet(name = "CompleteRegistrationServlet", urlPatterns = {"/completeRegistration"})
 public class CompleteRegistrationServlet extends HttpServlet {

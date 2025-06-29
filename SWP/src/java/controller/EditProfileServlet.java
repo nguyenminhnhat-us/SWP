@@ -5,11 +5,12 @@ import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import model.User;
-import model.UserDAO;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+
+import dal.UserDAO;
 
 @WebServlet("/profile")
 @MultipartConfig(

@@ -1,6 +1,5 @@
 package controller;
 
-import model.PlantDAO;
 import model.Plant;
 import java.io.IOException;
 import java.util.List;
@@ -9,6 +8,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import dal.PlantDAO;
 
 @WebServlet("/plantList")
 public class PlantListServlet extends HttpServlet {
@@ -18,18 +22,30 @@ public class PlantListServlet extends HttpServlet {
         
         String categoryParam = request.getParameter("category");
         PlantDAO plantDAO = new PlantDAO();
-        List<Plant> plants;
+        List<Plant> plants = null;
 
         if (categoryParam != null) {
             try {
                 int categoryId = Integer.parseInt(categoryParam);
                 plants = plantDAO.getPlantsByCategory(categoryId);
             } catch (NumberFormatException e) {
-                // Nếu category không hợp lệ, fallback lấy toàn bộ
-                plants = plantDAO.getAllPlants();
+                try {
+                    // Nếu category không hợp lệ, fallback lấy toàn bộ
+                    plants = plantDAO.getAllPlants();
+                } catch (SQLException ex) {
+                    Logger.getLogger(PlantListServlet.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(PlantListServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         } else {
-            plants = plantDAO.getAllPlants();
+            try {
+                plants = plantDAO.getAllPlants();
+            } catch (SQLException ex) {
+                Logger.getLogger(PlantListServlet.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(PlantListServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
         request.setAttribute("plants", plants);

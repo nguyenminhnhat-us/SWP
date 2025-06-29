@@ -4,8 +4,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
+
+import dal.UserDAO;
 import model.User;
-import model.UserDAO;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
@@ -41,9 +42,9 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("user", user);
 
             if ("admin".equalsIgnoreCase(user.getRole())) {
-                response.sendRedirect(request.getContextPath() + "/admin.jsp");
+                response.sendRedirect(request.getContextPath() + "/dashboard/dashboard.jsp");
             } else if ("customer".equalsIgnoreCase(user.getRole())) {
-                response.sendRedirect(request.getContextPath() + "/index.jsp");
+                response.sendRedirect(request.getContextPath() + "/dashboard/dashboard.jsp");
             } else {
                 request.setAttribute("errorMsg", "Vai trò không hợp lệ!");
                 request.getRequestDispatcher("login.jsp").forward(request, response);

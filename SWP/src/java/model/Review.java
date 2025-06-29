@@ -10,6 +10,7 @@ public class Review {
     private int rating;
     private String comment;
     private Timestamp createdAt;
+    private String userName; // Add userName field
 
     public Review() {}
 
@@ -21,6 +22,7 @@ public class Review {
         this.rating = rating;
         this.comment = comment;
         this.createdAt = createdAt;
+        this.userName = userName; // Set userName
     }
 
     public int getReviewId() { return reviewId; }
@@ -37,7 +39,8 @@ public class Review {
     public void setComment(String comment) { this.comment = comment; }
     public Timestamp getCreatedAt() { return createdAt; }
     public void setCreatedAt(Timestamp createdAt) { this.createdAt = createdAt; }
-    
+    public String getUserName() { return userName; }
+    public void setUserName(String userName) { this.userName = userName; }
 
     @Override
     public String toString() {
@@ -49,7 +52,6 @@ public class Review {
                 ", rating=" + rating +
                 ", comment='" + comment + '\'' +
                 ", createdAt=" + createdAt +
-                +
                 '}';
     }
 }

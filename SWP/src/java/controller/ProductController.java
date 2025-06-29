@@ -12,12 +12,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import model.Article;
 import model.Plant;
 import model.Review;
+import model.User; // Import User model
+import dal.OrderDAO; // Import OrderDAO
 
 @WebServlet(name = "ProductController", urlPatterns = {"/product-detail"})
 public class ProductController extends HttpServlet {
@@ -31,6 +35,12 @@ public class ProductController extends HttpServlet {
             ReviewDAO reviewDAO = new ReviewDAO();
             UserDAO userDAO = new UserDAO();
             CategoryDAO categoryDAO = new CategoryDAO();
+            OrderDAO orderDAO = new OrderDAO(); // Initialize OrderDAO
+
+            // Get current user from session
+            HttpSession session = request.getSession();
+            User currentUser = (User) session.getAttribute("user");
+            request.setAttribute("currentUser", currentUser); // Set currentUser for JSP
 
             // Lấy thông tin sản phẩm
             Plant product = plantDAO.getPlantById(plantId);
@@ -44,6 +54,13 @@ public class ProductController extends HttpServlet {
             productMap.put("product", product);
             productMap.put("categoryName", categoryName);
             request.setAttribute("productMap", productMap);
+
+            // Check if user has purchased this plant
+            boolean hasPurchased = false;
+            if (currentUser != null && product != null) {
+                hasPurchased = orderDAO.hasUserPurchasedPlant(currentUser.getUserId(), product.getPlantId());
+            }
+            request.setAttribute("hasPurchased", hasPurchased); // Set hasPurchased for JSP
 
             // Lấy feedback cho sản phẩm
             List<Review> feedbacks = reviewDAO.getReviewsByPlantId(plantId);

@@ -249,4 +249,169 @@ public class PlantDAO {
         }
         return null;
     }
+
+    // CRUD Methods for Plant Management
+    public boolean addPlant(Plant plant) throws SQLException, ClassNotFoundException {
+        String sql = "INSERT INTO Plants (category_id, name, description, price, stock_quantity, image_url) VALUES (?, ?, ?, ?, ?, ?)";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, plant.getCategoryId());
+            ps.setString(2, plant.getName());
+            ps.setString(3, plant.getDescription());
+            ps.setDouble(4, plant.getPrice());
+            ps.setInt(5, plant.getStockQuantity());
+            ps.setString(6, plant.getImageUrl());
+            return ps.executeUpdate() > 0;
+        }
+    }
+
+    public boolean updatePlant(Plant plant) throws SQLException, ClassNotFoundException {
+        String sql = "UPDATE Plants SET category_id = ?, name = ?, description = ?, price = ?, stock_quantity = ?, image_url = ? WHERE plant_id = ?";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, plant.getCategoryId());
+            ps.setString(2, plant.getName());
+            ps.setString(3, plant.getDescription());
+            ps.setDouble(4, plant.getPrice());
+            ps.setInt(5, plant.getStockQuantity());
+            ps.setString(6, plant.getImageUrl());
+            ps.setInt(7, plant.getPlantId());
+            return ps.executeUpdate() > 0;
+        }
+    }
+
+    public boolean deletePlant(int plantId) throws SQLException, ClassNotFoundException {
+        String sql = "DELETE FROM Plants WHERE plant_id = ?";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, plantId);
+            return ps.executeUpdate() > 0;
+        }
+    }
+
+    public boolean isPlantNameExists(String name) throws SQLException, ClassNotFoundException {
+        String sql = "SELECT COUNT(*) FROM Plants WHERE name = ?";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, name);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        }
+        return false;
+    }
+
+    public boolean isPlantNameExistsExcludeId(String name, int plantId) throws SQLException, ClassNotFoundException {
+        String sql = "SELECT COUNT(*) FROM Plants WHERE name = ? AND plant_id != ?";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, name);
+            ps.setInt(2, plantId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        }
+        return false;
+    }
+    
+    public List<Plant> searchPlantsWithFilter(String searchKeyword, Integer categoryId, String stockStatus, int page, int pageSize) 
+            throws SQLException, ClassNotFoundException {
+        List<Plant> list = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT * FROM Plants WHERE 1=1");
+        List<Object> params = new ArrayList<>();
+        
+        // Thêm điều kiện tìm kiếm theo tên
+        if (searchKeyword != null && !searchKeyword.trim().isEmpty()) {
+            sql.append(" AND name LIKE ?");
+            params.add("%" + searchKeyword.trim() + "%");
+        }
+        
+        // Thêm điều kiện lọc theo danh mục
+        if (categoryId != null) {
+            sql.append(" AND category_id = ?");
+            params.add(categoryId);
+        }
+        
+        // Thêm điều kiện lọc theo trạng thái tồn kho
+        if (stockStatus != null && !stockStatus.trim().isEmpty()) {
+            if ("instock".equals(stockStatus)) {
+                sql.append(" AND stock_quantity > 0");
+            } else if ("outstock".equals(stockStatus)) {
+                sql.append(" AND stock_quantity = 0");
+            }
+        }
+        
+        sql.append(" ORDER BY created_at DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
+        params.add((page - 1) * pageSize);
+        params.add(pageSize);
+        
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql.toString())) {
+            
+            // Set parameters
+            for (int i = 0; i < params.size(); i++) {
+                ps.setObject(i + 1, params.get(i));
+            }
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Plant plant = new Plant(
+                    rs.getInt("plant_id"),
+                    rs.getInt("category_id"),
+                    rs.getString("name"),
+                    rs.getString("description"),
+                    rs.getDouble("price"),
+                    rs.getInt("stock_quantity"),
+                    rs.getString("image_url")
+                );
+                plant.setCreatedAt(rs.getTimestamp("created_at"));
+                list.add(plant);
+            }
+        }
+        return list;
+    }
+    
+    public int getTotalFilteredPlantCount(String searchKeyword, Integer categoryId, String stockStatus) 
+            throws SQLException, ClassNotFoundException {
+        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM Plants WHERE 1=1");
+        List<Object> params = new ArrayList<>();
+        
+        // Thêm điều kiện tìm kiếm theo tên
+        if (searchKeyword != null && !searchKeyword.trim().isEmpty()) {
+            sql.append(" AND name LIKE ?");
+            params.add("%" + searchKeyword.trim() + "%");
+        }
+        
+        // Thêm điều kiện lọc theo danh mục
+        if (categoryId != null) {
+            sql.append(" AND category_id = ?");
+            params.add(categoryId);
+        }
+        
+        // Thêm điều kiện lọc theo trạng thái tồn kho
+        if (stockStatus != null && !stockStatus.trim().isEmpty()) {
+            if ("instock".equals(stockStatus)) {
+                sql.append(" AND stock_quantity > 0");
+            } else if ("outstock".equals(stockStatus)) {
+                sql.append(" AND stock_quantity = 0");
+            }
+        }
+        
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql.toString())) {
+            
+            // Set parameters
+            for (int i = 0; i < params.size(); i++) {
+                ps.setObject(i + 1, params.get(i));
+            }
+            
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+        return 0;
+    }
 }

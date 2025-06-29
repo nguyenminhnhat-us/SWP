@@ -1,240 +1,341 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" session="true" %>
-<%
-    model.User user = (model.User) session.getAttribute("user");
-%>
-<!DOCTYPE html>
-<html lang="vi">
-    <head>
-        <meta charset="UTF-8">
-        <title>Vườn Cây Đà Nẵng - Chuyên Mua Bán Cây Xanh</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" session="true" %>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+        <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+            <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+                <%
+                    // Redirect to HomeController if the plant list is not loaded
+                    if (request.getAttribute("plants") == null) {
+                        request.getRequestDispatcher("/home").forward(request, response);
+                        return;
+                    }
+                %>
+                    <!DOCTYPE html>
+                    <html lang="vi">
 
-        <!-- Bootstrap 5 -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-        <!-- Font Awesome -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link rel="stylesheet" href="css/index-style.css">
-        
-    </head>
-    <body>
-        <!-- Modal Đăng nhập -->
+                    <head>
+                        <meta charset="UTF-8">
+                        <title>Vườn Cây Đà Nẵng - Chuyên Mua Bán Cây Xanh</title>
+                        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    </div>
-    <!-- Logo and Search -->
-    <div class="logo-bar">
-        <div class="container d-flex align-items-center justify-content-between flex-wrap">
-            <div class="d-flex align-items-center logo">
-                <img src="images\logo.png" alt="Logo">
-                <h1>VUONCAYDANANG.COM<br><small>Chuyên Mua Bán Cây Xanh</small></h1>
-            </div>
-            <div class="input-group w-50">
-                <input type="text" class="form-control" placeholder="Bạn muốn tìm gì...">
-                <button class="btn btn-success">Tìm</button>
-            </div>
-            <div class="text-end">
-                <p class="mb-0 hotline-label">Hotline:</p>
-                <div class="hotline-number">0968 702 490</div>
-            </div>
-            <div class="d-flex gap-2 ms-auto">
-                <button class="btn btn-warning">GIỎ HÀNG 🛒</button>
-                <% if (user != null) { %>
-                <div class="dropdown">
-                    <button class="btn btn-outline-light bg-success text-white dropdown-toggle" data-bs-toggle="dropdown">
-                        
-                       <%= user.getFullName() %>
-                      
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="viewProfile">Xem hồ sơ</a></li>
-                        <li><a class="dropdown-item" href="editProfile.jsp">Chỉnh sửa hồ sơ</a></li>
-                        <li><a class="dropdown-item" href="logout">Đăng xuất</a></li>
-                    </ul>
-                </div>
-                <% } else { %>
-                <a href="login.jsp" class="btn btn-outline-light bg-success text-white">Đăng nhập</a>
-                <% } %>
-            </div>
-        </div>
-    </div>
+                        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+                            rel="stylesheet">
+                        <link rel="stylesheet"
+                            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+                        <script
+                            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+                        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/header-style.css">
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
-        <div class="container">
-            <ul class="navbar-nav d-flex justify-content-around w-100">
-                <li class="nav-item"><a class="nav-link" href="index.jsp">TRANG CHỦ</a></li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="gioithieuDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        GIỚI THIỆU
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="gioithieuDropdown">
-                        <li><a class="dropdown-item" href="#">Cây cảnh</a></li>
-                        <li><a class="dropdown-item" href="#">Chuyên gia</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="sanphamDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        SẢN PHẨM
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="sanphamDropdown">
-                        <li><a class="dropdown-item" href="plantList?category=1">Cây Xanh Công Trình</a></li>
-                        <li><a class="dropdown-item" href="plantList?category=2">Cây Xanh Ngoại Thất</a></li>
-                        <li><a class="dropdown-item" href="plantList?category=3">Cây Xanh Nội Thất</a></li>
-                        <li><a class="dropdown-item" href="plantList?category=4">Cây Phong Thủy</a></li>
-                        <li><a class="dropdown-item" href="plantList">Tất Cả Sản Phẩm</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item"><a class="nav-link" href="#">BÁO GIÁ</a></li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="dichvuDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        DỊCH VỤ
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="dichvuDropdown">
-                        <li><a class="dropdown-item" href="#">Chăm sóc cây</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item"><a class="nav-link" href="#">TIN TỨC</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">DỰ ÁN</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">LIÊN HỆ</a></li>
-            </ul>
-        </div>
-    </nav>
-    <!-- Main content -->
-    <div class="container my-4">
-        <div class="row">
-            <!-- Sidebar -->
-            <aside class="col-md-3 sidebar">
-                <h5>Danh mục sản phẩm</h5>
-                <ul class="list-group">
-                    <li class="list-group-item"><a href="plantList?category=1">Cây Xanh Công Trình</a></li>
-                    <li class="list-group-item"><a href="plantList?category=2">Cây Xanh Ngoại Thất</a></li>
-                    <li class="list-group-item"><a href="plantList?category=3">Cây Xanh Nội Thất</a></li>
-                    <li class="list-group-item"><a href="plantList?category=4">Cây Phong Thủy</a></li>
-                </ul>
-            </aside>
+                        <style>
+                            body {
+                                background-color: #f8f9fa;
+                            }
 
-            <!-- Carousel Banner -->
-            <div class="col-md-9">
-                <div id="bannerCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img src="images\banner.jpg" class="d-block w-100" alt="Cây xanh 1">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="images\banner2.jpg" class="d-block w-100" alt="Cây xanh 2">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="images\banner 3.jpg" class="d-block w-100" alt="Cây xanh 3">
-                        </div>
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#bannerCarousel" data-bs-slide="next">
-                        <span class="carousel-control-next-icon"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
-                    <div class="carousel-indicators">
-                        <button type="button" data-bs-target="#banner   Carousel" data-bs-slide-to="0" class="active"></button>
-                        <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="1"></button>
-                        <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="2"></button>   
-                    </div>
-                </div>
-            </div>
+                            
 
-            <!-- Product Categories full width -->
-            <section>
-                <h3 class="text-success text-center">Danh mục sản phẩm</h3>
-                <div class="row banner-categories text-center mt-4">
-                    <div class="col-md-3">
-                        <img src="images\download.jpg" class="img-fluid rounded shadow-sm" alt="Cây Xanh Công Trình">
-                        <p class="bold-text1">Cây xanh công trình</p><br>
-                        <p class="bold-text2">Chi tiết</p><br>
-                        <p class="bold-text3">Số lượng:</p><br>
-                    </div>
-                    <div class="col-md-3">
-                        <img src="images\tải xuống.jpg" class="img-fluid rounded shadow-sm" alt="Cây Xanh Ngoại Thất">
-                        <p class="bold-text1">Cây xanh ngoại thất</p><br>
-                        <p class="bold-text2">Chi tiết</p><br>
-                        <p class="bold-text3">Số lượng:</p><br>
-                    </div>
-                    <div class="col-md-3">
-                        <img src="images\noi that.jpg" class="img-fluid rounded shadow-sm" alt="Cây xanh nội thất">
-                        <p class="bold-text1">Cây xanh nội thất</p><br>
-                        <p class="bold-text2">Chi tiết</p><br>
-                        <p class="bold-text3">Số lượng:</p><br>
-                    </div>
-                    <div class="col-md-3">
-                        <img src="images\phong thuy.jpg" class="img-fluid rounded shadow-sm" alt="Cây phong thủy">
-                        <p class="bold-text1">Cây phong thủy</p><br>
-                        <p class="bold-text2">Chi tiết</p><br>
-                        <p class="bold-text3">Số lượng:</p><br>
-                    </div>
-                </div>
-                <p class="banner-text">GIÁ RẺ - BỀN ĐẸP - GIAO NHANH</p>
-            </section>
-        </div>
-        <div class="container mt-4 company-intro">
-            <h3>Giới thiệu về công ty</h3>
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <p>
-                        Công ty chúng tôi là đơn vị hàng đầu trong lĩnh vực cung cấp các sản phẩm chất lượng cao,
-                        đáp ứng nhu cầu đa dạng của khách hàng. Với đội ngũ nhân viên chuyên nghiệp và tận tâm,
-                        chúng tôi cam kết mang lại trải nghiệm mua sắm tuyệt vời cùng với dịch vụ chăm sóc khách hàng tốt nhất.
-                    </p>
-                </div>
-                <div class="col-md-6">
-                    <img src="images\gioithieu.png" alt="Ảnh giới thiệu công ty" class="img-fluid rounded shadow">
-                </div>
-            </div>
-        </div>
-        <section class="commitment-section">
-            <div class="container text-center">
-    <h2 class="commitment-title">CAM KẾT TỪ VƯỜN CÂY ĐÀ Nẵng</h2>
-    <p class="commitment-subtitle">Công Ty Vườn Cây Đà Nẵng – Chuyên mua bán cây xanh</p>
-                <div class="row commitment-features">
-                    <div class="col-md-3 col-sm-6 feature-box">
-                        <img src="images\truck.png" alt="Giao hàng" class="feature-icon">
-                        <p><strong>Giao hàng trên toàn quốc</strong><br>Tất cả giá trị của đơn hàng.</p>
-                    </div>
-                    <div class="col-md-3 col-sm-6 feature-box">
-                        <img src="images\exchange.png" alt="Đổi trả" class="feature-icon">
-                        <p><strong>Đổi trả miễn phí</strong><br>Trong vòng 7 ngày</p>
-                    </div>
-                    <div class="col-md-3 col-sm-6 feature-box">
-                        <img src=images\customer-service.png alt="Hotline" class="feature-icon">
-                        <p><strong>Hotline: 0968 702 490</strong><br>Hỗ trợ 24/7</p>
-                    </div>
-                    <div class="col-md-3 col-sm-6 feature-box">
-                        <img src="images\price.png" alt="Thanh toán" class="feature-icon">
-                        <p><strong>Thanh toán</strong><br>Bảo mật thanh toán</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+                            .hero-section {
+                                background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('images/banner.jpg');
+                                background-size: cover;
+                                background-position: center;
+                                color: white;
+                                padding: 100px 0;
+                                text-align: center;
+                                margin-bottom: 40px;
+                            }
 
-    </div>
-</div>
-<!-- Footer -->
-<footer>
-    <div class="container">
-        <h5>Thông tin liên hệ</h5>
-        <p><i class="fa fa-map-marker-alt"></i> Địa chỉ: Số 123 Đường Nguyễn Văn Linh, Quận Hòa Hải, Đà Nẵng </p>
-        <p><i class="fa fa-phone"></i> Hotline: 0949483982 </p>
-        <p><i class="fa fa-envelope"></i> Email: nguyensuminhnhat@gmail.com</p>
-        <p><i class="fa fa-globe"></i> Website: <a href="http://vuoncaydanang.com" style="color: white; text-decoration: underline;">vuoncaydanang.com</a></p>
-        <div class="mt-3">
-            <a href="#" style="color: white; margin-right: 10px;"><i class="fab fa-facebook-f"></i> Facebook</a>
-            <a href="#" style="color: white; margin-right: 10px;"><i class="fab fa-instagram"></i> Instagram</a>
-            <a href="#" style="color: white;"><i class="fab fa-youtube"></i> YouTube</a>
-        </div>
-        <p class="mt-3 mb-0">© 2025 Vườn Cây Đà Nẵng. All rights reserved.</p>
-    </div>
-</footer>
+                            .category-card {
+                                border: none;
+                                border-radius: 15px;
+                                overflow: hidden;
+                                transition: transform 0.3s;
+                                margin-bottom: 30px;
+                                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                            }
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+                            .category-card:hover {
+                                transform: translateY(-5px);
+                            }
 
+                            .category-card img {
+                                height: 200px;
+                                object-fit: cover;
+                            }
+
+                            .product-card {
+                                border: none;
+                                border-radius: 15px;
+                                overflow: hidden;
+                                transition: transform 0.3s;
+                                margin-bottom: 30px;
+                                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                            }
+
+                            .product-card:hover {
+                                transform: translateY(-5px);
+                            }
+
+                            .product-card img {
+                                height: 250px;
+                                object-fit: cover;
+                            }
+
+                            .price {
+                                color: #28a745;
+                                font-weight: bold;
+                                font-size: 1.2rem;
+                            }
+
+                            .features-section {
+                                background-color: #28a745;
+                                color: white;
+                                padding: 60px 0;
+                                margin: 40px 0;
+                            }
+
+                            .feature-item {
+                                text-align: center;
+                                padding: 20px;
+                            }
+
+                            .feature-item i {
+                                font-size: 3rem;
+                                margin-bottom: 20px;
+                            }
+
+                            footer {
+                                background-color: #333;
+                                color: white;
+                                padding: 40px 0;
+                            }
+
+                            .social-links a {
+                                color: white;
+                                margin-right: 15px;
+                                font-size: 1.5rem;
+                            }
+
+                            .btn-success {
+                                background-color: #28a745;
+                                border-color: #28a745;
+                            }
+
+                            .btn-outline-success {
+                                color: #28a745;
+                                border-color: #28a745;
+                            }
+                        </style>
+
+                    </head>
+
+                    <body>
+                        <jsp:include page="./common/home/header.jsp"></jsp:include>
+
+                        <!-- Hero Section -->
+                        <section class="hero-section">
+                            <div class="container">
+                                <h1 class="display-4">Chào mừng đến với Vườn Cây Đà Nẵng</h1>
+                                <p class="lead">Nơi cung cấp các loại cây xanh chất lượng cao cho không gian của bạn</p>
+                                <a href="#products" class="btn btn-success btn-lg">Xem sản phẩm</a>
+                            </div>
+                        </section>
+
+                        <!-- Top 5 sản phẩm bán chạy -->
+                        <section class="container mb-5">
+                            <h2 class="text-center mb-4">Top 5 Sản phẩm bán chạy</h2>
+                            <div class="row justify-content-center">
+                                <c:forEach var="plant" items="${topSellingPlants}">
+                                    <div class="col-md-2 col-6 mb-3">
+                                        <div class="card h-100">
+                                            <img src="${plant.imageUrl}" class="card-img-top" alt="${plant.name}">
+                                            <div class="card-body p-2">
+                                                <h6 class="card-title mb-1">${plant.name}</h6>
+                                                <p class="price mb-1">
+                                                    <fmt:formatNumber value="${plant.price}" type="currency"
+                                                        currencySymbol="₫" />
+                                                </p>
+                                                <a href="plant-details?id=${plant.plantId}"
+                                                    class="btn btn-outline-success btn-sm w-100">Chi tiết</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </c:forEach>
+                            </div>
+                        </section>
+
+                        <!-- Bài viết mới nhất -->
+                        <section class="container mb-5">
+                            <h2 class="text-center mb-4">Bài viết mới nhất</h2>
+                            <div class="row">
+                                <c:forEach var="article" items="${latestArticles}">
+                                    <div class="col-md-4 mb-3">
+                                        <div class="card h-100">
+                                            <div class="card-body">
+                                                <h5 class="card-title">${article.title}</h5>
+                                                <p class="card-text">
+                                                    <c:choose>
+                                                        <c:when test="${fn:length(article.content) > 120}">
+                                                            ${fn:substring(article.content, 0, 120)}...
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            ${article.content}
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </p>
+                                                <p class="text-muted small mb-1">Chuyên mục: ${article.category}</p>
+                                                <p class="text-muted small">Ngày đăng:
+                                                    <fmt:formatDate value='${article.createdAt}' pattern='dd/MM/yyyy' />
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </c:forEach>
+                            </div>
+                        </section>
+
+                        <!-- Categories Section -->
+                        <section class="container mb-5">
+                            <h2 class="text-center mb-4">Danh mục sản phẩm</h2>
+                            <div class="d-flex align-items-center mb-3">
+                                <button class="btn btn-outline-success me-2" id="category-prev"><i
+                                        class="fas fa-chevron-left"></i></button>
+                                <div id="category-list" class="flex-grow-1 d-flex justify-content-center"
+                                    style="overflow: hidden; min-width: 350px;">
+                                    <!-- Danh mục sẽ được render bằng JS -->
+                                </div>
+                                <button class="btn btn-outline-success ms-2" id="category-next"><i
+                                        class="fas fa-chevron-right"></i></button>
+                            </div>
+                        </section>
+
+                        <!-- Featured Products Section -->
+                        <section id="products" class="container mb-5">
+                            <h2 class="text-center mb-4">Sản phẩm nổi bật</h2>
+                            <div class="row">
+                                <c:forEach var="plant" items="${plants}">
+                                    <div class="col-md-3 col-6 mb-4">
+                                        <div class="product-card card h-100">
+                                            <img src="${plant.imageUrl}" class="card-img-top" alt="${plant.name}">
+                                            <div class="card-body">
+                                                <h5 class="card-title">${plant.name}</h5>
+                                                <p class="card-text">${plant.description}</p>
+                                                <p class="price">
+                                                    <fmt:formatNumber value="${plant.price}" type="currency"
+                                                        currencySymbol="₫" />
+                                                </p>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <a href="${pageContext.request.contextPath}//product-detail?id=${plant.plantId}"
+                                                        class="btn btn-outline-success">Chi tiết</a>
+                                                    <form action="${pageContext.request.contextPath}/cart" method="post"
+                                                        class="d-inline">
+                                                        <input type="hidden" name="action" value="add">
+                                                        <input type="hidden" name="plantId" value="${plant.plantId}">
+                                                        <input type="hidden" name="quantity" value="1">
+                                                        <button type="submit" class="btn btn-success">
+                                                            <i class="fas fa-shopping-cart"></i> Thêm vào giỏ
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </c:forEach>
+                            </div>
+                        </section>
+                        <nav>
+                            <ul class="pagination justify-content-center">
+                                <c:forEach begin="1" end="${totalPages}" var="i">
+                                    <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                        <a class="page-link" href="?page=${i}">${i}</a>
+                                    </li>
+                                </c:forEach>
+                            </ul>
+                        </nav>
+
+                        <!-- Features Section -->
+                        <section class="features-section">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="feature-item">
+                                            <i class="fas fa-truck"></i>
+                                            <h4>Giao hàng toàn quốc</h4>
+                                            <p>Miễn phí giao hàng cho đơn từ 1 triệu</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="feature-item">
+                                            <i class="fas fa-leaf"></i>
+                                            <h4>Sản phẩm chất lượng</h4>
+                                            <p>Cam kết cây khỏe mạnh 100%</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="feature-item">
+                                            <i class="fas fa-sync-alt"></i>
+                                            <h4>Đổi trả dễ dàng</h4>
+                                            <p>Đổi trả trong vòng 7 ngày</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="feature-item">
+                                            <i class="fas fa-headset"></i>
+                                            <h4>Hỗ trợ 24/7</h4>
+                                            <p>Tư vấn chuyên nghiệp</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+
+                        <jsp:include page="./common/home/footer.jsp"></jsp:include>
+
+                        <!-- Bootstrap JS -->
+                        <script
+                            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+                        <script>
+                            // Lấy danh sách category từ JSP sang JS
+                            const categories = [
+                                <c:forEach var="cat" items="${categories}" varStatus="loop">
+                                    "${cat.name}"<c:if test="${!loop.last}">,</c:if>
+                                </c:forEach>
+                            ];
+                        </script>
+                        <script>
+                            let catStart = 0;
+                            const catPerPage = 4;
+                            const categoryList = document.getElementById('category-list');
+                            const prevBtn = document.getElementById('category-prev');
+                            const nextBtn = document.getElementById('category-next');
+
+                            function renderCategories() {
+                                categoryList.innerHTML = '';
+                                for (let i = catStart; i < Math.min(catStart + catPerPage, categories.length); i++) {
+                                    const span = document.createElement('span');
+                                    span.className = 'badge bg-success mx-2';
+                                    span.textContent = categories[i];
+                                    categoryList.appendChild(span);
+                                }
+                                prevBtn.disabled = catStart === 0;
+                                nextBtn.disabled = catStart + catPerPage >= categories.length;
+                            }
+
+                            prevBtn.onclick = function () {
+                                if (catStart > 0) {
+                                    catStart -= catPerPage;
+                                    if (catStart < 0) catStart = 0;
+                                    renderCategories();
+                                }
+                            };
+                            nextBtn.onclick = function () {
+                                if (catStart + catPerPage < categories.length) {
+                                    catStart += catPerPage;
+                                    renderCategories();
+                                }
+                            };
+
+                            // Khởi tạo
+                            renderCategories();
+                        </script>
+                    </body>
+
+                    </html>
