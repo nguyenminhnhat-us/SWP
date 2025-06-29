@@ -32,8 +32,13 @@
     <body>
         <div class="container my-4">
             <h2 class="text-success text-center">Giỏ hàng của bạn</h2>
+<<<<<<< HEAD
             <c:if test="${not empty message}">
                 <div class="alert alert-${messageType}">${message}</div>
+=======
+            <c:if test="${not empty error}">
+                <div class="alert alert-danger">${error}</div>
+>>>>>>> d29c17d75eb1624e175c8b09a64d09bbe9fcb6e2
             </c:if>
             <c:choose>
                 <c:when test="${empty cartItems}">
@@ -88,15 +93,24 @@
                             <input type="hidden" name="action" value="clear">
                             <button type="submit" class="btn btn-danger">Xóa toàn bộ</button>
                         </form>
+<<<<<<< HEAD
                         <form action="${pageContext.request.contextPath}/cart" method="get" class="d-inline">
                             <input type="hidden" name="action" value="process-checkout">
                             <button type="submit" class="btn btn-success">Mua hàng</button>
                         </form>
                         <a href="${pageContext.request.contextPath}/home" class="btn btn-secondary">Quay lại</a>
+=======
+                        <a href="${pageContext.request.contextPath}/checkout.jsp" class="btn btn-success">Thanh toán</a>
+                        <a href="${pageContext.request.contextPath}/index.jsp" class="btn btn-secondary">Quay lại</a>
+>>>>>>> d29c17d75eb1624e175c8b09a64d09bbe9fcb6e2
                     </div>
                 </c:otherwise>
             </c:choose>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     </body>
+<<<<<<< HEAD
 </html>
+=======
+</html>
+>>>>>>> d29c17d75eb1624e175c8b09a64d09bbe9fcb6e2
