@@ -9,6 +9,29 @@
     <title>Quản lý cây cảnh - Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<<<<<<< HEAD
+=======
+    <style>
+        .plant-image {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        .badge {
+            font-size: 0.75rem;
+        }
+        
+        .table-actions {
+            white-space: nowrap;
+        }
+        
+        .search-box {
+            max-width: 300px;
+        }
+    </style>
+>>>>>>> 0517b3c45e1915473af6ab55ae6de0b26642502b
 </head>
 <body>
     <div class="container-fluid">
@@ -137,16 +160,28 @@
                                                 <td class="table-actions">
                                                     <div class="btn-group" role="group">
                                                         <button class="btn btn-sm btn-outline-primary" 
+<<<<<<< HEAD
                                                                 onclick="viewPlant('${plant.plantId}')" title="Xem chi tiết">
                                                             <i class="fa fa-eye"></i>
                                                         </button>
                                                         <button class="btn btn-sm btn-outline-warning" 
                                                                 onclick="editPlant('${plant.plantId}')" 
+=======
+                                                                onclick="viewPlant(${plant.plantId})" title="Xem chi tiết">
+                                                            <i class="fa fa-eye"></i>
+                                                        </button>
+                                                        <button class="btn btn-sm btn-outline-warning" 
+                                                                onclick="editPlant(${plant.plantId}, '${plant.name}', '${plant.description}', ${plant.price}, ${plant.stockQuantity}, ${plant.categoryId}, '${plant.imageUrl}')" 
+>>>>>>> 0517b3c45e1915473af6ab55ae6de0b26642502b
                                                                 title="Chỉnh sửa">
                                                             <i class="fa fa-edit"></i>
                                                         </button>
                                                         <button class="btn btn-sm btn-outline-danger" 
+<<<<<<< HEAD
                                                                 onclick="deletePlant('${plant.plantId}')" 
+=======
+                                                                onclick="deletePlant(${plant.plantId}, '${plant.name}')" 
+>>>>>>> 0517b3c45e1915473af6ab55ae6de0b26642502b
                                                                 title="Xóa cây cảnh">
                                                             <i class="fa fa-trash"></i>
                                                         </button>
@@ -542,6 +577,7 @@
         setupImagePreview('editImageFile', 'editImagePreview');
 
         // Plant management functions
+<<<<<<< HEAD
         var plants = JSON.parse(document.getElementById('plants-data').textContent.trim());
         var categories = JSON.parse(document.getElementById('categories-data').textContent.trim());
         function editPlant(plantId) {
@@ -557,11 +593,26 @@
             const currentImage = document.getElementById('editCurrentImage');
             if (plant.imageUrl && plant.imageUrl.trim() !== '') {
                 currentImage.src = '${pageContext.request.contextPath}/' + plant.imageUrl;
+=======
+        function editPlant(plantId, name, description, price, stockQuantity, categoryId, imageUrl) {
+            document.getElementById('editPlantId').value = plantId;
+            document.getElementById('editName').value = name;
+            document.getElementById('editDescription').value = description;
+            document.getElementById('editPrice').value = price;
+            document.getElementById('editStockQuantity').value = stockQuantity;
+            document.getElementById('editCategoryId').value = categoryId;
+            
+            // Show current image
+            const currentImage = document.getElementById('editCurrentImage');
+            if (imageUrl && imageUrl.trim() !== '') {
+                currentImage.src = '${pageContext.request.contextPath}/' + imageUrl;
+>>>>>>> 0517b3c45e1915473af6ab55ae6de0b26642502b
                 currentImage.style.display = 'block';
             } else {
                 currentImage.src = '${pageContext.request.contextPath}/images/default-plant.jpg';
                 currentImage.style.display = 'block';
             }
+<<<<<<< HEAD
             document.getElementById('editImageFile').value = '';
             document.getElementById('editImagePreview').style.display = 'none';
             new bootstrap.Modal(document.getElementById('editPlantModal')).show();
@@ -573,14 +624,38 @@
                 const form = document.createElement('form');
                 form.method = 'POST';
                 form.action = '${pageContext.request.contextPath}/dashboard/manage-plants';
+=======
+            
+            // Hide preview and reset file input
+            document.getElementById('editImageFile').value = '';
+            document.getElementById('editImagePreview').style.display = 'none';
+            
+            new bootstrap.Modal(document.getElementById('editPlantModal')).show();
+        }
+
+        function deletePlant(plantId, plantName) {
+            if (confirm('Bạn có chắc chắn muốn xóa cây "' + plantName + '"?\nHành động này không thể hoàn tác!')) {
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '${pageContext.request.contextPath}/dashboard/manage-plants';
+                
+>>>>>>> 0517b3c45e1915473af6ab55ae6de0b26642502b
                 const actionInput = document.createElement('input');
                 actionInput.type = 'hidden';
                 actionInput.name = 'action';
                 actionInput.value = 'delete';
+<<<<<<< HEAD
+=======
+                
+>>>>>>> 0517b3c45e1915473af6ab55ae6de0b26642502b
                 const plantIdInput = document.createElement('input');
                 plantIdInput.type = 'hidden';
                 plantIdInput.name = 'plantId';
                 plantIdInput.value = plantId;
+<<<<<<< HEAD
+=======
+                
+>>>>>>> 0517b3c45e1915473af6ab55ae6de0b26642502b
                 form.appendChild(actionInput);
                 form.appendChild(plantIdInput);
                 document.body.appendChild(form);
@@ -589,9 +664,40 @@
         }
 
         function viewPlant(plantId) {
+<<<<<<< HEAD
             // Sử dụng mảng plants và categories đã parse ở đầu script
             const plant = plants.find(p => p.plantId == plantId);
             const category = categories.find(c => c.categoryId == plant.categoryId);
+=======
+            // Find plant data from the table
+            const plants = [
+                <c:forEach var="plant" items="${plants}" varStatus="status">
+                    {
+                        plantId: ${plant.plantId},
+                        name: '${plant.name}',
+                        description: '${plant.description}',
+                        price: ${plant.price},
+                        stockQuantity: ${plant.stockQuantity},
+                        categoryId: ${plant.categoryId},
+                        imageUrl: '${plant.imageUrl}',
+                        createdAt: '<c:if test="${not empty plant.createdAt}"><fmt:formatDate value="${plant.createdAt}" pattern="dd/MM/yyyy HH:mm" /></c:if>'
+                    }<c:if test="${!status.last}">,</c:if>
+                </c:forEach>
+            ];
+            
+            const categories = [
+                <c:forEach var="category" items="${categories}" varStatus="status">
+                    {
+                        categoryId: ${category.categoryId},
+                        name: '${category.name}'
+                    }<c:if test="${!status.last}">,</c:if>
+                </c:forEach>
+            ];
+            
+            const plant = plants.find(p => p.plantId === plantId);
+            const category = categories.find(c => c.categoryId === plant.categoryId);
+            
+>>>>>>> 0517b3c45e1915473af6ab55ae6de0b26642502b
             if (plant) {
                 const detailsHtml = 
                     '<div class="row">' +
@@ -622,6 +728,7 @@
                                         (plant.stockQuantity > 10 ? 
                                             '<span class="badge bg-success">' + plant.stockQuantity + '</span>' :
                                             plant.stockQuantity > 0 ?
+<<<<<<< HEAD
                             '<img src="${pageContext.request.contextPath}/' + plant.imageUrl + '" ' +
                                  'alt="' + plant.name + '" class="img-fluid rounded"' +
                                  'onerror="this.src=\'${pageContext.request.contextPath}/images/default-plant.jpg\'">' +
@@ -648,6 +755,8 @@
                                         (plant.stockQuantity > 10 ? 
                                             '<span class="badge bg-success">' + plant.stockQuantity + '</span>' :
                                             plant.stockQuantity > 0 ?
+=======
+>>>>>>> 0517b3c45e1915473af6ab55ae6de0b26642502b
                                             '<span class="badge bg-warning">' + plant.stockQuantity + '</span>' :
                                             '<span class="badge bg-danger">Hết hàng</span>'
                                         ) +

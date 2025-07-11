@@ -12,8 +12,79 @@
                         rel="stylesheet">
                     <link rel="stylesheet"
                         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<<<<<<< HEAD
                     <link rel="stylesheet" href="css/header-style.css">
                     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+=======
+                    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/header-style.css">
+                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+                    <style>
+                       
+                        .product-image {
+                            max-width: 100%;
+                            border-radius: 10px;
+                            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+                        }
+
+                        .sidebar-section {
+                            background: #fff;
+                            border-radius: 10px;
+                            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+                            margin-bottom: 24px;
+                            padding: 16px;
+                        }
+
+                        .related-slider {
+                            display: flex;
+                            overflow-x: auto;
+                            -webkit-overflow-scrolling: touch;
+                            padding-bottom: 1rem;
+                        }
+
+                        .related-slider .card {
+                            flex: 0 0 220px;
+                            margin-right: 16px;
+                        }
+
+                        .feedback-section {
+                            background: #fff;
+                            border-radius: 10px;
+                            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+                            margin-bottom: 24px;
+                            padding: 16px;
+                        }
+
+                        footer,
+                        .footer {
+                            background: #222;
+                            color: #fff;
+                            padding: 30px 0 10px 0;
+                            font-size: 1rem;
+                            text-align: center;
+                            border-top: 1px solid #444;
+                        }
+
+                        .footer a,
+                        footer a {
+                            color: #8fd19e;
+                            text-decoration: none;
+                        }
+
+                        .footer a:hover,
+                        footer a:hover {
+                            color: #fff;
+                            text-decoration: underline;
+                        }
+
+                        .footer .footer-contact {
+                            margin-bottom: 10px;
+                        }
+
+                        .footer .footer-contact i {
+                            margin-right: 8px;
+                        }
+                    </style>
+>>>>>>> 0517b3c45e1915473af6ab55ae6de0b26642502b
                 </head>
 
                 <body>

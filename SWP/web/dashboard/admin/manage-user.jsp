@@ -9,6 +9,25 @@
     <title>Quản lý người dùng - Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<<<<<<< HEAD
+=======
+    <style>
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+        }
+        .status-badge {
+            font-size: 0.8rem;
+        }
+        .table-actions {
+            white-space: nowrap;
+        }
+        .search-box {
+            max-width: 300px;
+        }
+    </style>
+>>>>>>> 0517b3c45e1915473af6ab55ae6de0b26642502b
 </head>
 <body>
     <div class="container-fluid">

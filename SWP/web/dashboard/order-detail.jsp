@@ -9,7 +9,10 @@
     <title>Chi tiết đơn hàng - ID: ${order.orderId}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<<<<<<< HEAD
     <link rel="stylesheet" href="../css/header-style.css">
+=======
+>>>>>>> 0517b3c45e1915473af6ab55ae6de0b26642502b
 </head>
 <body>
     <div class="container-fluid">

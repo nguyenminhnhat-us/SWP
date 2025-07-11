@@ -39,10 +39,66 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
+<<<<<<< HEAD
     <title>Chi tiết cây cảnh</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="css/header-style.css">
+=======
+    <title>${plant.name} | Chi tiết sản phẩm</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        .product-detail-container {
+            margin: 50px auto;
+            max-width: 1000px;
+            display: flex;
+            gap: 30px;
+        }
+        .product-detail-container img {
+            max-width: 450px;
+            border-radius: 10px;
+        }
+        .product-info h2 {
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .price {
+            color: green;
+            font-size: 22px;
+            margin: 10px 0;
+        }
+        .desc {
+            margin-top: 15px;
+            font-size: 16px;
+        }
+        .btn-back {
+            margin-top: 20px;
+        }
+        .review-section {
+            margin-top: 50px;
+            border-top: 1px solid #eee;
+            padding-top: 30px;
+        }
+        .review-item {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        .review-rating {
+            color: #ffc107; /* Bootstrap yellow for stars */
+        }
+        .review-form {
+            margin-top: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+    </style>
+>>>>>>> 0517b3c45e1915473af6ab55ae6de0b26642502b
 </head>
 <body>
 <jsp:include page="/common/home/header.jsp" />

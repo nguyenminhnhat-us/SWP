@@ -11,6 +11,178 @@
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
             <link rel="stylesheet" href="${pageContext.request.contextPath}/css/header-style.css">
+<<<<<<< HEAD
+=======
+            <style>
+                :root {
+                    --primary-green: #28a745;
+                    --hover-green: #218838;
+                    --yellow: #ffc107;
+                    --dark-bg: #28a745;
+                    --sidebar-bg: #28a745;
+                    --sidebar-hover: #218838;
+                    --sidebar-active: #ffc107;
+                }
+
+                body {
+                    background-color: #f8f9fa;
+                    min-height: 100vh;
+                    font-family: 'Segoe UI', Arial, sans-serif;
+                }
+
+
+
+                /* Sidebar Styles */
+                .sidebar {
+                    background-color: #23272b;
+                    width: 250px;
+                    padding: 20px 0;
+                    min-height: 100%;
+                }
+
+                .sidebar .nav-link {
+                    color: #fff !important;
+                    padding: 12px 20px !important;
+                    border-left: 3px solid transparent;
+                    transition: all 0.3s ease;
+                    font-weight: 500;
+                }
+
+                .sidebar .nav-link:hover,
+                .sidebar .nav-link.active {
+                    background-color: var(--sidebar-hover);
+                    color: var(--sidebar-active) !important;
+                    border-left-color: var(--sidebar-active);
+                }
+
+                .sidebar .nav-link i {
+                    width: 20px;
+                    text-align: center;
+                    margin-right: 10px;
+                }
+
+                /* Main Layout */
+                .dashboard-container {
+                    display: flex;
+                    min-height: calc(100vh - 70px);
+                    width: 100%;
+                    margin: 0 auto;
+                }
+
+                /* Content Area */
+                .main-content {
+                    flex: 1;
+                    padding: 30px;
+                    background-color: #f8f9fa;
+                }
+
+                .profile-section {
+                    background: white;
+                    border-radius: 15px;
+                    padding: 30px;
+                    margin-bottom: 30px;
+                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+                    border: 1px solid #e9ecef;
+                }
+
+                .profile-section h4 {
+                    color: var(--primary-green);
+                    margin-bottom: 25px;
+                    font-weight: 600;
+                    border-bottom: 2px solid var(--primary-green);
+                    padding-bottom: 10px;
+                }
+
+                /* Form Controls */
+                .form-label {
+                    font-weight: 600;
+                    color: #495057;
+                    margin-bottom: 8px;
+                }
+
+                .form-control {
+                    border: 2px solid #e9ecef;
+                    padding: 10px 15px;
+                    border-radius: 8px;
+                    transition: all 0.3s ease;
+                }
+
+                .form-control:focus {
+                    border-color: var(--primary-green);
+                    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.15);
+                }
+
+                /* Buttons */
+                .main-content .btn-primary,
+                .main-content .btn-success {
+                    background-color: var(--primary-green);
+                    border-color: var(--primary-green);
+                    padding: 10px 25px;
+                    font-weight: 600;
+                    border-radius: 8px;
+                    transition: all 0.3s ease;
+                }
+
+                .btn-warning {
+                    background-color: var(--yellow);
+                    border-color: var(--yellow);
+                    padding: 10px 25px;
+                    font-weight: 600;
+                    border-radius: 8px;
+                    transition: all 0.3s ease;
+                    color: #000;
+                }
+
+                .btn-warning:hover {
+                    background-color: #e0a800;
+                    border-color: #e0a800;
+                }
+
+                /* Alerts */
+                .alert {
+                    border-radius: 8px;
+                    padding: 15px 20px;
+                    margin-bottom: 25px;
+                    border: none;
+                }
+
+                .alert-success {
+                    background-color: #d4edda;
+                    color: #155724;
+                    border-left: 4px solid var(--primary-green);
+                }
+
+                .alert-danger {
+                    background-color: #f8d7da;
+                    color: #721c24;
+                    border-left: 4px solid #dc3545;
+                }
+
+                /* Password Fields */
+                .password-field {
+                    position: relative;
+                }
+
+                .toggle-password {
+                    position: absolute;
+                    right: 15px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    cursor: pointer;
+                    color: #6c757d;
+                    transition: color 0.3s ease;
+                }
+
+                .toggle-password:hover {
+                    color: var(--primary-green);
+                }
+
+                .password-match-message {
+                    margin-top: 5px;
+                    font-size: 0.875em;
+                }
+            </style>
+>>>>>>> 0517b3c45e1915473af6ab55ae6de0b26642502b
         </head>
 
         <body>

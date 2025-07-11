@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" session="true" %>
+<<<<<<< HEAD
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %><style>
+=======
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<style>
+>>>>>>> 0517b3c45e1915473af6ab55ae6de0b26642502b
     .sidebar-custom {
         background-color: #23272b;
         color: #fff;
@@ -51,7 +56,11 @@
                 <i class="fa fa-home me-2"></i> Trang chủ
             </a>
         </li>
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> 0517b3c45e1915473af6ab55ae6de0b26642502b
         <!-- Menu chỉ dành cho Admin -->
         <c:if test="${sessionScope.user.role == 'admin'}">
             <li>
@@ -70,12 +79,20 @@
                 </a>
             </li>
             <li>
+<<<<<<< HEAD
                 <a href="${pageContext.request.contextPath}/dashboard/reports" class="nav-link">
+=======
+                <a href="/dashboard/reports" class="nav-link">
+>>>>>>> 0517b3c45e1915473af6ab55ae6de0b26642502b
                     <i class="fa fa-chart-line me-2"></i> Báo cáo
                 </a>
             </li>
         </c:if>
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> 0517b3c45e1915473af6ab55ae6de0b26642502b
         <!-- Menu cho tất cả các role -->
         <li>
             <a href="${pageContext.request.contextPath}/dashboard/order-history" class="nav-link">
@@ -105,5 +122,10 @@
                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/logout">Đăng xuất</a></li>
             </ul>
         </div>
+<<<<<<< HEAD
     </div></div>
 
+=======
+    </div>
+</div>
+>>>>>>> 0517b3c45e1915473af6ab55ae6de0b26642502b

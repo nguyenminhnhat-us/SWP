@@ -5,13 +5,18 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+<<<<<<< HEAD
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
+=======
+import java.util.ArrayList;
+>>>>>>> 0517b3c45e1915473af6ab55ae6de0b26642502b
 import java.util.List;
 import model.Article;
 
 public class ArticleDAO {
+<<<<<<< HEAD
 
     public List<Article> getAllArticles() throws SQLException, ClassNotFoundException {
         List<Article> articles = new ArrayList<>();
@@ -38,6 +43,8 @@ public class ArticleDAO {
         }
         return articles;
     }
+=======
+>>>>>>> 0517b3c45e1915473af6ab55ae6de0b26642502b
     
     public List<Article> getLatestArticles(int limit) throws SQLException, ClassNotFoundException {
         List<Article> list = new ArrayList<>();
