@@ -11,85 +11,11 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="css/index-style.css">
-    <style>
-        body { font-family: Arial, sans-serif; background-color: #000; color: #fff; margin: 0; padding: 0; }
-        .product-list { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 20px; }
-        .product-item { background-color: #006400; border: 2px solid #fff; width: 200px; text-align: center; padding: 10px; cursor: pointer; }
-        .product-item img { max-width: 100%; height: auto; }
-    </style>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/header-style.css">
 </head>
 <body>
 
-<!-- Logo và tìm kiếm -->
-<div class="logo-bar">
-    <div class="container d-flex align-items-center justify-content-between flex-wrap">
-        <div class="d-flex align-items-center logo">
-            <img src="images/logo.png" alt="Logo">
-            <h1>VUONCAYDANANG.COM<br><small>Chuyên Mua Bán Cây Xanh</small></h1>
-        </div>
-        <div class="input-group w-50">
-            <input type="text" class="form-control" placeholder="Bạn muốn tìm gì...">
-            <button class="btn btn-success">Tìm</button>
-        </div>
-        <div class="text-end">
-            <p class="mb-0 hotline-label">Hotline:</p>
-            <div class="hotline-number">0968 702 490</div>
-        </div>
-        <div class="d-flex gap-2 ms-auto">
-            <button class="btn btn-warning">GIỎ HÀNG 🛒</button>
-            <% if (user != null) { %>
-                <div class="dropdown">
-                    <button class="btn btn-outline-light bg-success text-white dropdown-toggle" data-bs-toggle="dropdown">
-                        <%= user.getFullName() %>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="viewProfile">Xem hồ sơ</a></li>
-                        <li><a class="dropdown-item" href="editProfile.jsp">Chỉnh sửa hồ sơ</a></li>
-                        <li><a class="dropdown-item" href="logout">Đăng xuất</a></li>
-                    </ul>
-                </div>
-            <% } else { %>
-                <a href="login.jsp" class="btn btn-outline-light bg-success text-white">Đăng nhập</a>
-            <% } %>
-        </div>
-    </div>
-</div>
-
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-success">
-    <div class="container">
-        <ul class="navbar-nav d-flex justify-content-around w-100">
-            <li class="nav-item"><a class="nav-link" href="index.jsp">TRANG CHỦ</a></li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">GIỚI THIỆU</a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Cây cảnh</a></li>
-                    <li><a class="dropdown-item" href="#">Chuyên gia</a></li>
-                </ul>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">SẢN PHẨM</a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="plantList?category=1">Cây Xanh Công Trình</a></li>
-                    <li><a class="dropdown-item" href="plantList?category=2">Cây Xanh Ngoại Thất</a></li>
-                    <li><a class="dropdown-item" href="plantList?category=3">Cây Xanh Nội Thất</a></li>
-                    <li><a class="dropdown-item" href="plantList?category=4">Cây Phong Thủy</a></li>
-                    <li><a class="dropdown-item" href="plantList">Tất Cả Sản Phẩm</a></li>
-                </ul>
-            </li>
-            <li class="nav-item"><a class="nav-link" href="#">BÁO GIÁ</a></li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">DỊCH VỤ</a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Chăm sóc cây</a></li>
-                </ul>
-            </li>
-            <li class="nav-item"><a class="nav-link" href="#">TIN TỨC</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">DỰ ÁN</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">LIÊN HỆ</a></li>
-        </ul>
-    </div>
-</nav>
+<jsp:include page="/common/home/header.jsp" />
 
 <!-- Danh sách sản phẩm -->
 <div class="container my-4">

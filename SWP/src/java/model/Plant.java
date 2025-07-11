@@ -1,5 +1,7 @@
 package model;
 
+import java.sql.Timestamp;
+
 public class Plant {
     private int plantId;
     private int categoryId;
@@ -8,6 +10,7 @@ public class Plant {
     private double price;
     private int stockQuantity;
     private String imageUrl;
+    private Timestamp createdAt;
 
     public Plant() {}
 
@@ -36,4 +39,6 @@ public class Plant {
     public void setStockQuantity(int stockQuantity) { this.stockQuantity = stockQuantity; }
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+    public Timestamp getCreatedAt() { return createdAt; }
+    public void setCreatedAt(Timestamp createdAt) { this.createdAt = createdAt; }
 }

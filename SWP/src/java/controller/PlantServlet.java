@@ -6,11 +6,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Plant;
-import model.PlantDAO;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+
+import dal.PlantDAO;
 
 @WebServlet("/plants")
 public class PlantServlet extends HttpServlet {

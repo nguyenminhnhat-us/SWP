@@ -1,471 +1,242 @@
-index.jsp:
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" session="true" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%
-    model.User user = (model.User) session.getAttribute("user");
-    // Chuyển hướng đến PlantServlet nếu danh sách cây chưa được tải
-    if (request.getAttribute("plants") == null) {
-        request.getRequestDispatcher("/plants").forward(request, response);
-        return;
-    }
-%>
-<!DOCTYPE html><html lang="vi">
-    <head>
-        <meta charset="UTF-8">
-        <title>Vườn Cây Đà Nẵng - Chuyên Mua Bán Cây Xanh</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" session="true" %>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+        <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+            <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+                <%
+                    // Redirect to HomeController if the plant list is not loaded
+                    if (request.getAttribute("plants") == null) {
+                        request.getRequestDispatcher("/home").forward(request, response);
+                        return;
+                    }
+                %>
+                    <!DOCTYPE html>
+                    <html lang="vi">
 
-        <!-- Bootstrap 5 -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-        <!-- Font Awesome -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+                    <head>
+                        <meta charset="UTF-8">
+                        <title>Vườn Cây Đà Nẵng - Chuyên Mua Bán Cây Xanh</title>
+                        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <style>
+                        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+                            rel="stylesheet">
+                        <link rel="stylesheet"
+                            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+                        <script
+                            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+                        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/header-style.css">
 
-            body {
-                background-color: #171717;
-            }
-            .logo-bar {
-                background-color: #28a745; /* Màu xanh Bootstrap chuẩn */
-                color: white; /* Để chữ nổi trên nền xanh */
-                border-radius: 5px; /* Tùy chọn: bo góc */
-            }
-            .logo-bar {
-                background-color: #28a745; /* Màu xanh Bootstrap chuẩn */
-                border-radius: 5px; /* Tùy chọn: bo góc */
-                padding: 15px;
-                display: flex;
-                flex-wrap: wrap;
-                align-items: center;
-                justify-content: space-between;
+                    </head>
 
-            }
-            .logo img {
-                width: 150px;  /* tăng kích thước theo ý bạn */
-                height: auto;  /* giữ tỉ lệ ảnh */
-                margin-right: 15px; /* thêm khoảng cách bên phải nếu muốn */
-            }
-            .logo h1 {
-                font-size: 24px;
-                margin: 0;
-                color: #2e7d32;
-            }
-            .logo small {
-                font-size: 14px;
-                color: gray;
-            }
-            .hotline-label {
-                text-transform: uppercase; /* Viết hoa */
-                color: red;                /* Màu đỏ */
-                font-weight: bold;         /* (Tùy chọn) In đậm */
-            }
-            .hotline-number {
-                color: red;
-                font-weight: bold;
-                font-size: 18px;
-            }
-            .nav-link:hover,
-            .dropdown-item:hover {
-                color: yellow !important;
-            }
+                    <body>
+                        <jsp:include page="./common/home/header.jsp"></jsp:include>
 
-            .sidebar {
-                background-color: #171717;
-                padding: 15px;
-                color: #28a745; /* chữ trắng cho tiêu đề */
-            }
-            .sidebar ul.list-group li.list-group-item {
-                background-color: #171717;
-                border: none; /* bỏ viền */
-                padding-left: 0; /* nếu muốn */
-            }
+                        <!-- Hero Section -->
+                        <section class="hero-section">
+                            <div class="container">
+                                <h1 class="display-4">Chào mừng đến với Vườn Cây Đà Nẵng</h1>
+                                <p class="lead">Nơi cung cấp các loại cây xanh chất lượng cao cho không gian của bạn</p>
+                                <a href="#products" class="btn btn-success btn-lg">Xem sản phẩm</a>
+                            </div>
+                        </section>
 
-            .sidebar ul.list-group li.list-group-item a {
-                color: #28a745; /* xanh sáng */
-                text-decoration: none; /* bỏ gạch chân */
-            }
-            .sidebar ul.list-group {
-                padding: 0; /* bỏ padding mặc định */
-                margin: 0; /* bỏ margin nếu có */
-            }
+                        <!-- Top 5 sản phẩm bán chạy -->
+                        <section class="container mb-5">
+                            <h2 class="text-center mb-4">Top 5 Sản phẩm bán chạy</h2>
+                            <div class="row justify-content-center">
+                                <c:forEach var="plant" items="${topSellingPlants}">
+                                    <div class="col-md-2 col-6 mb-3">
+                                        <div class="card h-100">
+                                            <img src="${plant.imageUrl}" class="card-img-top" alt="${plant.name}">
+                                            <div class="card-body p-2">
+                                                <h6 class="card-title mb-1">${plant.name}</h6>
+                                                <p class="price mb-1">
+                                                    <fmt:formatNumber value="${plant.price}" type="currency"
+                                                        currencySymbol="₫" />
+                                                </p>
+                                                <a href="plant-details?id=${plant.plantId}"
+                                                    class="btn btn-outline-success btn-sm w-100">Chi tiết</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </c:forEach>
+                            </div>
+                        </section>
 
-            .sidebar ul.list-group li.list-group-item {
-                border: 1px solid #28a745 !important;
-                border-top: none; /* bỏ viền trên của các ô, trừ ô đầu */
-                margin: 0; /* bỏ khoảng cách giữa các ô */
-                border-radius: 0; /* bỏ bo góc */
-                background-color:  !important;
-                padding: 8px 12px;
-            }
+                        <!-- Bài viết mới nhất -->
+                        <section class="container mb-5">
+                            <h2 class="text-center mb-4">Bài viết mới nhất</h2>
+                            <div class="row">
+                                <c:forEach var="article" items="${latestArticles}">
+                                    <div class="col-md-4 mb-3">
+                                        <div class="card h-100">
+                                            <div class="card-body">
+                                                <h5 class="card-title">${article.title}</h5>
+                                                <p class="card-text">
+                                                    <c:choose>
+                                                        <c:when test="${fn:length(article.content) > 120}">
+                                                            ${fn:substring(article.content, 0, 120)}...
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            ${article.content}
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </p>
+                                                <p class="text-muted small mb-1">Chuyên mục: ${article.category}</p>
+                                                <p class="text-muted small">Ngày đăng:
+                                                    <fmt:formatDate value='${article.createdAt}' pattern='dd/MM/yyyy' />
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </c:forEach>
+                            </div>
+                        </section>
 
-            /* Giữ viền trên cho ô đầu tiên */
-            .sidebar ul.list-group li.list-group-item:first-child {
-                border-top: 1px solid #28a745 !important;
-                border-radius: 4px 4px 0 0; /* bo góc trên */
-            }
+                        <!-- Categories Section -->
+                        <section class="container mb-5">
+                            <h2 class="text-center mb-4">Danh mục sản phẩm</h2>
+                            <div class="d-flex align-items-center mb-3">
+                                <button class="btn btn-outline-success me-2" id="category-prev"><i
+                                        class="fas fa-chevron-left"></i></button>
+                                <div id="category-list" class="flex-grow-1 d-flex justify-content-center"
+                                    style="overflow: hidden; min-width: 350px;">
+                                    <!-- Danh mục sẽ được render bằng JS -->
+                                </div>
+                                <button class="btn btn-outline-success ms-2" id="category-next"><i
+                                        class="fas fa-chevron-right"></i></button>
+                            </div>
+                        </section>
 
-            /* Bo góc dưới cho ô cuối */
-            .sidebar ul.list-group li.list-group-item:last-child {
-                border-radius: 0 0 4px 4px;
-            }
+                        <!-- Featured Products Section -->
+                        <section id="products" class="container mb-5">
+                            <h2 class="text-center mb-4">Sản phẩm nổi bật</h2>
+                            <div class="row">
+                                <c:forEach var="plant" items="${plants}">
+                                    <div class="col-md-3 col-6 mb-4">
+                                        <div class="product-card card h-100">
+                                            <img src="${plant.imageUrl}" class="card-img-top" alt="${plant.name}">
+                                            <div class="card-body">
+                                                <h5 class="card-title">${plant.name}</h5>
+                                                <p class="card-text">${plant.description}</p>
+                                                <p class="price">
+                                                    <fmt:formatNumber value="${plant.price}" type="currency"
+                                                        currencySymbol="₫" />
+                                                </p>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <a href="${pageContext.request.contextPath}//product-detail?id=${plant.plantId}"
+                                                        class="btn btn-outline-success">Chi tiết</a>
+                                                    <form action="${pageContext.request.contextPath}/cart" method="post"
+                                                        class="d-inline">
+                                                        <input type="hidden" name="action" value="add">
+                                                        <input type="hidden" name="plantId" value="${plant.plantId}">
+                                                        <input type="hidden" name="quantity" value="1">
+                                                        <button type="submit" class="btn btn-success">
+                                                            <i class="fas fa-shopping-cart"></i> Thêm vào giỏ
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </c:forEach>
+                            </div>
+                        </section>
+                        <nav>
+                            <ul class="pagination justify-content-center">
+                                <c:forEach begin="1" end="${totalPages}" var="i">
+                                    <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                        <a class="page-link" href="?page=${i}">${i}</a>
+                                    </li>
+                                </c:forEach>
+                            </ul>
+                        </nav>
 
-            .sidebar ul.list-group li.list-group-item a:hover {
-                text-decoration: underline;
-            }
+                        <!-- Features Section -->
+                        <section class="features-section">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="feature-item">
+                                            <i class="fas fa-truck"></i>
+                                            <h4>Giao hàng toàn quốc</h4>
+                                            <p>Miễn phí giao hàng cho đơn từ 1 triệu</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="feature-item">
+                                            <i class="fas fa-leaf"></i>
+                                            <h4>Sản phẩm chất lượng</h4>
+                                            <p>Cam kết cây khỏe mạnh 100%</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="feature-item">
+                                            <i class="fas fa-sync-alt"></i>
+                                            <h4>Đổi trả dễ dàng</h4>
+                                            <p>Đổi trả trong vòng 7 ngày</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="feature-item">
+                                            <i class="fas fa-headset"></i>
+                                            <h4>Hỗ trợ 24/7</h4>
+                                            <p>Tư vấn chuyên nghiệp</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
 
-            .banner-categories {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 20px;
-            }
 
-            .banner-categories .col-md-3 {
-                flex: 0 0 calc(25% - 20px);
-                box-sizing: border-box;
-                border: 3px solid #28a745;
-                padding: 2px;
-                border-radius: 10px;
-                transition: box-shadow 0.3s ease;
-                cursor: pointer;
-                background-color: #9ED2BB;
-            }
+                        <jsp:include page="./common/home/footer.jsp"></jsp:include>
 
-            .banner-categories img {
-                width: 100%;
-                height: 250px;
-                object-fit: cover;
-            }
-            .banner-text {
-                font-weight: bold;
-                text-align: center;
-                margin-top: 20px;
-                color: #388e3c;
-                font-size: 20px;
-            }
-            .carousel-inner img {
-                width: 100%;
-                height: 450px;
-                object-fit: cover;
-                border-radius: 8px;
-            }
-            .bold-text1{
-                display: inline-block;          /* Giúp viền gọn sát chữ */
-                border: 3px solid #28a745;       /* Viền xanh lá */
-                padding: 2px 6px;                /* Khoảng cách giữa chữ và viền */
-                border-radius: 4px;              /* Bo góc nhẹ */
-                font-weight: bold;               /* In đậm (áp dụng chung cho cả 3) */
-                margin: 5px 5px ;
-                background-color: #f8f9fa;
-            }
+                        <!-- Bootstrap JS -->
+                        <script
+                            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+                        <script>
+                            // Lấy danh sách category từ JSP sang JS
+                            const categories = [
+                                <c:forEach var="cat" items="${categories}" varStatus="loop">
+                                    "${cat.name}"<c:if test="${!loop.last}">,</c:if>
+                                </c:forEach>
+                            ];
+                        </script>
+                        <script>
+                            let catStart = 0;
+                            const catPerPage = 4;
+                            const categoryList = document.getElementById('category-list');
+                            const prevBtn = document.getElementById('category-prev');
+                            const nextBtn = document.getElementById('category-next');
 
-            .bold-text2{
-                display: inline-block;          /* Giúp viền gọn sát chữ */
-                border: 3px solid #28a745;       /* Viền xanh lá */
-                padding: 2px 6px;                /* Khoảng cách giữa chữ và viền */
-                border-radius: 4px;              /* Bo góc nhẹ */
-                font-weight: bold;               /* In đậm (áp dụng chung cho cả 3) */
-                margin: 5px 5px ;
-                background-color: #f8f9fa;
-            }
-            .bold-text3 {
-                display: inline-block;          /* Giúp viền gọn sát chữ */
-                border: 3px solid #28a745;       /* Viền xanh lá */
-                padding: 2px 6px;                /* Khoảng cách giữa chữ và viền */
-                border-radius: 4px;              /* Bo góc nhẹ */
-                font-weight: bold;               /* In đậm (áp dụng chung cho cả 3) */
-                margin: 5px 5px ;                   /* Tạo khoảng cách dọc giữa các dòng */
-                background-color: #f8f9fa;
-            }
-            .company-intro {
-                background-color: #9ED2BB;
-                padding: 30px;
-                border-radius: 10px;
-                margin-bottom: 40px;
-                font-size: 1.25rem;      /* Làm chữ to hơn (20px) */
-                line-height: 1.8;        /* Giãn dòng dễ đọc */
-                text-align: justify;     /* Căn đều chữ cho đẹp */            /* Màu chữ dễ nhìn */
-                margin-top: 15px;
-                color: white;
-            }
-            .company-intro img {
-                width: 100%;              /* Làm ảnh chiếm toàn bộ chiều ngang khung */
-                height: auto;             /* Giữ tỉ lệ ảnh */
-                object-fit: cover;        /* Cắt ảnh để lấp đầy khung mà không bị méo */
-                border-radius: 10px;
-                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-                transition: transform 0.3s ease;
-            }
-            .commitment-section {
-                background-color: #171717;
-                color: white;
-                padding: 60px 20px;
-                margin-top: 40px;
-            }
+                            function renderCategories() {
+                                categoryList.innerHTML = '';
+                                for (let i = catStart; i < Math.min(catStart + catPerPage, categories.length); i++) {
+                                    const span = document.createElement('span');
+                                    span.className = 'badge bg-success mx-2';
+                                    span.textContent = categories[i];
+                                    categoryList.appendChild(span);
+                                }
+                                prevBtn.disabled = catStart === 0;
+                                nextBtn.disabled = catStart + catPerPage >= categories.length;
+                            }
 
-            .commitment-title {
-                font-size: 2.2rem;
-                font-weight: bold;
-                margin-bottom: 10px;
-            }
+                            prevBtn.onclick = function () {
+                                if (catStart > 0) {
+                                    catStart -= catPerPage;
+                                    if (catStart < 0) catStart = 0;
+                                    renderCategories();
+                                }
+                            };
+                            nextBtn.onclick = function () {
+                                if (catStart + catPerPage < categories.length) {
+                                    catStart += catPerPage;
+                                    renderCategories();
+                                }
+                            };
 
-            .commitment-subtitle {
-                font-size: 1.2rem;
-                margin-bottom: 40px;
-            }
+                            // Khởi tạo
+                            renderCategories();
+                        </script>
+                    </body>
 
-            .commitment-features {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 30px;
-            }
-
-            .feature-box {
-                text-align: center;
-                flex: 1 1 200px;
-            }
-
-            .feature-icon {
-                width: 60px;
-                margin-bottom: 15px;
-            }
-
-            footer {
-                background-color:#388e3c;
-                color: white;
-                padding: 20px 0;
-            }
-
-            footer .container {
-                text-align: left;
-            }
-
-            footer a {
-                color: white;
-                text-decoration: none;
-            }
-
-            footer a:hover {
-                text-decoration: underline;
-            }
-        </style>
-
-    </head>
-    <body>
-        <!-- Modal Đăng nhập -->
-
-    </div>
-    <!-- Logo and Search -->
-    <div class="logo-bar">
-        <div class="container d-flex align-items-center justify-content-between flex-wrap">
-            <div class="d-flex align-items-center logo">
-                <img src="images\logo.png" alt="Logo">
-                <h1>VUONCAYDANANG.COM
-                    <small>Chuyên Mua Bán Cây Xanh</small></h1>
-            </div>
-            <div class="input-group w-50">
-                <input type="text" class="form-control" placeholder="Bạn muốn tìm gì...">
-                <button class="btn btn-success">Tìm</button>
-            </div>
-            <div class="text-end">
-                <p class="mb-0 hotline-label">Hotline:</p>
-                <div class="hotline-number">0968 702 490</div>
-            </div>
-            <div class="d-flex gap-2 ms-auto">
-                <a href="${pageContext.request.contextPath}/cart" class="btn btn-warning">GIỎ HÀNG </a>
-                <% if (user != null) {%>
-                <div class="dropdown">
-                    <button class="btn btn-outline-light bg-success text-white dropdown-toggle" data-bs-toggle="dropdown">
-
-                        <%= user.getFullName()%>
-
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="viewProfile">Xem hồ sơ</a></li>
-                        <li><a class="dropdown-item" href="editProfile.jsp">Chỉnh sửa hồ sơ</a></li>
-                        <li><a class="dropdown-item" href="logout">Đăng xuất</a></li>
-                    </ul>
-                </div>
-                <% } else { %>
-                <a href="login.jsp" class="btn btn-outline-light bg-success text-white">Đăng nhập</a>
-                <% }%>
-            </div>
-        </div>
-    </div>
-
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
-        <div class="container">
-            <ul class="navbar-nav d-flex justify-content-around w-100">
-                <li class="nav-item"><a class="nav-link" href="#">TRANG CHỦ</a></li>
-
-                <!-- Dropdown GIỚI THIỆU -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="gioithieuDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        GIỚI THIỆU
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="gioithieuDropdown">
-                        <li><a class="dropdown-item" href="#">Cây cảnh</a></li>
-                        <li><a class="dropdown-item" href="#">Chuyên gia</a></li>
-                    </ul>
-                </li>
-
-                <li class="nav-item"><a class="nav-link" href="#">SẢN PHẨM</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">BÁO GIÁ</a></li>
-
-                <!-- Dropdown DỊCH VỤ -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="dichvuDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        DỊCH VỤ
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="dichvuDropdown">
-                        <li><a class="dropdown-item" href="#">Chăm sóc cây</a></li>
-                    </ul>
-                </li>
-
-                <li class="nav-item"><a class="nav-link" href="#">TIN TỨC</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">DỰ ÁN</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">LIÊN HỆ</a></li>
-            </ul>
-        </div>
-    </nav>
-    <!-- Main content -->
-    <div class="container my-4">
-        <div class="row">
-            <!-- Sidebar -->
-            <aside class="col-md-3 sidebar">
-                <h5>Danh mục sản phẩm</h5>
-                <ul class="list-group">
-                    <li class="list-group-item"><a href="#">Cây Xanh Công Trình</a></li>
-                    <li class="list-group-item"><a href="#">Cây Xanh Ngoại Thất</a></li>
-                    <li class="list-group-item"><a href="#">Cây Xanh Nội Thất</a></li>
-                    <li class="list-group-item"><a href="#">Cây Phong Thủy</a></li>
-                </ul>
-            </aside>
-
-            <!-- Carousel Banner -->
-            <div class="col-md-9">
-                <div id="bannerCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img src="images\banner.jpg" class="d-block w-100" alt="Cây xanh 1">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="images\banner2.jpg" class="d-block w-100" alt="Cây xanh 2">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="images\banner 3.jpg" class="d-block w-100" alt="Cây xanh 3">
-                        </div>
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#bannerCarousel" data-bs-slide="next">
-                        <span class="carousel-control-next-icon"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
-                    <div class="carousel-indicators">
-                        <button type="button" data-bs-target="#banner   Carousel" data-bs-slide-to="0" class="active"></button>
-                        <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="1"></button>
-                        <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="2"></button>   
-                    </div>
-                </div>
-            </div>
-
-            <!-- Product Categories full width -->
-            <section>
-                <h3 class="text-success text-center">Danh mục sản phẩm</h3>
-                <div class="row banner-categories text-center mt-4">
-                    <c:forEach var="plant" items="${plants}">
-                        <div class="col-md-3">
-                            <img src="${plant.imageUrl}" class="img-fluid rounded shadow-sm" alt="${plant.name}">
-                            <p class="bold-text1">${plant.name}</p>
-
-                            <p class="bold-text2">Giá: <fmt:formatNumber value="${plant.price}" type="currency" currencySymbol="₫" /></p>
-
-                            <form action="${pageContext.request.contextPath}/cart" method="post" class="d-inline">
-                                <input type="hidden" name="action" value="add">
-                                <input type="hidden" name="plantId" value="${plant.plantId}">
-                                <input type="number" name="quantity" value="1" min="1" max="${plant.stockQuantity}" class="form-control d-inline-block" style="width: 80px;">
-                                <button type="submit" class="btn btn-success btn-sm">Thêm vào giỏ</button>
-                            </form>
-                            <p><a href="#" class="btn btn-primary btn-sm">Chi tiết</a></p>
-                            <p>Số lượng: ${plant.stockQuantity}</p>
-                        </div>
-                    </c:forEach>
-                    <c:if test="${empty plants}">
-                        <div class="alert alert-warning text-center">Không có sản phẩm để hiển thị.</div>
-                    </c:if>
-                </div>
-                <p class="banner-text">GIÁ RẺ - BỀN ĐẸP - GIAO NHANH</p>
-            </section>
-        </div>
-        <div class="container mt-4 company-intro">
-            <h3>Giới thiệu về công ty</h3>
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <p>
-                        Công ty chúng tôi là đơn vị hàng đầu trong lĩnh vực cung cấp các sản phẩm chất lượng cao,
-                        đáp ứng nhu cầu đa dạng của khách hàng. Với đội ngũ nhân viên chuyên nghiệp và tận tâm,
-                        chúng tôi cam kết mang lại trải nghiệm mua sắm tuyệt vời cùng với dịch vụ chăm sóc khách hàng tốt nhất.
-                    </p>
-                </div>
-                <div class="col-md-6">
-                    <img src="images\gioithieu.png" alt="Ảnh giới thiệu công ty" class="img-fluid rounded shadow">
-                </div>
-            </div>
-        </div>
-        <section class="commitment-section">
-            <div class="container text-center">
-                <h2 class="commitment-title">CAM KẾT TỪ VƯỜN CÂY ĐÀ Nẵng</h2>
-                <p class="commitment-subtitle">Công Ty Vườn Cây Đà Nẵng – Chuyên mua bán cây xanh</p>
-                <div class="row commitment-features">
-                    <div class="col-md-3 col-sm-6 feature-box">
-                        <img src="images\truck.png" alt="Giao hàng" class="feature-icon">
-                        <p><strong>Giao hàng trên toàn quốc</strong>
-                            Tất cả giá trị của đơn hàng.</p>
-                    </div>
-                    <div class="col-md-3 col-sm-6 feature-box">
-                        <img src="images\exchange.png" alt="Đổi trả" class="feature-icon">
-                        <p><strong>Đổi trả miễn phí</strong>
-                            Trong vòng 7 ngày</p>
-                    </div>
-                    <div class="col-md-3 col-sm-6 feature-box">
-                        <img src=images\customer-service.png alt="Hotline" class="feature-icon">
-                        <p><strong>Hotline: 0968 702 490</strong>
-                            Hỗ trợ 24/7</p>
-                    </div>
-                    <div class="col-md-3 col-sm-6 feature-box">
-                        <img src="images\price.png" alt="Thanh toán" class="feature-icon">
-                        <p><strong>Thanh toán</strong>
-                            Bảo mật thanh toán</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-    </div></div>
-<!-- Footer -->
-<footer>
-    <div class="container">
-        <h5>Thông tin liên hệ</h5>
-        <p><i class="fa fa-map-marker-alt"></i> Địa chỉ: Số 123 Đường Nguyễn Văn Linh, Quận Hòa Hải, Đà Nẵng </p>
-        <p><i class="fa fa-phone"></i> Hotline: 0949483982 </p>
-        <p><i class="fa fa-envelope"></i> Email: nguyensuminhnhat@gmail.com</p>
-        <p><i class="fa fa-globe"></i> Website: <a href="http://vuoncaydanang.com" style="color: white; text-decoration: underline;">vuoncaydanang.com</a></p>
-        <div class="mt-3">
-            <a href="#" style="color: white; margin-right: 10px;"><i class="fab fa-facebook-f"></i> Facebook</a>
-            <a href="#" style="color: white; margin-right: 10px;"><i class="fab fa-instagram"></i> Instagram</a>
-            <a href="#" style="color: white;"><i class="fab fa-youtube"></i> YouTube</a>
-        </div>
-        <p class="mt-3 mb-0">© 2025 Vườn Cây Đà Nẵng. All rights reserved.</p>
-    </div>
-</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
-
+                    </html>

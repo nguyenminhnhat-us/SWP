@@ -3,10 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/ADMIN/Desktop/SWP/SWP/src/java/controller/PlantListServlet.java</file>
-            <file>file:/C:/Users/ADMIN/Desktop/SWP/SWP/src/java/controller/PlantDetailsServlet.java</file>
-            <file>file:/C:/Users/ADMIN/Desktop/SWP/SWP/src/java/model/Plant.java</file>
-            <file>file:/C:/Users/ADMIN/Desktop/SWP/SWP/src/java/model/PlantDAO.java</file>
+            <file>file:/C:/Users/ADMIN/Downloads/SWP-main%20(2)/SWP-main/SWP/web/css/header-style.css</file>
+            <file>file:/C:/Users/ADMIN/Downloads/SWP-main%20(2)/SWP-main/SWP/src/java/controller/CartServlet.java</file>
+            <file>file:/C:/Users/ADMIN/Downloads/SWP-main%20(2)/SWP-main/SWP/web/common/home/header.jsp</file>
+            <file>file:/C:/Users/ADMIN/Downloads/SWP-main%20(2)/SWP-main/SWP/src/java/controller/CartFilter.java</file>
         </group>
     </open-files>
 </project-private>

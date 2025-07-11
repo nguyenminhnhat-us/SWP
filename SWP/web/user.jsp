@@ -14,6 +14,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <!-- Font Awesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+        <link rel="stylesheet" href="css/header-style.css">
 
         <style>
             
@@ -89,7 +90,7 @@
     border-top: none; /* bỏ viền trên của các ô, trừ ô đầu */
     margin: 0; /* bỏ khoảng cách giữa các ô */
     border-radius: 0; /* bỏ bo góc */
-    background-color:  !important;
+    background-color: #171717 !important;
     padding: 8px 12px;
     }
 
@@ -145,33 +146,16 @@
         object-fit: cover;
         border-radius: 8px;
     }
-    .bold-text1{ 
-        display: inline-block;          /* Giúp viền gọn sát chữ */
-        border: 3px solid #28a745;       /* Viền xanh lá */
-        padding: 2px 6px;                /* Khoảng cách giữa chữ và viền */
-        border-radius: 4px;              /* Bo góc nhẹ */
-        font-weight: bold;               /* In đậm (áp dụng chung cho cả 3) */
-        margin: 5px 5px ;
-    background-color: #f8f9fa;}
-
-    .bold-text2{ 
-        display: inline-block;          /* Giúp viền gọn sát chữ */
-        border: 3px solid #28a745;       /* Viền xanh lá */
-        padding: 2px 6px;                /* Khoảng cách giữa chữ và viền */
-        border-radius: 4px;              /* Bo góc nhẹ */
-        font-weight: bold;               /* In đậm (áp dụng chung cho cả 3) */
-        margin: 5px 5px ;
+    .bold-text1, .bold-text2, .bold-text3 {
+    display: inline-block;
+    border: 3px solid #28a745;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: bold;
+    margin: 5px 5px;
     background-color: #f8f9fa;
-    }
-    .bold-text3 {
-        display: inline-block;          /* Giúp viền gọn sát chữ */
-        border: 3px solid #28a745;       /* Viền xanh lá */
-        padding: 2px 6px;                /* Khoảng cách giữa chữ và viền */
-        border-radius: 4px;              /* Bo góc nhẹ */
-        font-weight: bold;               /* In đậm (áp dụng chung cho cả 3) */
-        margin: 5px 5px ;                   /* Tạo khoảng cách dọc giữa các dòng */
-        background-color: #f8f9fa;
-    }
+}
+
     .company-intro {
   background-color: #9ED2BB;
   padding: 30px;
@@ -467,6 +451,6 @@ footer a:hover {
 </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
-    
+
+
 

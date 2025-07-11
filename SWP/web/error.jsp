@@ -5,9 +5,8 @@
     <meta charset="UTF-8">
     <title>Lỗi - Vườn Cây Đà Nẵng</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body { background-color: #171717; color: white; }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/header-style.css">
 </head>
 <body>
     <div class="container my-4 text-center">

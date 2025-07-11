@@ -18,11 +18,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Trang Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="../css/login-style.css">
 </head>
 <body>
-    <h1>Chào m?ng Admin: <%= user.getFullName() %></h1>
-    <p>?ây là trang qu?n tr?</p>
+    <h1>Chï¿½o m?ng Admin: <%= user.getFullName() %></h1>
+    <p>?ï¿½y lï¿½ trang qu?n tr?</p>
     <a href="../logout">??ng xu?t</a>
 </body>
 </html>

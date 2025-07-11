@@ -89,6 +89,10 @@ public class User {
     public boolean isIsActive() {
         return isActive;
     }
+    
+    public boolean isActive() {
+        return isActive;
+    }
 
     public void setIsActive(boolean isActive) {
         this.isActive = isActive;

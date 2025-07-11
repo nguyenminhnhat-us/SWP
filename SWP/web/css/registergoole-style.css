@@ -1,5 +1,5 @@
 body {
-    background-color: #171717;
+    background: linear-gradient(to right, #e9ffe6, #b7f5c2);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
@@ -10,14 +10,14 @@ body {
 }
 
 .form-container {
-    background-color: #212121; /* nền tối đậm hơn cho form */
+    background-color: #fff;
     padding: 30px 40px;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.6); /* bóng nhẹ màu xanh */
+    border-radius: 15px;
+    box-shadow: 0 4px 16px rgba(40, 167, 69, 0.12);
     width: 100%;
     max-width: 400px;
     text-align: center;
-    color: #28a745; /* chữ xanh */
+    color: #28a745;
 }
 
 .form-container h2 {
@@ -31,35 +31,46 @@ body {
     width: 100%;
     padding: 10px 12px;
     border: 2px solid #28a745;
-    border-radius: 6px;
-    background-color: #171717;
-    color: #fff;
+    border-radius: 8px;
+    background-color: #f9fff7;
+    color: #222;
     font-size: 16px;
     transition: border-color 0.3s ease;
 }
 
 .form-container input[type="email"]:focus {
-    border-color: #5cd65c;
+    border-color: #218838;
     outline: none;
-    background-color: #222;
+    background-color: #f3fff0;
 }
 
 .form-container button {
     width: 100%;
     padding: 12px;
     margin-top: 20px;
-    background-color: #28a745;
-    color: white;
+    border-radius: 8px;
+    background: #28a745;
+    color: #fff;
     border: none;
-    border-radius: 6px;
     font-weight: 600;
     font-size: 16px;
+    box-shadow: 0 2px 8px rgba(40, 167, 69, 0.08);
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background 0.2s;
 }
 
 .form-container button:hover {
-    background-color: #218838;
+    background: #218838;
+}
+
+.form-container a {
+    color: #28a745;
+    text-decoration: underline;
+    transition: color 0.2s;
+}
+
+.form-container a:hover {
+    color: #218838;
 }
 
 .error-message {

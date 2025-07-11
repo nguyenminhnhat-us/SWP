@@ -8,28 +8,10 @@
         <title>Giỏ hàng - Vườn Cây Đà Nẵng</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-        <style>
-            body {
-                background-color: #171717;
-                color: white;
-            }
-            .cart-table {
-                background-color: #2e2e2e;
-                border-radius: 8px;
-            }
-            .cart-table th, .cart-table td {
-                vertical-align: middle;
-            }
-            .btn-action {
-                margin: 5px;
-            }
-            .total-section {
-                font-size: 1.2rem;
-                font-weight: bold;
-            }
-        </style>
+        <link rel="stylesheet" href="css/header-style.css">
     </head>
     <body>
+        <jsp:include page="/common/home/header.jsp" />
         <div class="container my-4">
             <h2 class="text-success text-center">Giỏ hàng của bạn</h2>
             <c:if test="${not empty error}">
@@ -89,7 +71,6 @@
                             <button type="submit" class="btn btn-danger">Xóa toàn bộ</button>
                         </form>
                         <a href="${pageContext.request.contextPath}/checkout.jsp" class="btn btn-success">Thanh toán</a>
-                        <a href="${pageContext.request.contextPath}/index.jsp" class="btn btn-secondary">Quay lại</a>
                     </div>
                 </c:otherwise>
             </c:choose>
