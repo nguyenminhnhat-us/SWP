@@ -1,44 +1,46 @@
 package controller.dashboard;
 
 import dal.OrderDAO;
+import dal.CareCartDAO;
 import model.Order;
 import model.OrderDetail;
+import model.CareCart;
+import model.User;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.*;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-import jakarta.servlet.http.HttpSession;
-import model.User;
 
 @WebServlet("/dashboard/order-history")
 public class ViewOrderHistoryController extends HttpServlet {
 
     private OrderDAO orderDAO = new OrderDAO();
+    private CareCartDAO careCartDAO = new CareCartDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
         User user = (User) session.getAttribute("user");
 
         if (user == null) {
-            response.sendRedirect(request.getContextPath() + "/login.jsp"); // Redirect to login if not logged in
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
             return;
         }
 
-        boolean isAdmin = "admin".equalsIgnoreCase(user.getRole()); // Assuming "admin" is the role for administrators
+        boolean isAdmin = "admin".equalsIgnoreCase(user.getRole());
 
         try {
             String orderIdParam = request.getParameter("orderId");
 
+            // Nếu có orderId thì hiển thị chi tiết đơn sản phẩm
             if (orderIdParam != null && !orderIdParam.isEmpty()) {
-                // View order details
                 int orderId = Integer.parseInt(orderIdParam);
-                Order order = null;
-                List<OrderDetail> orderDetails = null;
+                Order order;
+                List<OrderDetail> orderDetails;
 
                 if (isAdmin) {
                     order = orderDAO.getOrderById(orderId);
@@ -51,26 +53,31 @@ public class ViewOrderHistoryController extends HttpServlet {
                     request.setAttribute("order", order);
                     request.setAttribute("orderDetails", orderDetails);
                     request.getRequestDispatcher("/dashboard/order-detail.jsp").forward(request, response);
+                    return;
                 } else {
                     request.setAttribute("error", "Không tìm thấy đơn hàng hoặc bạn không có quyền truy cập.");
-                    request.getRequestDispatcher("/dashboard/order-history.jsp").forward(request, response);
                 }
-
-            } else {
-                // View all orders or user's own orders
-                List<Order> orders;
-                if (isAdmin) {
-                    orders = orderDAO.getAllOrders();
-                } else {
-                    orders = orderDAO.getOrdersByUserId(user.getUserId());
-                }
-                request.setAttribute("orders", orders);
-                request.getRequestDispatcher("/dashboard/order-history.jsp").forward(request, response);
             }
-        } catch (SQLException | ClassNotFoundException e) {
+
+            // ✅ Hiển thị danh sách đơn hàng (product order)
+            List<Order> orders = isAdmin
+                    ? orderDAO.getAllOrders()
+                    : orderDAO.getOrdersByUserId(user.getUserId());
+
+            // ✅ Hiển thị danh sách đơn chăm sóc cây
+            List<CareCart> careCarts = isAdmin
+                    ? careCartDAO.getAllCareCarts()
+                    : careCartDAO.getAllCareCartsByUserId(user.getUserId());
+
+            request.setAttribute("orders", orders);
+            request.setAttribute("careCarts", careCarts); // ⚠️ Đổi tên thành careCarts
+
+            request.getRequestDispatcher("/dashboard/order-history.jsp").forward(request, response);
+
+        } catch (SQLException | ClassNotFoundException | NumberFormatException e) {
             e.printStackTrace();
             request.setAttribute("error", "Lỗi khi tải dữ liệu đơn hàng: " + e.getMessage());
-                request.getRequestDispatcher("/dashboard/order-history.jsp").forward(request, response);
+            request.getRequestDispatcher("/dashboard/order-history.jsp").forward(request, response);
         }
     }
 
@@ -80,33 +87,30 @@ public class ViewOrderHistoryController extends HttpServlet {
         User user = (User) session.getAttribute("user");
 
         if (user == null || !"admin".equalsIgnoreCase(user.getRole())) {
-            response.sendRedirect(request.getContextPath() + "/login.jsp"); // Redirect to login if not admin
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
             return;
         }
 
         String action = request.getParameter("action");
-        if ("updateStatus".equals(action)) {
-            int orderId = Integer.parseInt(request.getParameter("orderId"));
-            String newStatus = request.getParameter("status");
 
+        if ("updateStatus".equals(action)) {
             try {
+                int orderId = Integer.parseInt(request.getParameter("orderId"));
+                String newStatus = request.getParameter("status");
+
                 boolean success = orderDAO.updateOrderStatus(orderId, newStatus);
-                if (success) {
-                    session.setAttribute("message", "Cập nhật trạng thái đơn hàng thành công.");
-                    session.setAttribute("messageType", "success");
-                } else {
-                    session.setAttribute("message", "Cập nhật trạng thái đơn hàng thất bại.");
-                    session.setAttribute("messageType", "error");
-                }
-            } catch (SQLException | ClassNotFoundException e) {
+                session.setAttribute("message", success ? "Cập nhật trạng thái thành công." : "Cập nhật thất bại.");
+                session.setAttribute("messageType", success ? "success" : "error");
+
+                response.sendRedirect(request.getContextPath() + "/dashboard/order-history?orderId=" + orderId);
+            } catch (Exception e) {
                 e.printStackTrace();
-                session.setAttribute("message", "Lỗi khi cập nhật trạng thái đơn hàng: " + e.getMessage());
+                session.setAttribute("message", "Lỗi khi cập nhật: " + e.getMessage());
                 session.setAttribute("messageType", "error");
+                response.sendRedirect(request.getContextPath() + "/dashboard/order-history");
             }
-            // Redirect back to the order detail page
-            response.sendRedirect(request.getContextPath() + "/dashboard/order-history?orderId=" + orderId);
         } else {
-            doGet(request, response); // Fallback to doGet for other actions
+            doGet(request, response);
         }
     }
 }

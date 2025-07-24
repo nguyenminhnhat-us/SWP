@@ -117,7 +117,7 @@ public class LoginGoogleServlet extends HttpServlet {
             session.setAttribute("user", user);
             System.out.println("Session created for user ID: " + user.getUserId());
 
-            response.sendRedirect("user.jsp");
+            response.sendRedirect("index.jsp");
 
         } catch (Exception e) {
             System.err.println("OAuth2 Exception: " + e.getMessage());

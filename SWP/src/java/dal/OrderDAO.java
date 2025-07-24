@@ -3,27 +3,20 @@ package dal;
 import model.Order;
 import model.OrderDetail;
 import controller.DBUtil;
+
 import java.sql.*;
-import java.util.List;
+import java.util.*;
 import java.math.BigDecimal;
-<<<<<<< HEAD
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-=======
->>>>>>> 0517b3c45e1915473af6ab55ae6de0b26642502b
 
 public class OrderDAO {
 
     public int createOrder(Order order) throws SQLException, ClassNotFoundException {
         String sql = "INSERT INTO Orders (user_id, total_amount, status, shipping_address, payment_method) VALUES (?, ?, ?, ?, ?)";
         int orderId = 0;
-<<<<<<< HEAD
-        try (Connection con = DBUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-=======
+
         try (Connection con = DBUtil.getConnection();
              PreparedStatement st = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
->>>>>>> 0517b3c45e1915473af6ab55ae6de0b26642502b
+
             st.setInt(1, order.getUserId());
             st.setBigDecimal(2, order.getTotalAmount());
             st.setString(3, order.getStatus());
@@ -42,12 +35,9 @@ public class OrderDAO {
 
     public void createOrderDetails(int orderId, List<OrderDetail> orderDetails) throws SQLException, ClassNotFoundException {
         String sql = "INSERT INTO OrderDetails (order_id, plant_id, quantity, unit_price) VALUES (?, ?, ?, ?)";
-<<<<<<< HEAD
-        try (Connection con = DBUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
-=======
         try (Connection con = DBUtil.getConnection();
              PreparedStatement st = con.prepareStatement(sql)) {
->>>>>>> 0517b3c45e1915473af6ab55ae6de0b26642502b
+
             for (OrderDetail detail : orderDetails) {
                 st.setInt(1, orderId);
                 st.setInt(2, detail.getPlantId());
@@ -60,12 +50,15 @@ public class OrderDAO {
     }
 
     public List<Order> getAllOrders() throws SQLException, ClassNotFoundException {
-        List<Order> orders = new java.util.ArrayList<>();
+        List<Order> orders = new ArrayList<>();
         String sql = "SELECT order_id, user_id, total_amount, status, shipping_address, payment_method, created_at FROM Orders ORDER BY created_at DESC";
-<<<<<<< HEAD
-        try (Connection con = DBUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
+
+        try (Connection con = DBUtil.getConnection();
+             PreparedStatement st = con.prepareStatement(sql);
+             ResultSet rs = st.executeQuery()) {
+
             while (rs.next()) {
-                Order order = new Order(
+                orders.add(new Order(
                         rs.getInt("order_id"),
                         rs.getInt("user_id"),
                         rs.getBigDecimal("total_amount"),
@@ -73,22 +66,7 @@ public class OrderDAO {
                         rs.getString("shipping_address"),
                         rs.getString("payment_method"),
                         rs.getTimestamp("created_at")
-=======
-        try (Connection con = DBUtil.getConnection();
-             PreparedStatement st = con.prepareStatement(sql);
-             ResultSet rs = st.executeQuery()) {
-            while (rs.next()) {
-                Order order = new Order(
-                    rs.getInt("order_id"),
-                    rs.getInt("user_id"),
-                    rs.getBigDecimal("total_amount"),
-                    rs.getString("status"),
-                    rs.getString("shipping_address"),
-                    rs.getString("payment_method"),
-                    rs.getTimestamp("created_at")
->>>>>>> 0517b3c45e1915473af6ab55ae6de0b26642502b
-                );
-                orders.add(order);
+                ));
             }
         }
         return orders;
@@ -96,17 +74,14 @@ public class OrderDAO {
 
     public Order getOrderById(int orderId) throws SQLException, ClassNotFoundException {
         String sql = "SELECT order_id, user_id, total_amount, status, shipping_address, payment_method, created_at FROM Orders WHERE order_id = ?";
-<<<<<<< HEAD
-        try (Connection con = DBUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
-=======
+
         try (Connection con = DBUtil.getConnection();
              PreparedStatement st = con.prepareStatement(sql)) {
->>>>>>> 0517b3c45e1915473af6ab55ae6de0b26642502b
+
             st.setInt(1, orderId);
             try (ResultSet rs = st.executeQuery()) {
                 if (rs.next()) {
                     return new Order(
-<<<<<<< HEAD
                             rs.getInt("order_id"),
                             rs.getInt("user_id"),
                             rs.getBigDecimal("total_amount"),
@@ -114,15 +89,6 @@ public class OrderDAO {
                             rs.getString("shipping_address"),
                             rs.getString("payment_method"),
                             rs.getTimestamp("created_at")
-=======
-                        rs.getInt("order_id"),
-                        rs.getInt("user_id"),
-                        rs.getBigDecimal("total_amount"),
-                        rs.getString("status"),
-                        rs.getString("shipping_address"),
-                        rs.getString("payment_method"),
-                        rs.getTimestamp("created_at")
->>>>>>> 0517b3c45e1915473af6ab55ae6de0b26642502b
                     );
                 }
             }
@@ -131,35 +97,25 @@ public class OrderDAO {
     }
 
     public List<OrderDetail> getOrderDetailsByOrderId(int orderId) throws SQLException, ClassNotFoundException {
-        List<OrderDetail> orderDetails = new java.util.ArrayList<>();
-        String sql = "SELECT od.order_detail_id, od.order_id, od.plant_id, od.quantity, od.unit_price, p.name AS plant_name, p.image_url FROM OrderDetails od JOIN Plants p ON od.plant_id = p.plant_id WHERE od.order_id = ?";
-<<<<<<< HEAD
-        try (Connection con = DBUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
-=======
+        List<OrderDetail> orderDetails = new ArrayList<>();
+        String sql = "SELECT od.order_detail_id, od.order_id, od.plant_id, od.quantity, od.unit_price, p.name AS plant_name, p.image_url " +
+                "FROM OrderDetails od JOIN Plants p ON od.plant_id = p.plant_id WHERE od.order_id = ?";
+
         try (Connection con = DBUtil.getConnection();
              PreparedStatement st = con.prepareStatement(sql)) {
->>>>>>> 0517b3c45e1915473af6ab55ae6de0b26642502b
+
             st.setInt(1, orderId);
             try (ResultSet rs = st.executeQuery()) {
                 while (rs.next()) {
                     OrderDetail detail = new OrderDetail(
-<<<<<<< HEAD
                             rs.getInt("order_detail_id"),
                             rs.getInt("order_id"),
                             rs.getInt("plant_id"),
                             rs.getInt("quantity"),
                             rs.getBigDecimal("unit_price")
                     );
-
-=======
-                        rs.getInt("order_detail_id"),
-                        rs.getInt("order_id"),
-                        rs.getInt("plant_id"),
-                        rs.getInt("quantity"),
-                        rs.getBigDecimal("unit_price")
-                    );
-                  
->>>>>>> 0517b3c45e1915473af6ab55ae6de0b26642502b
+                        detail.setPlantName(rs.getString("plant_name"));
+                        detail.setPlantImage(rs.getString("image_url"));
                     orderDetails.add(detail);
                 }
             }
@@ -168,19 +124,17 @@ public class OrderDAO {
     }
 
     public List<Order> getOrdersByUserId(int userId) throws SQLException, ClassNotFoundException {
-        List<Order> orders = new java.util.ArrayList<>();
-        String sql = "SELECT order_id, user_id, total_amount, status, shipping_address, payment_method, created_at FROM Orders WHERE user_id = ? ORDER BY created_at DESC";
-<<<<<<< HEAD
-        try (Connection con = DBUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
-=======
+        List<Order> orders = new ArrayList<>();
+        String sql = "SELECT order_id, user_id, total_amount, status, shipping_address, payment_method, created_at " +
+                "FROM Orders WHERE user_id = ? ORDER BY created_at DESC";
+
         try (Connection con = DBUtil.getConnection();
              PreparedStatement st = con.prepareStatement(sql)) {
->>>>>>> 0517b3c45e1915473af6ab55ae6de0b26642502b
+
             st.setInt(1, userId);
             try (ResultSet rs = st.executeQuery()) {
                 while (rs.next()) {
-                    Order order = new Order(
-<<<<<<< HEAD
+                    orders.add(new Order(
                             rs.getInt("order_id"),
                             rs.getInt("user_id"),
                             rs.getBigDecimal("total_amount"),
@@ -188,17 +142,7 @@ public class OrderDAO {
                             rs.getString("shipping_address"),
                             rs.getString("payment_method"),
                             rs.getTimestamp("created_at")
-=======
-                        rs.getInt("order_id"),
-                        rs.getInt("user_id"),
-                        rs.getBigDecimal("total_amount"),
-                        rs.getString("status"),
-                        rs.getString("shipping_address"),
-                        rs.getString("payment_method"),
-                        rs.getTimestamp("created_at")
->>>>>>> 0517b3c45e1915473af6ab55ae6de0b26642502b
-                    );
-                    orders.add(order);
+                    ));
                 }
             }
         }
@@ -206,19 +150,17 @@ public class OrderDAO {
     }
 
     public Order getOrderByIdAndUserId(int orderId, int userId) throws SQLException, ClassNotFoundException {
-        String sql = "SELECT order_id, user_id, total_amount, status, shipping_address, payment_method, created_at FROM Orders WHERE order_id = ? AND user_id = ?";
-<<<<<<< HEAD
-        try (Connection con = DBUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
-=======
+        String sql = "SELECT order_id, user_id, total_amount, status, shipping_address, payment_method, created_at " +
+                "FROM Orders WHERE order_id = ? AND user_id = ?";
+
         try (Connection con = DBUtil.getConnection();
              PreparedStatement st = con.prepareStatement(sql)) {
->>>>>>> 0517b3c45e1915473af6ab55ae6de0b26642502b
+
             st.setInt(1, orderId);
             st.setInt(2, userId);
             try (ResultSet rs = st.executeQuery()) {
                 if (rs.next()) {
                     return new Order(
-<<<<<<< HEAD
                             rs.getInt("order_id"),
                             rs.getInt("user_id"),
                             rs.getBigDecimal("total_amount"),
@@ -226,15 +168,6 @@ public class OrderDAO {
                             rs.getString("shipping_address"),
                             rs.getString("payment_method"),
                             rs.getTimestamp("created_at")
-=======
-                        rs.getInt("order_id"),
-                        rs.getInt("user_id"),
-                        rs.getBigDecimal("total_amount"),
-                        rs.getString("status"),
-                        rs.getString("shipping_address"),
-                        rs.getString("payment_method"),
-                        rs.getTimestamp("created_at")
->>>>>>> 0517b3c45e1915473af6ab55ae6de0b26642502b
                     );
                 }
             }
@@ -243,13 +176,12 @@ public class OrderDAO {
     }
 
     public boolean hasUserPurchasedPlant(int userId, int plantId) throws SQLException, ClassNotFoundException {
-        String sql = "SELECT COUNT(od.order_id) FROM OrderDetails od JOIN Orders o ON od.order_id = o.order_id WHERE o.user_id = ? AND od.plant_id = ? AND o.status = 'delivered'";
-<<<<<<< HEAD
-        try (Connection con = DBUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
-=======
+        String sql = "SELECT COUNT(od.order_id) FROM OrderDetails od JOIN Orders o ON od.order_id = o.order_id " +
+                "WHERE o.user_id = ? AND od.plant_id = ? AND o.status = 'delivered'";
+
         try (Connection con = DBUtil.getConnection();
              PreparedStatement st = con.prepareStatement(sql)) {
->>>>>>> 0517b3c45e1915473af6ab55ae6de0b26642502b
+
             st.setInt(1, userId);
             st.setInt(2, plantId);
             try (ResultSet rs = st.executeQuery()) {
@@ -262,14 +194,12 @@ public class OrderDAO {
     }
 
     public int getOrderIdForUserAndPlant(int userId, int plantId) throws SQLException, ClassNotFoundException {
-        // Get the latest order ID where the user purchased this plant and the order is delivered
-        String sql = "SELECT TOP 1 od.order_id FROM OrderDetails od JOIN Orders o ON od.order_id = o.order_id WHERE o.user_id = ? AND od.plant_id = ? AND o.status = 'delivered' ORDER BY o.created_at DESC";
-<<<<<<< HEAD
-        try (Connection con = DBUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
-=======
+        String sql = "SELECT TOP 1 od.order_id FROM OrderDetails od JOIN Orders o ON od.order_id = o.order_id " +
+                "WHERE o.user_id = ? AND od.plant_id = ? AND o.status = 'delivered' ORDER BY o.created_at DESC";
+
         try (Connection con = DBUtil.getConnection();
              PreparedStatement st = con.prepareStatement(sql)) {
->>>>>>> 0517b3c45e1915473af6ab55ae6de0b26642502b
+
             st.setInt(1, userId);
             st.setInt(2, plantId);
             try (ResultSet rs = st.executeQuery()) {
@@ -278,37 +208,27 @@ public class OrderDAO {
                 }
             }
         }
-        return -1; // Return -1 if not found
-    }
-<<<<<<< HEAD
-
-=======
->>>>>>> 0517b3c45e1915473af6ab55ae6de0b26642502b
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        OrderDAO o = new OrderDAO();
-        System.out.println(o.hasUserPurchasedPlant(2, 9));
+        return -1;
     }
 
     public boolean updateOrderStatus(int orderId, String newStatus) throws SQLException, ClassNotFoundException {
         String sql = "UPDATE Orders SET status = ? WHERE order_id = ?";
-<<<<<<< HEAD
-        try (Connection con = DBUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
-=======
+
         try (Connection con = DBUtil.getConnection();
              PreparedStatement st = con.prepareStatement(sql)) {
->>>>>>> 0517b3c45e1915473af6ab55ae6de0b26642502b
+
             st.setString(1, newStatus);
             st.setInt(2, orderId);
-            int rowsAffected = st.executeUpdate();
-            return rowsAffected > 0;
+            return st.executeUpdate() > 0;
         }
     }
-<<<<<<< HEAD
 
-    // Lấy tổng doanh thu từ các đơn hàng có trạng thái delivered
     public BigDecimal getTotalRevenue() throws SQLException, ClassNotFoundException {
         String sql = "SELECT SUM(total_amount) AS total_revenue FROM Orders WHERE status = 'delivered'";
-        try (Connection con = DBUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
+        try (Connection con = DBUtil.getConnection();
+             PreparedStatement st = con.prepareStatement(sql);
+             ResultSet rs = st.executeQuery()) {
+
             if (rs.next()) {
                 return rs.getBigDecimal("total_revenue") != null ? rs.getBigDecimal("total_revenue") : BigDecimal.ZERO;
             }
@@ -316,10 +236,11 @@ public class OrderDAO {
         return BigDecimal.ZERO;
     }
 
-    // Lấy doanh thu theo khoảng thời gian
     public BigDecimal getRevenueByDateRange(String startDate, String endDate) throws SQLException, ClassNotFoundException {
         String sql = "SELECT SUM(total_amount) AS total_revenue FROM Orders WHERE status = 'delivered' AND created_at BETWEEN ? AND ?";
-        try (Connection con = DBUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
+        try (Connection con = DBUtil.getConnection();
+             PreparedStatement st = con.prepareStatement(sql)) {
+
             st.setString(1, startDate + " 00:00:00");
             st.setString(2, endDate + " 23:59:59");
             try (ResultSet rs = st.executeQuery()) {
@@ -331,14 +252,17 @@ public class OrderDAO {
         return BigDecimal.ZERO;
     }
 
-    // Lấy danh sách đơn hàng đã giao
     public List<Order> getDeliveredOrders() throws SQLException, ClassNotFoundException {
         List<Order> orders = new ArrayList<>();
-        String sql = "SELECT order_id, user_id, total_amount, status, shipping_address, payment_method, created_at "
-                + "FROM Orders WHERE status = 'delivered' ORDER BY created_at DESC";
-        try (Connection con = DBUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
+        String sql = "SELECT order_id, user_id, total_amount, status, shipping_address, payment_method, created_at " +
+                "FROM Orders WHERE status = 'delivered' ORDER BY created_at DESC";
+
+        try (Connection con = DBUtil.getConnection();
+             PreparedStatement st = con.prepareStatement(sql);
+             ResultSet rs = st.executeQuery()) {
+
             while (rs.next()) {
-                Order order = new Order(
+                orders.add(new Order(
                         rs.getInt("order_id"),
                         rs.getInt("user_id"),
                         rs.getBigDecimal("total_amount"),
@@ -346,24 +270,26 @@ public class OrderDAO {
                         rs.getString("shipping_address"),
                         rs.getString("payment_method"),
                         rs.getTimestamp("created_at")
-                );
-                orders.add(order);
+                ));
             }
         }
         return orders;
     }
 
-    // Lấy danh sách đơn hàng đã giao trong khoảng thời gian
     public List<Order> getDeliveredOrdersByDateRange(String startDate, String endDate) throws SQLException, ClassNotFoundException {
         List<Order> orders = new ArrayList<>();
-        String sql = "SELECT order_id, user_id, total_amount, status, shipping_address, payment_method, created_at "
-                + "FROM Orders WHERE status = 'delivered' AND created_at BETWEEN ? AND ? ORDER BY created_at DESC";
-        try (Connection con = DBUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
+        String sql = "SELECT order_id, user_id, total_amount, status, shipping_address, payment_method, created_at " +
+                "FROM Orders WHERE status = 'delivered' AND created_at BETWEEN ? AND ? ORDER BY created_at DESC";
+
+        try (Connection con = DBUtil.getConnection();
+             PreparedStatement st = con.prepareStatement(sql)) {
+
             st.setString(1, startDate + " 00:00:00");
             st.setString(2, endDate + " 23:59:59");
+
             try (ResultSet rs = st.executeQuery()) {
                 while (rs.next()) {
-                    Order order = new Order(
+                    orders.add(new Order(
                             rs.getInt("order_id"),
                             rs.getInt("user_id"),
                             rs.getBigDecimal("total_amount"),
@@ -371,23 +297,25 @@ public class OrderDAO {
                             rs.getString("shipping_address"),
                             rs.getString("payment_method"),
                             rs.getTimestamp("created_at")
-                    );
-                    orders.add(order);
+                    ));
                 }
             }
         }
         return orders;
     }
-    
+
     public Map<String, BigDecimal> getRevenueByDay(String startDate, String endDate) throws SQLException, ClassNotFoundException {
         Map<String, BigDecimal> revenueByDay = new HashMap<>();
         String sql = "SELECT CAST(created_at AS DATE) AS revenue_date, SUM(total_amount) AS daily_revenue " +
-                     "FROM Orders WHERE status = 'delivered' AND created_at BETWEEN ? AND ? " +
-                     "GROUP BY CAST(created_at AS DATE) ORDER BY revenue_date";
+                "FROM Orders WHERE status = 'delivered' AND created_at BETWEEN ? AND ? " +
+                "GROUP BY CAST(created_at AS DATE) ORDER BY revenue_date";
+
         try (Connection con = DBUtil.getConnection();
              PreparedStatement st = con.prepareStatement(sql)) {
+
             st.setString(1, startDate + " 00:00:00");
             st.setString(2, endDate + " 23:59:59");
+
             try (ResultSet rs = st.executeQuery()) {
                 while (rs.next()) {
                     String date = rs.getString("revenue_date");
@@ -398,6 +326,10 @@ public class OrderDAO {
         }
         return revenueByDay;
     }
-=======
->>>>>>> 0517b3c45e1915473af6ab55ae6de0b26642502b
+
+    // For testing
+    public static void main(String[] args) throws SQLException, ClassNotFoundException {
+        OrderDAO dao = new OrderDAO();
+        System.out.println(dao.hasUserPurchasedPlant(2, 9));
+    }
 }

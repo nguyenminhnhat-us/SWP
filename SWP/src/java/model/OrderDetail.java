@@ -9,6 +9,10 @@ public class OrderDetail {
     private int quantity;
     private BigDecimal unitPrice;
 
+    // ✅ Thêm 2 thuộc tính mới
+    private String plantName;
+    private String plantImage;
+
     public OrderDetail() {
     }
 
@@ -27,7 +31,7 @@ public class OrderDetail {
         this.unitPrice = unitPrice;
     }
 
-    // Getters and Setters
+    // ✅ Getters and Setters
     public int getOrderDetailId() {
         return orderDetailId;
     }
@@ -66,5 +70,22 @@ public class OrderDetail {
 
     public void setUnitPrice(BigDecimal unitPrice) {
         this.unitPrice = unitPrice;
+    }
+
+    // ✅ Getter/Setter mới thêm
+    public String getPlantName() {
+        return plantName;
+    }
+
+    public void setPlantName(String plantName) {
+        this.plantName = plantName;
+    }
+
+    public String getPlantImage() {
+        return plantImage;
+    }
+
+    public void setPlantImage(String plantImage) {
+        this.plantImage = plantImage;
     }
 }

@@ -1,12 +1,8 @@
 package controller;
 
-<<<<<<< HEAD
-import dal.CartDAO;
-=======
 import config.VNPAYConfig;
 import dal.CartDAO;
 import dal.OrderDAO;
->>>>>>> 0517b3c45e1915473af6ab55ae6de0b26642502b
 import model.CartItem;
 import model.Order;
 import model.OrderDetail;
@@ -17,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -30,15 +27,10 @@ import java.nio.charset.StandardCharsets;
 
 @WebServlet("/cart")
 public class CartServlet extends HttpServlet {
-
     private CartDAO cartDAO = new CartDAO();
     private OrderDAO orderDAO = new OrderDAO();
 
     @Override
-<<<<<<< HEAD
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-=======
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
@@ -222,14 +214,12 @@ public class CartServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
->>>>>>> 0517b3c45e1915473af6ab55ae6de0b26642502b
         String action = request.getParameter("action");
-        int userId = request.getSession().getAttribute("user") != null
-                ? ((User) request.getSession().getAttribute("user")).getUserId()
-                : 0; // Giả sử User là lớp mô hình của bạn
-        if (userId == 0) {
-            request.setAttribute("error", "Vui lòng đăng nhập để sử dụng giỏ hàng.");
-            request.getRequestDispatcher("/login.jsp").forward(request, response);
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+
+        if (user == null) {
+            response.sendRedirect("login.jsp");
             return;
         }
 
@@ -237,50 +227,22 @@ public class CartServlet extends HttpServlet {
             if ("add".equals(action)) {
                 int plantId = Integer.parseInt(request.getParameter("plantId"));
                 int quantity = Integer.parseInt(request.getParameter("quantity"));
-                cartDAO.addToCart(userId, plantId, quantity);
+                cartDAO.addToCart(user.getUserId(), plantId, quantity);
             } else if ("update".equals(action)) {
                 int plantId = Integer.parseInt(request.getParameter("plantId"));
                 int quantity = Integer.parseInt(request.getParameter("quantity"));
-                cartDAO.updateCartItem(userId, plantId, quantity);
+                cartDAO.updateCartItem(user.getUserId(), plantId, quantity);
             } else if ("delete".equals(action)) {
                 int plantId = Integer.parseInt(request.getParameter("plantId"));
-                cartDAO.removeCartItem(userId, plantId);
+                cartDAO.removeCartItem(user.getUserId(), plantId);
             } else if ("clear".equals(action)) {
-                cartDAO.clearCart(userId);
+                cartDAO.clearCart(user.getUserId());
             }
-
-            // Cập nhật danh sách cartItems trong session
-            List<CartItem> cartItems = cartDAO.getCartItems(userId);
-            request.getSession().setAttribute("cartItems", cartItems);
-
-            // Chuyển hướng về trang giỏ hàng
-            response.sendRedirect(request.getContextPath() + "/cart.jsp");
+            response.sendRedirect("cart");
         } catch (SQLException | ClassNotFoundException e) {
-            request.setAttribute("error", "Lỗi khi xử lý giỏ hàng: " + e.getMessage());
-            request.getRequestDispatcher("/cart.jsp").forward(request, response);
+            e.printStackTrace();
+            request.setAttribute("error", "Lỗi khi xử lý giỏ hàng.");
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     }
-<<<<<<< HEAD
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        int userId = request.getSession().getAttribute("user") != null
-                ? ((User) request.getSession().getAttribute("user")).getUserId()
-                : 0;
-        try {
-            List<CartItem> cartItems = cartDAO.getCartItems(userId);
-            request.getSession().setAttribute("cartItems", cartItems);
-            double total = cartItems.stream()
-                    .mapToDouble(item -> item.getPlant().getPrice() * item.getQuantity())
-                    .sum();
-            request.setAttribute("total", total);
-            request.getRequestDispatcher("/cart.jsp").forward(request, response);
-        } catch (SQLException | ClassNotFoundException e) {
-            request.setAttribute("error", "Lỗi khi tải giỏ hàng: " + e.getMessage());
-            request.getRequestDispatcher("/cart.jsp").forward(request, response);
-        }
-    }
-=======
->>>>>>> 0517b3c45e1915473af6ab55ae6de0b26642502b
 }

@@ -45,6 +45,8 @@ public class LoginServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/dashboard/dashboard.jsp");
             } else if ("customer".equalsIgnoreCase(user.getRole())) {
                 response.sendRedirect(request.getContextPath() + "/dashboard/dashboard.jsp");
+            } else if ("expert".equalsIgnoreCase(user.getRole())) {
+                response.sendRedirect(request.getContextPath() + "/dashboard/dashboard.jsp");
             } else {
                 request.setAttribute("errorMsg", "Vai trò không hợp lệ!");
                 request.getRequestDispatcher("login.jsp").forward(request, response);

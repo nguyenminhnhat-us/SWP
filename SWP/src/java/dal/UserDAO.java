@@ -1,9 +1,12 @@
 package dal;
 
 import controller.DBUtil;
+import java.math.BigDecimal;
 import model.User;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDAO {
 
@@ -22,23 +25,49 @@ public class UserDAO {
         }
         return null;
     }
-
+    public List<User> getExpertsWithProfiles() {
+        List<User> experts = new ArrayList<>();
+        String sql = "SELECT u.*, ep.introduction, ep.achievements, ep.specialties, ep.gallery_image_1, ep.gallery_image_2, ep.gallery_image_3 " +
+                     "FROM Users u INNER JOIN ExpertProfiles ep ON u.user_id = ep.user_id " +
+                     "WHERE u.role = 'expert' AND u.is_active = 1";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                User user = extractUserFromResultSet(rs);
+                user.setBio(rs.getString("introduction"));
+                user.setAchievements(rs.getString("achievements"));
+                user.setSpecialties(rs.getString("specialties"));
+                user.setGallery1(rs.getString("gallery_image_1"));
+                user.setGallery2(rs.getString("gallery_image_2"));
+                user.setGallery3(rs.getString("gallery_image_3"));
+                experts.add(user);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return experts;
+    }
     // Cập nhật thông tin user (không cập nhật password, createdAt, authType)
-    public boolean updateUser(User user) {
-    String sql = "UPDATE Users SET full_name = ?, email = ?, phone = ?, address = ?, avatar_path = ? WHERE user_id = ?";
+public boolean updateUser(User user) {
+    String sql = "UPDATE Users SET full_name = ?, email = ?, phone = ?, address = ?, avatar_path = ?, role = ?, is_active = ? WHERE user_id = ?";
     try (Connection conn = DBUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
         ps.setString(1, user.getFullName());
         ps.setString(2, user.getEmail());
         ps.setString(3, user.getPhone());
         ps.setString(4, user.getAddress());
-        ps.setString(5, user.getAvatarPath());  // Thêm dòng này
-        ps.setInt(6, user.getUserId());
+        ps.setString(5, user.getAvatarPath());
+        ps.setString(6, user.getRole());
+        ps.setBoolean(7, user.isActive());
+        ps.setInt(8, user.getUserId());
         return ps.executeUpdate() > 0;
     } catch (SQLException | ClassNotFoundException e) {
         e.printStackTrace();
         return false;
     }
 }
+
+
 
     // Cập nhật mật khẩu
     public boolean updatePassword(int userId, String newPassword) {
@@ -84,21 +113,25 @@ public class UserDAO {
         }
     }
 
+
     private User extractUserFromResultSet(ResultSet rs) throws SQLException {
-        User user = new User(
-                rs.getInt("user_id"),
-                rs.getString("email"),
-                rs.getString("password"),
-                rs.getString("full_name"),
-                rs.getString("phone"),
-                rs.getString("address"),
-                rs.getString("role"),
-                rs.getBoolean("is_active"),
-                rs.getString("auth_type")
-        );
+        User user = new User();
+        user.setUserId(rs.getInt("user_id"));
+        user.setEmail(rs.getString("email"));
+        user.setPassword(rs.getString("password"));
+        user.setFullName(rs.getString("full_name"));
+        user.setPhone(rs.getString("phone"));
+        user.setAddress(rs.getString("address"));
+        user.setRole(rs.getString("role"));
+        user.setIsActive(rs.getBoolean("is_active"));
         user.setAvatarPath(rs.getString("avatar_path"));
+        user.setAuthType(rs.getString("auth_type"));
+        user.setBio(rs.getString("bio"));
+        user.setExperienceYears(rs.getInt("experience_years"));
+        user.setPricePerDay(rs.getBigDecimal("price_per_day"));
         return user;
     }
+
 
     public void updatePasswordreset(String email, String newPassword) {
         String sql = "UPDATE Users SET password = ? WHERE email = ?";
@@ -175,11 +208,6 @@ public class UserDAO {
     }
 
     // Lấy danh sách người dùng với phân trang
-    public java.util.List<User> getUsersWithPagination(int offset, int limit, String searchKeyword) {
-        return getUsersWithPagination(offset, limit, searchKeyword, "", "");
-    }
-    
-    // Lấy danh sách người dùng với phân trang và filter
     public java.util.List<User> getUsersWithPagination(int offset, int limit, String searchKeyword, String roleFilter, String statusFilter) {
         java.util.List<User> users = new java.util.ArrayList<>();
         StringBuilder sql = new StringBuilder("SELECT * FROM Users WHERE (full_name LIKE ? OR email LIKE ?)");
@@ -358,4 +386,56 @@ public class UserDAO {
         }
         return false;
     }
+    public BigDecimal getExpertDailyPrice(int expertId) {
+        String sql = "SELECT price_per_day FROM Users WHERE user_id = ? AND role = 'expert'";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, expertId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getBigDecimal("price_per_day");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return BigDecimal.ZERO;
+    }
+
+    public List<User> getAllExperts() {
+        List<User> list = new ArrayList<>();
+        String sql = "SELECT * FROM Users WHERE role = 'expert'";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                list.add(extractUserFromResultSet(rs));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    public List<User> getUsersByIds(List<Integer> userIds) {
+    List<User> list = new ArrayList<>();
+    if (userIds == null || userIds.isEmpty()) return list;
+    StringBuilder sql = new StringBuilder("SELECT * FROM Users WHERE user_id IN (");
+    for (int i = 0; i < userIds.size(); i++) {
+        sql.append("?");
+        if (i < userIds.size() - 1) sql.append(",");
+    }
+    sql.append(")");
+    try (Connection conn = DBUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql.toString())) {
+        for (int i = 0; i < userIds.size(); i++) {
+            ps.setInt(i + 1, userIds.get(i));
+        }
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            list.add(extractUserFromResultSet(rs));
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return list;
+}
+
 }

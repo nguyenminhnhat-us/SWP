@@ -92,52 +92,47 @@ public class ManageUserController extends HttpServlet {
         }
     }
 
-    private void listUsers(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        
-        // Lấy tham số trang hiện tại
-        String pageParam = request.getParameter("page");
-        int currentPage = 1;
-        if (pageParam != null && !pageParam.isEmpty()) {
-            try {
-                currentPage = Integer.parseInt(pageParam);
-                if (currentPage < 1) currentPage = 1;
-            } catch (NumberFormatException e) {
-                currentPage = 1;
-            }
+private void listUsers(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    System.out.println(">>> [DEBUG] listUsers() called");
+
+    // Đoạn này đã có rồi
+    String pageParam = request.getParameter("page");
+    int currentPage = 1;
+    if (pageParam != null && !pageParam.isEmpty()) {
+        try {
+            currentPage = Integer.parseInt(pageParam);
+            if (currentPage < 1) currentPage = 1;
+        } catch (NumberFormatException e) {
+            currentPage = 1;
         }
-
-        // Lấy tham số tìm kiếm và filter
-        String searchKeyword = request.getParameter("search");
-        if (searchKeyword == null) searchKeyword = "";
-        
-        String roleFilter = request.getParameter("role");
-        if (roleFilter == null) roleFilter = "";
-        
-        String statusFilter = request.getParameter("status");
-        if (statusFilter == null) statusFilter = "";
-
-        // Tính toán offset
-        int offset = (currentPage - 1) * USERS_PER_PAGE;
-
-        // Lấy danh sách người dùng và tổng số
-        List<User> users = userDAO.getUsersWithPagination(offset, USERS_PER_PAGE, searchKeyword, roleFilter, statusFilter);
-        int totalUsers = userDAO.getTotalUsersCount(searchKeyword, roleFilter, statusFilter);
-        int totalPages = (int) Math.ceil((double) totalUsers / USERS_PER_PAGE);
-
-        // Set attributes
-        request.setAttribute("users", users);
-        request.setAttribute("currentPage", currentPage);
-        request.setAttribute("totalPages", totalPages);
-        request.setAttribute("totalUsers", totalUsers);
-        request.setAttribute("searchKeyword", searchKeyword);
-        request.setAttribute("roleFilter", roleFilter);
-        request.setAttribute("statusFilter", statusFilter);
-        request.setAttribute("usersPerPage", USERS_PER_PAGE);
-
-        // Forward đến JSP
-        request.getRequestDispatcher("/dashboard/admin/manage-user.jsp").forward(request, response);
     }
+
+    // DEBUG
+    System.out.println(">>> [DEBUG] currentPage = " + currentPage);
+
+    String searchKeyword = request.getParameter("search");
+    if (searchKeyword == null) searchKeyword = "";
+
+    String roleFilter = request.getParameter("role");
+    if (roleFilter == null) roleFilter = "";
+
+    String statusFilter = request.getParameter("status");
+    if (statusFilter == null) statusFilter = "";
+
+    int offset = (currentPage - 1) * USERS_PER_PAGE;
+
+    List<User> users = userDAO.getUsersWithPagination(offset, USERS_PER_PAGE, searchKeyword, roleFilter, statusFilter);
+    System.out.println(">>> [DEBUG] Fetched users: " + users.size());
+
+    // Gán lại lên request
+    request.setAttribute("users", users);
+    
+
+    request.getRequestDispatcher("/dashboard/admin/manage-user.jsp").forward(request, response);
+}
+
+
 
     private void toggleUserStatus(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

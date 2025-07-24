@@ -19,18 +19,13 @@ public class ArticleListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            List<Article> articles = articleDAO.getAllArticles();
-            if (articles == null || articles.isEmpty()) {
-                request.setAttribute("error", "Không có bài viết nào để hiển thị.");
-                request.getRequestDispatcher("error.jsp").forward(request, response);
-                return;
-            }
-            request.setAttribute("articles", articles);
-            request.getRequestDispatcher("/articleList.jsp").forward(request, response);
-        } catch (SQLException | ClassNotFoundException e) {
-            request.setAttribute("error", "Lỗi khi tải danh sách bài viết: " + e.getMessage());
+        List<Article> articles = articleDAO.getAllArticles();
+        if (articles == null || articles.isEmpty()) {
+            request.setAttribute("error", "Không có bài viết nào để hiển thị.");
             request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
         }
+        request.setAttribute("articles", articles);
+        request.getRequestDispatcher("/articleList.jsp").forward(request, response);
     }
 }
