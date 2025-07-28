@@ -1,9 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<!-- Link CSS Header -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/header-style.css">
-
 <!-- Top Header -->
 <div class="container py-3">
     <div class="row align-items-center">
@@ -119,6 +116,7 @@
                     </a>
                 </li>
             </ul>
+                
         </div>
     </div>
 </nav>
