@@ -8,49 +8,83 @@
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/web/common/home/footer.jsp</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/dal/OrderDAO.java</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/controller/CareServiceManagementServlet.java</file>
+            <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/controller/VerifyForgotOTPServlet.java</file>
+            <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/controller/dashboard/ManageCategoryController.java</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/controller/CareCartServlet.java</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/controller/EditProfileServlet.java</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/controller/BookCareServlet.java</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/web/index.jsp</file>
+            <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/web/home.jsp</file>
+            <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/controller/ajaxServlet.java</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/test/TestCareCartDAO.java</file>
+            <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/web/book-care.jsp</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/controller/DBUtil.java</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/model/Consultation.java</file>
+            <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/test/LoginTest.java</file>
+            <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/servlet/DUtil.java</file>
+            <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/web/editProfile.jsp</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/model/Message.java</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/controller/PlantDetailsServlet.java</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/web/login.jsp</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/model/User.java</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/web/common/dashboard/sidebar.jsp</file>
+            <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/web/checkout.jsp</file>
+            <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/web/expert.jsp</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/web/user-chat-list.jsp</file>
+            <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/model/Article.java</file>
+            <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/model/Order.java</file>
+            <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/model/CareOrder.java</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/dal/CategoryDAO.java</file>
-            <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/web/expert-chat-list.jsp</file>
+            <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/controller/VerifyServlet.java</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/controller/ReviewServlet.java</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/dal/UserDAO.java</file>
+            <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/web/edit-care-cart.jsp</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/nbproject/build-impl.xml</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/dal/CareCartServicesDAO.java</file>
+            <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/model/CareCart.java</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/dal/CartDAO.java</file>
+            <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/controller/ForgotPasswordServlet.java</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/model/Plant.java</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/dal/CareOrderDAO.java</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/controller/AjaxCarePaymentServlet.java</file>
+            <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/web/css/login-style.css</file>
+            <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/web/plantList.jsp</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/web/common/dashboard/avatar.jsp</file>
+            <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/web/expert-care-cart.jsp</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/web/common/home/header.jsp</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/dal/MessageDAO.java</file>
+            <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/model/Review.java</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/web/checkout-care.jsp</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/controller/ExpertScheduleServlet.java</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/controller/CartServlet.java</file>
+            <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/model/OrderDetail.java</file>
+            <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/web/bill.jsp</file>
+            <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/utils/EmailUtility.java</file>
+            <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/web/css/header-style.css</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/test/TestUserDAO.java</file>
+            <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/web/care-cart.jsp</file>
+            <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/controller/VNPAYReturnServlet.java</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/web/verifyForgotOTP.jsp</file>
+            <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/web/css/index-style.css</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/controller/DeleteCareCartServlet.java</file>
+            <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/model/CareService.java</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/web/plantDetails.jsp</file>
+            <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/model/CareOrderDay.java</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/dal/ConsultationDAO.java</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/test/TestGetCareCarts.java</file>
-            <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/web/chat/chatbox.jsp</file>
+            <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/web/articleList.jsp</file>
+            <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/web/images/bang.jpg</file>
+            <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/web/productDetail.jsp</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/dal/PlantDAO.java</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/web/change-password.jsp</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/controller/LoginServlet.java</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/controller/ChatEndpoint.java</file>
+            <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/web/forgotPassword.jsp</file>
+            <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/controller/UpdateCareServiceServlet.java</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/web/cart.jsp</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/model/Category.java</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/controller/dashboard/ReportsController.java</file>
+            <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/controller/ViewProfileServlet.java</file>
             <file>file:/C:/Users/ADMIN/Desktop/SWP_NhatMinh_Plant%20-%20Copy/SWP/src/java/model/CartItem.java</file>
         </group>
     </open-files>
