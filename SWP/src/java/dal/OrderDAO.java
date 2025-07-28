@@ -326,6 +326,7 @@ public class OrderDAO {
         }
         return revenueByDay;
     }
+    
 
     // For testing
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
