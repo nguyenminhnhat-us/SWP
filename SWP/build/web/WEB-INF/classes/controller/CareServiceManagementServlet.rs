@@ -1,2 +1,1 @@
 controller.dashboard.CareServiceManagementServlet
-CareServiceManagementServlet
