@@ -25,6 +25,16 @@ public class Order {
         this.paymentMethod = paymentMethod;
     }
 
+    public Order(int orderId, int userId, BigDecimal totalAmount, String status, String shippingAddress, String paymentMethod, Date createdAt) {
+        this.orderId = orderId;
+        this.userId = userId;
+        this.totalAmount = totalAmount;
+        this.status = status;
+        this.shippingAddress = shippingAddress;
+        this.paymentMethod = paymentMethod;
+        this.createdAt = createdAt;
+    }
+
     // Getters and Setters
     public int getOrderId() {
         return orderId;

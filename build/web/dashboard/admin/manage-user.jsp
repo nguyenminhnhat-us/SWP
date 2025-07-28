@@ -79,8 +79,8 @@
                                         <div class="col-md-3">
                                             <select class="form-select" name="status">
                                                 <option value="">Tất cả trạng thái</option>
-                                                <option value="active" ${param.status == 'active' ? 'selected' : ''}>Hoạt động</option>
-                                                <option value="inactive" ${param.status == 'inactive' ? 'selected' : ''}>Bị khóa</option>
+                                                <option value="active" ${param.isActive == 'active' ? 'selected' : ''}>Hoạt động</option>
+                                                <option value="inactive" ${param.isActive == 'inactive' ? 'selected' : ''}>Bị khóa</option>
                                             </select>
                                         </div>
                                         <div class="col-md-2">
@@ -134,20 +134,7 @@
                                                 </span>
                                             </p>
                                         </div>
-                                        <!-- <div class="mb-3">
-                                            <label class="form-label fw-bold">Loại xác thực:</label>
-                                            <p class="form-control-plaintext">
-                                                <span class="badge bg-info fs-6">
-                                                    ${viewUser.authType == 'google' ? 'Google' : 'Tài khoản nội bộ'}
-                                                </span>
-                                            </p>
-                                        </div> -->
-                                        <div class="mb-3">
-                                            <label class="form-label fw-bold">Ngày tạo:</label>
-                                            <p class="form-control-plaintext">
-                                                <fmt:formatDate value="${viewUser.createdAt}" pattern="dd/MM/yyyy HH:mm:ss" />
-                                            </p>
-                                        </div>
+                                        
                                     </div>
                                     <div class="col-12">
                                         <div class="mb-3">

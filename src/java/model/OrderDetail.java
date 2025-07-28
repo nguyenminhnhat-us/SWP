@@ -19,6 +19,14 @@ public class OrderDetail {
         this.unitPrice = unitPrice;
     }
 
+    public OrderDetail(int orderDetailId, int orderId, int plantId, int quantity, BigDecimal unitPrice) {
+        this.orderDetailId = orderDetailId;
+        this.orderId = orderId;
+        this.plantId = plantId;
+        this.quantity = quantity;
+        this.unitPrice = unitPrice;
+    }
+
     // Getters and Setters
     public int getOrderDetailId() {
         return orderDetailId;

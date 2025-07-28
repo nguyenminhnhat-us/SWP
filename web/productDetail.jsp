@@ -138,6 +138,42 @@
                                         <p>Chưa có phản hồi nào cho sản phẩm này.</p>
                                     </c:if>
                                 </div>
+                                <!-- Review Section -->
+                                <div class="feedback-section mb-4">
+                                    <h4 class="mb-3">Đánh giá sản phẩm</h4>
+                                    <c:if test="${not empty message}">
+                                        <div class="alert alert-${messageType}">${message}</div>
+                                    </c:if>
+
+                                    <c:choose>
+                                        <c:when test="${hasPurchased}">
+                                            <div class="review-form">
+                                                <h6>Gửi đánh giá của bạn</h6>
+                                                <form action="${pageContext.request.contextPath}/review" method="post">
+                                                    <input type="hidden" name="plantId" value="${product.plantId}">
+                                                    <div class="mb-3">
+                                                        <label for="rating" class="form-label">Số sao:</label>
+                                                        <select class="form-select" id="rating" name="rating" required>
+                                                            <option value="5">5 sao</option>
+                                                            <option value="4">4 sao</option>
+                                                            <option value="3">3 sao</option>
+                                                            <option value="2">2 sao</option>
+                                                            <option value="1">1 sao</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="comment" class="form-label">Bình luận:</label>
+                                                        <textarea class="form-control" id="comment" name="comment" rows="3" required></textarea>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-primary">Gửi đánh giá</button>
+                                                </form>
+                                            </div>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <div class="alert alert-info">Bạn cần mua sản phẩm này để có thể gửi đánh giá.</div>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
                                 <!-- Sản phẩm liên quan -->
                                 <div class="mb-4">
                                     <h4 class="mb-3">Sản phẩm liên quan</h4>

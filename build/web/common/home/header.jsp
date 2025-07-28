@@ -82,9 +82,7 @@
                         <li><a class="dropdown-item" href="#">Đội ngũ chuyên gia</a></li>
                     </ul>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/plants">SẢN PHẨM</a>
-                </li>
+              
                 <li class="nav-item">
                     <a class="nav-link" href="#">BÁO GIÁ</a>
                 </li>

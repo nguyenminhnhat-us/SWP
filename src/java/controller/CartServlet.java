@@ -152,7 +152,7 @@ public class CartServlet extends HttpServlet {
                 }
                 
                 // Payment successful - process the order
-                processSuccessfulOrder(request, response, user, cartItems);
+                processSuccessfulOrder(request, response, user, cartItems, "VNPAY");
             } else {
                 // Payment failed
                 session.setAttribute("message", "Payment was not successful. Response code: " + vnp_ResponseCode);
@@ -170,7 +170,7 @@ public class CartServlet extends HttpServlet {
         }
     }
 
-    private void processSuccessfulOrder(HttpServletRequest request, HttpServletResponse response, User user, List<CartItem> cartItems) throws ServletException, IOException {
+    private void processSuccessfulOrder(HttpServletRequest request, HttpServletResponse response, User user, List<CartItem> cartItems, String paymentMethod) throws ServletException, IOException {
         HttpSession session = request.getSession();
         try {
             if (cartItems.isEmpty()) {
@@ -184,7 +184,7 @@ public class CartServlet extends HttpServlet {
                 .map(item -> BigDecimal.valueOf(item.getPlant().getPrice()).multiply(new BigDecimal(item.getQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-            Order order = new Order(user.getUserId(), totalAmount, "pending", user.getAddress(), "VNPAY");
+            Order order = new Order(user.getUserId(), totalAmount, "pending", user.getAddress(), paymentMethod);
             int orderId = orderDAO.createOrder(order);
 
             List<OrderDetail> orderDetails = new ArrayList<>();
@@ -200,7 +200,10 @@ public class CartServlet extends HttpServlet {
             session.removeAttribute("vnp_Amount");
             session.removeAttribute("checkoutCartItems");
 
-            request.setAttribute("message", "Payment successful! Your order has been placed.");
+            String successMessage = "VNPAY".equals(paymentMethod) ? 
+                "Payment successful! Your order has been placed." : 
+                "Order placed successfully! You will pay when you receive the goods.";
+            request.setAttribute("message", successMessage);
             request.setAttribute("messageType", "success");
             
         } catch (SQLException | ClassNotFoundException e) {
@@ -237,12 +240,48 @@ public class CartServlet extends HttpServlet {
                 cartDAO.removeCartItem(user.getUserId(), plantId);
             } else if ("clear".equals(action)) {
                 cartDAO.clearCart(user.getUserId());
+            } else if ("complete-order".equals(action)) {
+                handleCompleteOrder(request, response);
+                return;
             }
             response.sendRedirect("cart");
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
             request.setAttribute("error", "Lỗi khi xử lý giỏ hàng.");
             request.getRequestDispatcher("error.jsp").forward(request, response);
+        }
+    }
+    
+    private void handleCompleteOrder(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        
+        if (user == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
+        
+        String paymentMethod = request.getParameter("payment_method");
+        
+        // Get cart items from session (should be set during process-checkout)
+        @SuppressWarnings("unchecked")
+        List<CartItem> cartItems = (List<CartItem>) session.getAttribute("checkoutCartItems");
+        
+        if (cartItems == null || cartItems.isEmpty()) {
+            session.setAttribute("message", "Your checkout session has expired. Please try again.");
+            session.setAttribute("messageType", "error");
+            response.sendRedirect(request.getContextPath() + "/cart");
+            return;
+        }
+        
+        if ("COD".equals(paymentMethod)) {
+            // Process COD order directly
+            processSuccessfulOrder(request, response, user, cartItems, "COD");
+        } else {
+            // For VNPAY, this shouldn't happen as it should go through ajaxServlet
+            session.setAttribute("message", "Invalid payment method.");
+            session.setAttribute("messageType", "error");
+            response.sendRedirect(request.getContextPath() + "/cart");
         }
     }
 }

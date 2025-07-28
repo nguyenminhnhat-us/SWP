@@ -152,7 +152,7 @@
                                                     <fmt:formatNumber value="${plant.price}" type="currency"
                                                         currencySymbol="₫" />
                                                 </p>
-                                                <a href="plant-details?id=${plant.plantId}"
+                                                <a href="product-detail?id=${plant.plantId}"
                                                     class="btn btn-outline-success btn-sm w-100">Chi tiết</a>
                                             </div>
                                         </div>

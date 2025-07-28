@@ -23,12 +23,23 @@ public class ReviewDAO {
                 r.setRating(rs.getInt("rating"));
                 r.setComment(rs.getString("comment"));
                 r.setCreatedAt(rs.getTimestamp("created_at"));
-                // Lấy tên user
-                // Nếu cần lấy tên plant, có thể gọi PlantDAO ở đây và set vào Review (nếu entity có trường đó)
+                r.setUserName(rs.getString("full_name")); // Set userName
                 list.add(r);
             }
         }
         return list;
     }
     
+    public void addReview(Review review) throws SQLException, ClassNotFoundException {
+        String sql = "INSERT INTO Reviews (user_id, plant_id, order_id, rating, comment) VALUES (?, ?, ?, ?, ?)";
+        try (Connection con = DBUtil.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, review.getUserId());
+            ps.setInt(2, review.getPlantId());
+            ps.setInt(3, review.getOrderId());
+            ps.setInt(4, review.getRating());
+            ps.setString(5, review.getComment());
+            ps.executeUpdate();
+        }
+    }
 }
